@@ -10,6 +10,11 @@ namespace SokubaiPos
     class LCD
     {
     public:
+        static void FillScreen(const Color16& color)
+        {
+            M5.Lcd.fillScreen(color.Get());
+        }
+
         static void GenerateQRCode(const char* string, const Vector2<uint16_t>& position, uint8_t width, const uint8_t version = 6)
         {
             M5.Lcd.qrcode(string, position.X(), position.Y(), width, version);
@@ -21,11 +26,6 @@ namespace SokubaiPos
         }
 
         static void DrawBitmapFile(const char* path, const Vector2<uint16_t>& position, FS& fs = SD)
-        {
-            M5.Lcd.drawBmpFile(fs, path, position.X(), position.Y());
-        }
-
-        static void DrawBitmapFile(String& path, const Vector2<uint16_t>& position, FS& fs = SD)
         {
             M5.Lcd.drawBmpFile(fs, path, position.X(), position.Y());
         }

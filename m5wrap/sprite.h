@@ -43,6 +43,11 @@ namespace SokubaiPos
             _sprite.fillSprite(color.Get());
         }
 
+        TFT_eSprite* Get()
+        {
+            return &_sprite;
+        }
+
         Rect<uint16_t> GetSize()
         {
             return Rect<uint16_t>(_sprite.width(), _sprite.height());

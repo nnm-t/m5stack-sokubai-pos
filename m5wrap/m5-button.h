@@ -10,6 +10,8 @@
 
 namespace SokubaiPos
 {
+    using ButtonCallback  = void (*)();
+
     class M5Button
     {
         Button* _button;

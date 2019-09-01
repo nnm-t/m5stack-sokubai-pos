@@ -46,7 +46,7 @@ namespace SokubaiPos
     public:
         static constexpr Color16 White()
         {
-            return Color16(0xFFFFF);
+            return Color16(0xFFFFFF);
         }
 
         static constexpr Color16 Black()

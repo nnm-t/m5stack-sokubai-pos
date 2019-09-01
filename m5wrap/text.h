@@ -76,6 +76,11 @@ namespace SokubaiPos
             _tft->loadFont(font_name, fs);
         }
 
+        void LoadFont(const char* font_name, FS& fs = SD)
+        {
+            _tft->loadFont(font_name, fs);
+        }
+
         void Print(const char* string)
         {
             SetTextParameter();
