@@ -1,0 +1,33 @@
+#pragma once
+
+#include <Arduino.h>
+#include <M5Stack.h>
+
+#include "../sokubai-pos.h"
+
+namespace SokubaiPos
+{
+    class LCD
+    {
+    public:
+        static void GenerateQRCode(const char* string, const Vector2<uint16_t>& position, uint8_t width, const uint8_t version = 6)
+        {
+            M5.Lcd.qrcode(string, position.X(), position.Y(), width, version);
+        }
+
+        static void GenerateQRCode(String& string, const Vector2<uint16_t>& position, const uint8_t width, const uint8_t version = 6)
+        {
+            M5.Lcd.qrcode(string, position.X(), position.Y(), width, version);
+        }
+
+        static void DrawBitmapFile(const char* path, const Vector2<uint16_t>& position, FS& fs = SD)
+        {
+            M5.Lcd.drawBmpFile(fs, path, position.X(), position.Y());
+        }
+
+        static void DrawBitmapFile(String& path, const Vector2<uint16_t>& position, FS& fs = SD)
+        {
+            M5.Lcd.drawBmpFile(fs, path, position.X(), position.Y());
+        }
+    };
+}

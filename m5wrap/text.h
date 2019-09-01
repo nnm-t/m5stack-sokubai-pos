@@ -9,9 +9,8 @@
 
 namespace SokubaiPos
 {
-    class Text
+    class Text : public LCDBase
     {
-        TFT_eSPI* _tft;
         uint8_t _size;
         std::shared_ptr<Color16> _foreground;
         std::shared_ptr<Color16> _background;
@@ -19,7 +18,7 @@ namespace SokubaiPos
 
         void SetTextSize()
         {
-            M5.Lcd.setTextSize(_size);
+            _tft->setTextSize(_size);
         }
 
         void SetTextParameter()
@@ -32,7 +31,7 @@ namespace SokubaiPos
     public:
         Text(TFT_eSPI* tft, const uint8_t size = 8, const Color16& foreground = Color16::White(),
             const Color16& background = Color16::Black(), const TextDatum datum = TextDatum::TopLeft)
-        : _tft(tft), _size(size), _foreground(std::make_shared<Color16>(foreground)), _background(std::make_shared<Color16>(background)), _datum(datum)
+        : LCDBase(tft), _size(size), _foreground(std::make_shared<Color16>(foreground)), _background(std::make_shared<Color16>(background)), _datum(datum)
         {
 
         }
