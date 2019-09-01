@@ -37,15 +37,5 @@ namespace SokubaiPos
         {
             _sprite.fillSprite(color.Get());
         }
-
-        void SetTextColor(const Color16& foreground)
-        {
-            _sprite.setTextColor(foreground.Get());
-        }
-
-        void SetTextColor(const Color16& foreground, const Color16& background)
-        {
-            _sprite.setTextColor(foreground.Get(), background.Get());
-        }
     };
 }
