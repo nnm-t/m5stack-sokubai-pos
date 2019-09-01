@@ -22,7 +22,7 @@ void setup()
     sprite.Create(sprite_rect);
     sprite.Fill(Color16::White());
 
-    text.Draw("hoge", Vector2<uint32_t>::Zero());
+    text.Draw("hoge", Vector2<int32_t>::Zero());
 }
 
 void loop()

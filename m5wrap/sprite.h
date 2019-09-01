@@ -33,9 +33,29 @@ namespace SokubaiPos
             SetColorDepth(depth);
         }
 
+        void Delete()
+        {
+            _sprite.deleteSprite();
+        }
+
         void Fill(const Color16& color)
         {
             _sprite.fillSprite(color.Get());
+        }
+
+        Rect<uint16_t> GetSize()
+        {
+            return Rect<uint16_t>(_sprite.width(), _sprite.height());
+        }
+
+        void Push(const Vector2<int32_t>& position)
+        {
+            _sprite.pushSprite(position.X(), position.Y());
+        }
+
+        void Push(const Vector2<int32_t>& position, const Color16& transparent)
+        {
+            _sprite.pushSprite(position.X(), position.Y(), transparent.Get());
         }
     };
 }
