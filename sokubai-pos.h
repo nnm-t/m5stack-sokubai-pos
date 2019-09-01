@@ -8,3 +8,4 @@
 #include "m5wrap/text.h"
 #include "m5wrap/diagram.h"
 #include "m5wrap/sprite.h"
+#include "m5wrap/m5-button.h"
