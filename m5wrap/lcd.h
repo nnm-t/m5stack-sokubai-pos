@@ -29,5 +29,10 @@ namespace SokubaiPos
         {
             M5.Lcd.drawBmpFile(fs, path, position.X(), position.Y());
         }
+
+        static void SetBrightness(uint8_t brightness)
+        {
+            M5.Lcd.setBrightness(brightness);
+        }
     };
 }

@@ -4,6 +4,7 @@
 #include <Ticker.h>
 #include <ArduinoJson.h>
 
+#include "constants.h"
 #include "sokubai-pos.h"
 
 using namespace SokubaiPos;
@@ -11,9 +12,7 @@ using namespace SokubaiPos;
 constexpr Rect<uint32_t> tft_rect(320, 240);
 constexpr Rect<uint16_t> sprite_rect(32, 32);
 
-Diagram header;
-Text header_text(20, Color16::White(), Color16::Black(), TextDatum::TopRight);
-constexpr Rect<int32_t> header_rect(320, 20);
+Header header;
 
 Diagram footer;
 constexpr Vector2<int32_t> footer_left(20, 220);
@@ -36,12 +35,10 @@ void setup()
     Serial.println(Color16::White().Get());
 
     LCD::FillScreen(Color16::White());
-    header.FillRect(Vector2<int32_t>::Zero(), header_rect, Color16::Black());
 
-    header_text.LoadFont("mplus-1c20");
-    header_text.Draw("100%", Vector2<int32_t>(320, 0));
+    header.Begin();
 
-    footer.FillRect(Vector2<int32_t>(0, 220), header_rect, Color16::Black());
+    footer.FillRect(Vector2<int32_t>(0, 220), Rect<int32_t>(320, 20), Color16::Black());
     footer.DrawRect(footer_left, footer_border);
     footer.DrawRect(footer_center, footer_border);
     footer.DrawRect(footer_right, footer_border);
