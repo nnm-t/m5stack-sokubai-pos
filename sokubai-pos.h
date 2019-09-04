@@ -15,4 +15,6 @@
 #include "states/state-base.h"
 #include "states/goods-state.h"
 
+#include "json/json-goods.h"
+
 #include "header.h"

@@ -35,6 +35,8 @@ namespace SokubaiPos
             _button_c.Loop();
         }
 
+        virtual void OnLoad() = 0;
+
         virtual void OnButtonAPressed()
         {
 
