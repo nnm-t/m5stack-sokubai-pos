@@ -10,11 +10,11 @@ namespace SokubaiPos
     class Good
     {
         // 120x120
-        const Vector2<uint16_t> image_pos = Vector2<uint16_t>(40, 60);
+        static constexpr Vector2<uint16_t> image_pos = Vector2<uint16_t>(40, 60);
 
-        const Vector2<int32_t> name_pos = Vector2<int32_t>(170, 60);
-        const Vector2<int32_t> price_pos = Vector2<int32_t>(170, 100);
-        const Vector2<int32_t> qty_pos = Vector2<int32_t>(170, 140);
+        static constexpr Vector2<int32_t> name_pos = Vector2<int32_t>(170, 60);
+        static constexpr Vector2<int32_t> price_pos = Vector2<int32_t>(170, 100);
+        static constexpr Vector2<int32_t> qty_pos = Vector2<int32_t>(170, 140);
 
         uint32_t _price;
         String _name;
@@ -56,19 +56,34 @@ namespace SokubaiPos
             qty_text.Draw("数量: " + String(_qty), qty_pos);
         }
 
-        uint32_t GetPrice()
+        uint32_t GetPrice() const
         {
             return _price;
         }
 
-        String GetName()
+        String GetName() const
         {
             return _name;
         }
 
-        String GetImagePath()
+        String GetImagePath() const
         {
             return _image_path;
+        }
+
+        uint8_t GetQuantity() const
+        {
+            return _qty;
+        }
+
+        void IncrementQuantity()
+        {
+            _qty++;
+        }
+
+        void DecrementQuantity()
+        {
+            _qty--;
         }
     };
 }

@@ -25,7 +25,10 @@ constexpr Vector2<int32_t> footer_text_left(60, 220);
 constexpr Vector2<int32_t> footer_text_center(160, 220);
 constexpr Vector2<int32_t> footer_text_right(260, 220);
 
-GoodsState goods_state;
+JsonGoods json_goods;
+constexpr char* json_goods_path = "/goods.json";
+
+GoodsState goods_state(&json_goods);
 StateBase* state = &goods_state;
 
 void setup()
@@ -47,6 +50,8 @@ void setup()
     footer_text.Draw("金額入力", footer_text_left);
     footer_text.Draw("反転", footer_text_center);
     footer_text.Draw("会計", footer_text_right);
+
+    state->OnLoad();
 }
 
 void loop()

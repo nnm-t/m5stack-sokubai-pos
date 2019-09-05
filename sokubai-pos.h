@@ -12,9 +12,9 @@
 #include "m5wrap/m5-button.h"
 #include "m5wrap/power.h"
 
+#include "json/json-goods.h"
+
 #include "states/state-base.h"
 #include "states/goods-state.h"
-
-#include "json/json-goods.h"
 
 #include "header.h"
