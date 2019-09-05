@@ -19,13 +19,13 @@ namespace SokubaiPos
 
         static constexpr Color16 tr_color = Color16::From32(0xFF0000);
 
-        const JsonGoods* _goods;
+        JsonGoods* _goods;
 
         Text _text;
         Diagram _diagram;
 
     public:
-        GoodsState(const JsonGoods* goods)
+        GoodsState(JsonGoods* goods)
          : _goods(goods), _text(Text()), _diagram(Diagram()), StateBase()
         {
         }
@@ -34,6 +34,8 @@ namespace SokubaiPos
         {
             _diagram.FillTriangle(left_tr0, left_tr1, left_tr2, tr_color);
             _diagram.FillTriangle(right_tr0, right_tr1, right_tr2, tr_color);
+
+            Good* good = _goods->CurrentGood();
         }
     };
 }

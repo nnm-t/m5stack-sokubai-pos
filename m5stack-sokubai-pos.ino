@@ -35,7 +35,7 @@ void setup()
 {
     M5.begin();
     Serial.begin(115200);
-    Serial.println(Color16::White().Get());
+    SD.begin();
 
     LCD::FillScreen(Color16::White());
 
@@ -50,6 +50,8 @@ void setup()
     footer_text.Draw("金額入力", footer_text_left);
     footer_text.Draw("反転", footer_text_center);
     footer_text.Draw("会計", footer_text_right);
+
+    json_goods.ReadJsonFromFile(json_goods_path);
 
     state->OnLoad();
 }
