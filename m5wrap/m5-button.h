@@ -6,8 +6,6 @@
 #include <Arduino.h>
 #include <M5Stack.h>
 
-#include "../sokubai-pos.h"
-
 namespace SokubaiPos
 {
     using ButtonCallback  = void (*)();

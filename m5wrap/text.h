@@ -4,7 +4,9 @@
 #include <M5Stack.h>
 #include <memory>
 
-#include "../sokubai-pos.h"
+#include "../misc/vector2.h"
+#include "../misc/rect.h"
+#include "color16.h"
 #include "text-datum.h"
 
 namespace SokubaiPos

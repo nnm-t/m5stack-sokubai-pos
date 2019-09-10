@@ -5,7 +5,7 @@
 #include <Arduino.h>
 #include <M5Stack.h>
 
-#include "../sokubai-pos.h"
+#include "../m5wrap/m5-button.h"
 
 namespace SokubaiPos
 {

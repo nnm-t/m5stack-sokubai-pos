@@ -1,7 +1,8 @@
 #pragma once
 
-#include <M5Stack.h>
 #include <cmath>
+
+#include <Arduino.h>
 
 namespace SokubaiPos
 {

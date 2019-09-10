@@ -7,7 +7,7 @@
 
 #include <ArduinoJson.h>
 
-#include "../sokubai-pos.h"
+#include "../constants.h"
 #include "good.h"
 
 namespace SokubaiPos
@@ -49,7 +49,7 @@ namespace SokubaiPos
 
         Good* CurrentGood()
         {
-            if (_is_deserialized)
+            if (!_is_deserialized)
             {
                 return nullptr;
             }

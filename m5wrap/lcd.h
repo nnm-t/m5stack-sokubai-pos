@@ -3,7 +3,8 @@
 #include <Arduino.h>
 #include <M5Stack.h>
 
-#include "../sokubai-pos.h"
+#include "color16.h"
+#include "../misc/vector2.h"
 
 namespace SokubaiPos
 {

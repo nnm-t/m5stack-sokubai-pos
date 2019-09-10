@@ -5,7 +5,15 @@
 #include <ArduinoJson.h>
 
 #include "constants.h"
-#include "sokubai-pos.h"
+#include "misc/vector2.h"
+#include "misc/rect.h"
+#include "header.h"
+#include "m5wrap/color16.h"
+#include "m5wrap/diagram.h"
+#include "m5wrap/text.h"
+#include "json/json-goods.h"
+#include "states/goods-state.h"
+#include "states/state-base.h"
 
 using namespace SokubaiPos;
 

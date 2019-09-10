@@ -5,6 +5,10 @@
 
 #include <ArduinoJson.h>
 
+#include "../misc/vector2.h"
+#include "../constants.h"
+#include "../m5wrap/lcd.h"
+
 namespace SokubaiPos
 {
     class Good
@@ -47,11 +51,11 @@ namespace SokubaiPos
         {
             LCD::DrawBitmapFile(_image_path.c_str(), image_pos);
 
-            Text price_text(40);
+            Text price_text(40, color_black, color_white);
             price_text.LoadFont(font_40pt);
             price_text.Draw(_name, price_pos);
 
-            Text qty_text(20);
+            Text qty_text(20, color_black, color_white);
             qty_text.LoadFont(font_20pt);
             qty_text.Draw("数量: " + String(_qty), qty_pos);
         }
@@ -86,4 +90,9 @@ namespace SokubaiPos
             _qty--;
         }
     };
+
+    constexpr Vector2<uint16_t> Good::image_pos;
+    constexpr Vector2<int32_t> Good::name_pos;
+    constexpr Vector2<int32_t> Good::price_pos;
+    constexpr Vector2<int32_t> Good::qty_pos;
 }

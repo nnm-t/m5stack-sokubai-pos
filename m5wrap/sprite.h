@@ -1,8 +1,10 @@
 #pragma once
 
+#include <Arduino.h>
 #include <M5Stack.h>
 
-#include "../sokubai-pos.h"
+#include "../misc/rect.h"
+#include "../misc/vector2.h"
 #include "sprite-color-depth.h"
 
 namespace SokubaiPos

@@ -3,20 +3,23 @@
 #include <Arduino.h>
 #include <M5Stack.h>
 
+#include "misc/vector2.h"
+#include "misc/rect.h"
+#include "m5wrap/text-datum.h"
+#include "m5wrap/power.h"
+#include "m5wrap/diagram.h"
+#include "m5wrap/text.h"
 #include "constants.h"
-#include "sokubai-pos.h"
 
 namespace SokubaiPos
 {
     class Header
     {
-        const Rect<int32_t> _rect = Rect<int32_t>(320, 20);
-        const uint8_t _font_size = 20;
-        const Color16 _background = Color16::From32(0x000000);
-        const Color16 _foreground = Color16::From32(0xFFFFFF);
+        static constexpr Rect<int32_t> rect = Rect<int32_t>(320, 20);
+        static constexpr uint8_t font_size = 20;
 
-        const Vector2<int32_t> _pos = Vector2<int32_t>::Zero();
-        const Vector2<int32_t> _battery_text_pos = Vector2<int32_t>(320, 0);
+        static constexpr Vector2<int32_t> pos = Vector2<int32_t>::Zero();
+        static constexpr Vector2<int32_t> battery_pos = Vector2<int32_t>(320, 0);
 
         Diagram _diagram;
         Text _battery_text;
@@ -29,17 +32,21 @@ namespace SokubaiPos
     public:
         Header()
         : _diagram(Diagram()),
-         _battery_text(_font_size, _foreground, _background, TextDatum::TopRight)
+         _battery_text(font_size, color_white, color_black, TextDatum::TopRight)
         {
 
         }
 
         void Begin()
         {
-            _diagram.FillRect(_pos, _rect, _background);
+            _diagram.FillRect(pos, rect, color_black);
 
             _battery_text.LoadFont(font_20pt);
-            _battery_text.Draw(GetBatteryLevel() + "%", _battery_text_pos);
+            _battery_text.Draw(GetBatteryLevel() + "%", battery_pos);
         }
     };
+
+    constexpr Rect<int32_t> Header::rect;
+    constexpr Vector2<int32_t> Header::pos;
+    constexpr Vector2<int32_t> Header::battery_pos;
 }
