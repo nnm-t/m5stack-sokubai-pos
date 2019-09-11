@@ -13,10 +13,7 @@ namespace SokubaiPos
     {
         TFT_eSprite _sprite;
 
-        void SetColorDepth(const SpriteColorDepth depth)
-        {
-            _sprite.setColorDepth(static_cast<uint8_t>(depth));
-        }
+        void SetColorDepth(const SpriteColorDepth depth);
 
     public:
         Sprite(TFT_eSPI *tft) : _sprite(TFT_eSprite(tft))
@@ -29,40 +26,18 @@ namespace SokubaiPos
 
         }
 
-        void Create(const Rect<uint16_t>& rect, const SpriteColorDepth depth = SpriteColorDepth::Bytes16)
-        {
-            _sprite.createSprite(rect.Width(), rect.Height());
-            SetColorDepth(depth);
-        }
+        void Create(const Rect<uint16_t>& rect, const SpriteColorDepth depth = SpriteColorDepth::Bytes16);
 
-        void Delete()
-        {
-            _sprite.deleteSprite();
-        }
+        void Delete();
 
-        void Fill(const Color16& color)
-        {
-            _sprite.fillSprite(color.Get());
-        }
+        void Fill(const Color16& color);
 
-        TFT_eSprite* Get()
-        {
-            return &_sprite;
-        }
+        inline TFT_eSprite* Get();
 
-        Rect<uint16_t> GetSize()
-        {
-            return Rect<uint16_t>(_sprite.width(), _sprite.height());
-        }
+        Rect<uint16_t> GetSize();
 
-        void Push(const Vector2<int32_t>& position)
-        {
-            _sprite.pushSprite(position.X(), position.Y());
-        }
+        void Push(const Vector2<int32_t>& position);
 
-        void Push(const Vector2<int32_t>& position, const Color16& transparent)
-        {
-            _sprite.pushSprite(position.X(), position.Y(), transparent.Get());
-        }
+        void Push(const Vector2<int32_t>& position, const Color16& transparent);
     };
 }
