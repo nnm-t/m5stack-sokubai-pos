@@ -7,7 +7,7 @@
 
 #include <ArduinoJson.h>
 
-#include "../constants.h"
+#include "constants.h"
 #include "good.h"
 
 namespace SokubaiPos

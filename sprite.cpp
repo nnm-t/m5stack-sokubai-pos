@@ -23,7 +23,7 @@ namespace SokubaiPos
         _sprite.fillSprite(color.Get());
     }
 
-    TFT_eSprite* Get()
+    TFT_eSprite* Sprite::Get()
     {
         return &_sprite;
     }

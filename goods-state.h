@@ -3,8 +3,8 @@
 #include <Arduino.h>
 #include <M5Stack.h>
 
-#include "../misc/vector2.h"
-#include "../m5wrap/color16.h"
+#include "vector2.h"
+#include "color16.h"
 #include "state-base.h"
 
 namespace SokubaiPos

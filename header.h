@@ -3,12 +3,12 @@
 #include <Arduino.h>
 #include <M5Stack.h>
 
-#include "misc/vector2.h"
-#include "misc/rect.h"
-#include "m5wrap/text-datum.h"
-#include "m5wrap/power.h"
-#include "m5wrap/diagram.h"
-#include "m5wrap/text.h"
+#include "vector2.h"
+#include "rect.h"
+#include "text-datum.h"
+#include "power.h"
+#include "diagram.h"
+#include "text.h"
 #include "constants.h"
 
 namespace SokubaiPos

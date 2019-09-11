@@ -2,9 +2,11 @@
 
 #include <Arduino.h>
 #include <M5Stack.h>
+#include <M5Display.h>
 
-#include "../misc/rect.h"
-#include "../misc/vector2.h"
+#include "color16.h"
+#include "rect.h"
+#include "vector2.h"
 #include "sprite-color-depth.h"
 
 namespace SokubaiPos

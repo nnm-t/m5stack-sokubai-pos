@@ -1,13 +1,14 @@
 #pragma once
 
+#include <memory>
 #include <Arduino.h>
 #include <M5Stack.h>
-#include <memory>
 
-#include "../misc/vector2.h"
-#include "../misc/rect.h"
+#include "vector2.h"
+#include "rect.h"
 #include "color16.h"
 #include "text-datum.h"
+#include "lcd-base.h"
 
 namespace SokubaiPos
 {

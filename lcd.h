@@ -4,7 +4,7 @@
 #include <M5Stack.h>
 
 #include "color16.h"
-#include "../misc/vector2.h"
+#include "vector2.h"
 
 namespace SokubaiPos
 {
