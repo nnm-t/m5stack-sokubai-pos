@@ -19,17 +19,9 @@ namespace SokubaiPos
         std::shared_ptr<Color16> _background;
         TextDatum _datum;
 
-        void SetTextSize()
-        {
-            _tft->setTextSize(_size);
-        }
+        void SetTextSize();
 
-        void SetTextParameter()
-        {
-            SetTextSize();
-            _tft->setTextDatum(static_cast<uint8_t>(_datum));
-            _tft->setTextColor(_foreground->Get(), _background->Get());
-        }
+        void SetTextParameter();
 
     public:
         Text(TFT_eSPI* tft, const uint8_t size = 8, const Color16& foreground = Color16::White(),
@@ -46,91 +38,37 @@ namespace SokubaiPos
 
         }
 
-        void Draw(const char* string, const Vector2<int32_t>& position)
-        {
-            SetTextParameter();
-            _tft->drawString(string, position.X(), position.Y());
-        }
+        void Draw(const char* string, const Vector2<int32_t>& position);
+        
 
-        void Draw(String& string, const Vector2<int32_t>& position)
-        {
-            SetTextParameter();
-            _tft->drawString(string, position.X(), position.Y());
-        }
+        void Draw(String& string, const Vector2<int32_t>& position);
 
-        bool GetFontsLoaded()
-        {
-            return _tft->fontsLoaded();
-        }
+        bool GetFontsLoaded();
 
-        uint16_t GetTextWidth(const String& string)
-        {
-            SetTextSize();
-            return _tft->textWidth(string);
-        }
+        uint16_t GetTextWidth(const String& string);
 
-        TextDatum GetTextDatum()
-        {
-            return static_cast<TextDatum>(_tft->getTextDatum());
-        }
+        TextDatum GetTextDatum();
 
-        void LoadFont(String& font_name, FS& fs = SD)
-        {
-            _tft->loadFont(font_name, fs);
-        }
+        void LoadFont(String& font_name, FS& fs = SD);
 
-        void LoadFont(const char* font_name, FS& fs = SD)
-        {
-            _tft->loadFont(font_name, fs);
-        }
+        void LoadFont(const char* font_name, FS& fs = SD);
 
-        void Print(const char* string)
-        {
-            SetTextParameter();
-            _tft->print(string);
-        }
+        void Print(const char* string);
 
-        void Print(String& string)
-        {
-            SetTextParameter();
-            _tft->println(string);
-        }
+        void Print(String& string);
 
-        void PrintLn(const char* string)
-        {
-            SetTextParameter();
-            _tft->println(string);
-        }
+        void PrintLn(const char* string);
 
-        void PrintLn(String& string)
-        {
-            SetTextParameter();
-            _tft->println(string);
-        }
+        void PrintLn(String& string);
 
-        void SetCursor(const Vector2<uint16_t>& position)
-        {
-            _tft->setCursor(position.X(), position.Y());
-        }
+        void SetCursor(const Vector2<uint16_t>& position);
 
-        void SetSize(const uint8_t size)
-        {
-            _size = size;
-        }
+        void SetSize(const uint8_t size);
 
-        void SetForeground(Color16& color)
-        {
-            _foreground = std::make_shared<Color16>(color);
-        }
+        void SetForeground(Color16& color);
 
-        void SetBackground(const Color16& color)
-        {
-            _background = std::make_shared<Color16>(color);
-        }
+        void SetBackground(const Color16& color);
 
-        void UnloadFont()
-        {
-            _tft->unloadFont();
-        }
+        void UnloadFont();
     };
 }
