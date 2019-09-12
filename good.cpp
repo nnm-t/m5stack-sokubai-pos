@@ -2,6 +2,18 @@
 
 namespace SokubaiPos
 {
+   constexpr Vector2<int32_t> Good::qty_pos;
+   constexpr Vector2<int32_t> Good::price_pos;
+
+   Good Good::FromJson(JsonVariant& json)
+   {
+        String name = json["name"].as<String>();
+        String image_path = json["image_path"].as<String>();
+        uint32_t price = json["price"].as<uint32_t>();
+
+        return Good(price, name, image_path);
+   }
+
     void Good::IncrementQuantity()
     {
         _qty++;

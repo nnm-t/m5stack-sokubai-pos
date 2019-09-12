@@ -39,14 +39,7 @@ namespace SokubaiPos
 
         }
 
-        static Good FromJson(JsonVariant& json)
-        {
-            String name = json["name"].as<String>();
-            String image_path = json["image_path"].as<String>();
-            uint32_t price = json["price"].as<uint32_t>();
-
-            return Good(price, name, image_path);
-        }
+        static Good FromJson(JsonVariant& json);
 
         void Draw();
 
