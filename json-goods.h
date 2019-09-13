@@ -20,10 +20,7 @@ namespace SokubaiPos
         size_t _index = 0;
         bool _is_deserialized = false;
 
-        DeserializationError Deserialize(String& string)
-        {
-            return deserializeJson(_json, string);
-        }
+        DeserializationError Deserialize(String& string);
 
     public:
         JsonGoods()
@@ -32,96 +29,20 @@ namespace SokubaiPos
 
         }
 
-        bool IsDeserialized()
-        {
-            return _is_deserialized;
-        }
+        bool IsDeserialized();
 
-        Good* GetGood(const size_t index)
-        {
-            if (!_is_deserialized)
-            {
-                return nullptr;
-            }
+        Good* GetGood(const size_t index);
 
-            return &_goods[index];
-        }
+        Good* CurrentGood();
 
-        Good* CurrentGood()
-        {
-            if (!_is_deserialized)
-            {
-                return nullptr;
-            }
+        Good* NextGood();
 
-            return &_goods[_index];
-        }
+        Good* PrevGood();
 
-        Good* NextGood()
-        {
-            if (_index >= _goods.size())
-            {
-                _index = 0;
-            }
+        size_t GetIndex() const;
 
-            return CurrentGood();
-        }
+        bool ReadJsonFromFile(const char* path);
 
-        Good* PrevGood()
-        {
-            if (_index < 1)
-            {
-                _index - _goods.size() - 1;
-            }
-
-            return CurrentGood();
-        }
-
-        size_t GetIndex() const
-        {
-            return _index;
-        }
-
-        bool ReadJsonFromFile(const char* path)
-        {
-            File file = SD.open(path, FILE_READ);
-
-            if (!file)
-            {
-                return false;
-            }
-
-            String string = file.readString();
-            file.close();
-
-            return ReadJson(string);
-        }
-
-        bool ReadJson(String& json_string)
-        {
-            if (Deserialize(json_string) != DeserializationError::Ok)
-            {
-                return false;
-            }
-
-            _is_deserialized = false;
-            _goods.clear();
-            JsonArray array = _json.as<JsonArray>();
-
-            for (JsonVariant element : array)
-            {
-                Good good = Good::FromJson(element);
-                _goods.push_back(good);
-            }
-
-            if (_goods.size() < 1)
-            {
-                return false;
-            }
-
-            _is_deserialized = true;
-
-            return true;
-        }
+        bool ReadJson(String& json_string);
     };
 }

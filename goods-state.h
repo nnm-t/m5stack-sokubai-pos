@@ -6,6 +6,9 @@
 #include "vector2.h"
 #include "color16.h"
 #include "state-base.h"
+#include "json-goods.h"
+#include "text.h"
+#include "diagram.h"
 
 namespace SokubaiPos
 {
@@ -32,14 +35,6 @@ namespace SokubaiPos
         {
         }
 
-        void OnLoad() override
-        {
-            _diagram.FillTriangle(left_tr0, left_tr1, left_tr2, tr_color);
-            _diagram.FillTriangle(right_tr0, right_tr1, right_tr2, tr_color);
-
-            Good* good = _goods->CurrentGood();
-
-            good->Draw();
-        }
+        void OnLoad() override;
     };
 }

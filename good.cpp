@@ -36,4 +36,24 @@ namespace SokubaiPos
         qty_text.LoadFont(font_20pt);
         qty_text.Draw("数量: " + String(_qty), qty_pos);
     }
+
+    uint32_t Good::GetPrice() const
+    {
+        return _price;
+    }
+
+    String Good::GetName() const
+    {
+        return _name;
+    }
+
+    String Good::GetImagePath() const
+    {
+        return _image_path;
+    }
+
+    uint8_t Good::GetQuantity() const
+    {
+        return _qty;
+    }
 }

@@ -43,25 +43,13 @@ namespace SokubaiPos
 
         void Draw();
 
-        uint32_t GetPrice() const
-        {
-            return _price;
-        }
+        uint32_t GetPrice() const;
 
-        String GetName() const
-        {
-            return _name;
-        }
+        String GetName() const;
 
-        String GetImagePath() const
-        {
-            return _image_path;
-        }
+        String GetImagePath() const;
 
-        uint8_t GetQuantity() const
-        {
-            return _qty;
-        }
+        uint8_t GetQuantity() const;
 
         void IncrementQuantity();
 
