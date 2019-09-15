@@ -28,28 +28,14 @@ namespace SokubaiPos
             _button_c.SetOnPressed(c_pressed);
         }
 
-        void Loop()
-        {
-            _button_a.Loop();
-            _button_b.Loop();
-            _button_c.Loop();
-        }
+        void Loop();
 
         virtual void OnLoad() = 0;
 
-        virtual void OnButtonAPressed()
-        {
+        virtual void OnButtonAPressed();
 
-        }
+        virtual void OnButtonBPressed();
 
-        virtual void OnButtonBPressed()
-        {
-
-        }
-
-        virtual void OnButtonCPressed()
-        {
-
-        }
+        virtual void OnButtonCPressed();
     };
 }

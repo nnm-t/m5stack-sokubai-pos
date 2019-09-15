@@ -8,9 +8,6 @@ namespace SokubaiPos
     class Power
     {
     public:
-        static int8_t GetBatteryLevel()
-        {
-            return M5.Power.getBatteryLevel();
-        }
+        static int8_t GetBatteryLevel();
     };
 }
