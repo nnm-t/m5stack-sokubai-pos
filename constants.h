@@ -8,3 +8,4 @@ constexpr char* font_40pt = "mplus-1c40";
 
 constexpr SokubaiPos::Color16 color_white = SokubaiPos::Color16::From32(0xFFFFFF);
 constexpr SokubaiPos::Color16 color_black = SokubaiPos::Color16::From32(0x000000);
+constexpr SokubaiPos::Color16 color_red = SokubaiPos::Color16::From32(0xFF0000);

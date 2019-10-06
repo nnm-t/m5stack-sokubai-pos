@@ -13,9 +13,10 @@ namespace SokubaiPos
 {
     class Sprite
     {
-        TFT_eSprite _sprite;
-
         void SetColorDepth(const SpriteColorDepth depth);
+
+    protected:
+        TFT_eSprite _sprite;
 
     public:
         Sprite(TFT_eSPI *tft) : _sprite(TFT_eSprite(tft))

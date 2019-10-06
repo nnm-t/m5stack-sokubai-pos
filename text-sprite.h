@@ -1,40 +1,33 @@
 #pragma once
 
-#include <memory>
 #include <Arduino.h>
 #include <M5Stack.h>
 
 #include "i-text.h"
+#include "sprite.h"
+#include "text.h"
 #include "vector2.h"
 #include "rect.h"
 #include "color16.h"
 #include "text-datum.h"
-#include "lcd-base.h"
 
 namespace SokubaiPos
 {
-    class Text : public LCDBase, public IText
+    class TextSprite : public Sprite, public IText
     {
-        uint8_t _size;
-        std::shared_ptr<Color16> _foreground;
-        std::shared_ptr<Color16> _background;
-        TextDatum _datum;
-
-        void SetTextSize();
-
-        void SetTextParameter();
+        Text _text;
 
     public:
-        Text(TFT_eSPI* tft, const uint8_t size = 8, const Color16& foreground = Color16::White(),
+        TextSprite(TFT_eSPI *tft, const uint8_t size = 8, const Color16& foreground = Color16::White(),
             const Color16& background = Color16::Black(), const TextDatum datum = TextDatum::TopLeft)
-        : LCDBase(tft), _size(size), _foreground(std::make_shared<Color16>(foreground)), _background(std::make_shared<Color16>(background)), _datum(datum)
+        : Sprite(tft), _text(Text(&_sprite, size, foreground, background, datum))
         {
 
         }
 
-        Text(const uint8_t size = 8, const Color16& foreground = Color16::White(),
+        TextSprite(const uint8_t size, const Color16& foreground = Color16::White(),
             const Color16& background = Color16::Black(), const TextDatum datum = TextDatum::TopLeft)
-        : Text(&M5.Lcd, size, foreground, background, datum)
+        : Sprite(), _text(Text(&_sprite, size, background, foreground, datum))
         {
 
         }

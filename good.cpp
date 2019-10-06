@@ -6,6 +6,7 @@ namespace SokubaiPos
    constexpr Vector2<int32_t> Good::name_pos;
    constexpr Vector2<int32_t> Good::price_pos;
    constexpr Vector2<int32_t> Good::qty_pos;
+   constexpr Rect<uint16_t> Good::name_rect;
 
    Good Good::FromJson(JsonVariant& json)
    {
@@ -28,12 +29,16 @@ namespace SokubaiPos
 
     void Good::Draw()
     {
+
+        // 画像
         LCD::DrawBitmapFile(_image_path.c_str(), image_pos);
 
-        Text price_text(30, color_black, color_white);
+        // 価格
+        Text price_text(30, color_red, color_white);
         price_text.LoadFont(font_30pt);
-        price_text.Draw(_name, price_pos);
+        price_text.Draw(String(_price) + "円", price_pos);
 
+        // 数量
         Text qty_text(20, color_black, color_white);
         qty_text.LoadFont(font_20pt);
         qty_text.Draw("数量: " + String(_qty), qty_pos);
