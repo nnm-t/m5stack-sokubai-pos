@@ -8,8 +8,10 @@
 #include "rect.h"
 #include "color16.h"
 #include "header.h"
+#include "footer.h"
 
 Header header;
+Footer footer;
 
 void setup()
 {
@@ -20,6 +22,7 @@ void setup()
     M5.Lcd.fillScreen(0xFFFF);
 
     header.Draw();
+    footer.Draw();
 }
 
 void loop()
