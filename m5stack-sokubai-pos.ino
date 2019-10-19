@@ -9,9 +9,13 @@
 #include "color16.h"
 #include "header.h"
 #include "footer.h"
+#include "goods-list.h"
+
+constexpr const char* json_name = "/goods.json";
 
 Header header;
 Footer footer;
+GoodsList goods_list;
 
 void setup()
 {
@@ -23,6 +27,7 @@ void setup()
 
     header.Draw();
     footer.Draw();
+    goods_list.Begin(json_name);
 }
 
 void loop()
