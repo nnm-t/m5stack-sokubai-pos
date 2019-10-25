@@ -1,16 +1,16 @@
 #include "goods-list.h"
 
-void GoodsList::Begin(const char* file_name)
+void GoodsList::Begin()
 {
-    File file = SD.open(file_name, FILE_READ);
+    File file = SD.open(_file_name, FILE_READ);
 
-    if (!file.available())
+    String json_text;
+
+    while (file.available())
     {
-        Serial.println("JSON not found.");
-        return;
+        json_text += static_cast<char>(file.read());
     }
 
-    String json_text(file.read());
     file.close();
 
     DeserializationError error = deserializeJson(_json_document, json_text);
@@ -27,4 +27,44 @@ void GoodsList::Begin(const char* file_name)
     {
         _goods.push_back(Good::Deserialize(json_variant));
     }
+
+    Draw();
+}
+
+void GoodsList::Draw()
+{
+    if (_goods.size() < 1)
+    {
+        return;
+    }
+
+    _goods[_current].Draw();
+}
+
+void GoodsList::Next()
+{
+    if (_current >= GetLastIndex())
+    {
+        _current = 0;
+    }
+    else
+    {
+        _current++;
+    }
+
+    Draw();
+}
+
+void GoodsList::Prev()
+{
+    if (_current <= 0)
+    {
+        _current = GetLastIndex();
+    }
+    else
+    {
+        _current--;
+    }
+
+    Draw();
 }

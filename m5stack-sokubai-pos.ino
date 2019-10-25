@@ -10,12 +10,14 @@
 #include "header.h"
 #include "footer.h"
 #include "goods-list.h"
+#include "goods-state.h"
 
-constexpr const char* json_name = "/goods.json";
+constexpr const char* json_filename = "/goods.json";
 
 Header header;
 Footer footer;
-GoodsList goods_list;
+GoodsList goods_list(json_filename);
+GoodsState goods_state(&goods_list);
 
 void setup()
 {
@@ -23,11 +25,12 @@ void setup()
     Serial.begin(115200);
     SD.begin();
 
-    M5.Lcd.fillScreen(0xFFFF);
+    LCD::FillScreen(color_black);
 
     header.Draw();
     footer.Draw();
-    goods_list.Begin(json_name);
+
+    goods_state.Begin();
 }
 
 void loop()
