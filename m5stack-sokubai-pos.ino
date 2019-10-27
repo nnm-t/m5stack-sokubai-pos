@@ -11,6 +11,7 @@
 #include "footer.h"
 #include "goods-list.h"
 #include "goods-state.h"
+#include "keyboard.h"
 
 constexpr const char* json_filename = "/goods.json";
 
@@ -19,11 +20,15 @@ Footer footer;
 GoodsList goods_list(json_filename);
 GoodsState goods_state(&goods_list);
 
+Keyboard keyboard;
+
 void setup()
 {
     M5.begin();
     Serial.begin(115200);
     SD.begin();
+
+    keyboard.Begin();
 
     LCD::FillScreen(color_black);
 
@@ -36,4 +41,8 @@ void setup()
 void loop()
 {
     M5.update();
+
+    keyboard.Update();
+
+    delay(20);
 }
