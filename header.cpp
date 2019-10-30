@@ -10,7 +10,6 @@ void Header::Draw()
 {
     LCD::FillRect(background_pos, background_rect, color_white);
 
-    LCD::LoadFont(font_20pt);
     LCD::SetTextColor(color_black, color_white);
 
     LCD::SetTextDatum(TextDatum::TopLeft);

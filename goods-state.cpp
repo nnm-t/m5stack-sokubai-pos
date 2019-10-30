@@ -27,3 +27,28 @@ void GoodsState::Loop()
 {
 
 }
+
+void GoodsState::Up()
+{
+    _goods_list->Up();
+}
+
+void GoodsState::Down()
+{
+    _goods_list->Down();
+}
+
+void GoodsState::Left()
+{
+    _goods_list->Prev();
+}
+
+void GoodsState::Right()
+{
+    _goods_list->Next();
+}
+
+void GoodsState::Select()
+{
+    _goods_list->Reset();
+}

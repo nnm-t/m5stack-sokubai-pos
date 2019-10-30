@@ -38,4 +38,6 @@ public:
     static void DrawBmpFile(const Vector2<uint16_t>& position, const char* path, fs::FS fs = SD);
 
     static void DrawBmpFile(const Vector2<uint16_t>& position, String& path, fs::FS fs = SD);
+
+    static void SetTextSize(const uint8_t size);
 };

@@ -1,5 +1,9 @@
 #include "goods-list.h"
 
+constexpr Vector2<int32_t> GoodsList::sum_pos;
+constexpr Vector2<int32_t> GoodsList::sum_rect_pos;
+constexpr Rect<int32_t> GoodsList::sum_rect;
+
 void GoodsList::Begin()
 {
     File file = SD.open(_file_name, FILE_READ);
@@ -39,6 +43,7 @@ void GoodsList::Draw()
     }
 
     _goods[_current].Draw();
+    DrawSumPrice();
 }
 
 void GoodsList::Next()
@@ -67,4 +72,42 @@ void GoodsList::Prev()
     }
 
     Draw();
+}
+
+void GoodsList::Up()
+{
+    _goods[_current].Up();
+    DrawSumPrice();
+}
+
+void GoodsList::Down()
+{
+    _goods[_current].Down();
+    DrawSumPrice();
+}
+
+void GoodsList::DrawSumPrice()
+{
+    uint32_t sum = 0;
+
+    for (Good& good : _goods)
+    {
+        sum += good.GetSumPrice();
+    }
+
+    LCD::SetTextColor(color_yellow, color_black);
+    LCD::SetTextDatum(TextDatum::TopLeft);
+
+    LCD::FillRect(sum_rect_pos, sum_rect, color_black);
+    LCD::DrawString("合計: " + String(sum) + "円", sum_pos);
+}
+
+void GoodsList::Reset()
+{
+    for (Good& good : _goods)
+    {
+        good.Reset();
+    }
+
+    DrawSumPrice();
 }

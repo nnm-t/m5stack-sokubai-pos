@@ -15,7 +15,6 @@ void Footer::Draw()
 {
     LCD::FillRect(background_pos, background_rect, color_white);
 
-    LCD::LoadFont(font_20pt);
     LCD::SetTextDatum(TextDatum::TopCenter);
     LCD::SetTextColor(color_black, color_white);
 

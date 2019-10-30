@@ -11,7 +11,7 @@
 #include "footer.h"
 #include "goods-list.h"
 #include "goods-state.h"
-#include "keyboard.h"
+#include "game-boy.h"
 
 constexpr const char* json_filename = "/goods.json";
 
@@ -20,7 +20,7 @@ Footer footer;
 GoodsList goods_list(json_filename);
 GoodsState goods_state(&goods_list);
 
-Keyboard keyboard;
+GameBoy gameboy;
 
 void setup()
 {
@@ -28,9 +28,15 @@ void setup()
     Serial.begin(115200);
     SD.begin();
 
-    keyboard.Begin();
+    gameboy.Begin();
+    gameboy.on_up_pressed = [&]{ goods_state.Up(); };
+    gameboy.on_down_pressed = [&]{ goods_state.Down(); };
+    gameboy.on_left_pressed = [&]{ goods_state.Left(); };
+    gameboy.on_right_pressed = [&]{ goods_state.Right(); };
+    gameboy.on_select_pressed = [&]{ goods_state.Select(); };
 
     LCD::FillScreen(color_black);
+    LCD::LoadFont(font_20pt);
 
     header.Draw();
     footer.Draw();
@@ -42,7 +48,7 @@ void loop()
 {
     M5.update();
 
-    keyboard.Update();
+    gameboy.Update();
 
     delay(20);
 }

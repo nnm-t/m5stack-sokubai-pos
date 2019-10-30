@@ -32,4 +32,14 @@ public:
     void Draw() override;
 
     void Loop() override;
+
+    void Up();
+
+    void Down();
+
+    void Left();
+
+    void Right();
+
+    void Select();
 };
