@@ -12,8 +12,10 @@
 #include "goods-list.h"
 #include "goods-state.h"
 #include "game-boy.h"
+#include "rfid.h"
 
 constexpr const char* json_filename = "/goods.json";
+constexpr const uint8_t mfrc522_address = 0x28;
 
 Header header;
 Footer footer;
@@ -21,6 +23,7 @@ GoodsList goods_list(json_filename);
 GoodsState goods_state(&goods_list);
 
 GameBoy gameboy;
+RFID rfid(mfrc522_address);
 
 void setup()
 {
@@ -34,6 +37,8 @@ void setup()
     gameboy.on_left_pressed = [&]{ goods_state.Left(); };
     gameboy.on_right_pressed = [&]{ goods_state.Right(); };
     gameboy.on_select_pressed = [&]{ goods_state.Select(); };
+
+    rfid.Begin();
 
     LCD::FillScreen(color_black);
     LCD::LoadFont(font_20pt);
@@ -49,6 +54,7 @@ void loop()
     M5.update();
 
     gameboy.Update();
+    rfid.Update();
 
     delay(20);
 }
