@@ -13,7 +13,7 @@ void Header::Draw()
     LCD::SetTextColor(color_black, color_white);
 
     LCD::SetTextDatum(TextDatum::TopLeft);
-    LCD::DrawString(WiFi.macAddress(), wifi_pos);
+    LCD::DrawString("ホンナムユーティナイ", wifi_pos);
 
     LCD::SetTextDatum((TextDatum::TopRight));
     LCD::DrawString(Power::GetBatteryLevel() + "%", battery_pos);

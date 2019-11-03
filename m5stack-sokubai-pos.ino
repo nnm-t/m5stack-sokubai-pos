@@ -16,6 +16,7 @@
 #include "goods-state.h"
 #include "game-boy.h"
 #include "rfid.h"
+#include "speaker.h"
 
 using namespace std;
 
@@ -33,7 +34,8 @@ GoodsList goods_list(json_filename);
 GoodsState goods_state(&goods_list);
 
 GameBoy gameboy;
-RFID rfid(mfrc522_address, delay_ms);
+Speaker speaker;
+RFID rfid(&speaker, mfrc522_address, delay_ms);
 
 void setup()
 {
@@ -41,14 +43,14 @@ void setup()
     Serial.begin(115200);
     SD.begin();
 
-    M5.Speaker.begin();
-
     gameboy.Begin();
     gameboy.on_up_pressed = [&]{ goods_state.Up(); };
     gameboy.on_down_pressed = [&]{ goods_state.Down(); };
     gameboy.on_left_pressed = [&]{ goods_state.Left(); };
     gameboy.on_right_pressed = [&]{ goods_state.Right(); };
     gameboy.on_select_pressed = [&]{ goods_state.Select(); };
+
+    speaker.Begin();
 
     rfid.Begin();
     rfid.on_rfid_received = [&](vector<byte> uuid){ goods_state.RFIDReceived(uuid); };

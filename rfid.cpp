@@ -27,7 +27,7 @@ void RFID::Update()
         return;
     }
 
-    // M5.Speaker.tone(440, 50);
+    _speaker->Tone(tone_frequency_ms, tone_duration_ms);
 
     uint16_t length = _mfrc522.uid.size;
     vector<byte> uuid;
