@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <Arduino.h>
 #include <M5Stack.h>
 
@@ -42,4 +44,8 @@ public:
     void Right();
 
     void Select();
+
+    void Start();
+
+    void RFIDReceived(const std::vector<byte>& uuid);
 };

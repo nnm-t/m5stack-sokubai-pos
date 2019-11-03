@@ -19,6 +19,7 @@ class Footer
     static constexpr Vector2<int32_t> right_pos = Vector2<int32_t>(220, 220);
 
     static constexpr Vector2<int32_t> left_text_pos = Vector2<int32_t>(60, 221);
+    static constexpr Vector2<int32_t> center_text_pos = Vector2<int32_t>(60, 221);
     static constexpr Vector2<int32_t> right_text_pos = Vector2<int32_t>(260, 221);
 
 public:

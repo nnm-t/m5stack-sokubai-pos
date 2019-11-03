@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <Arduino.h>
 #include <M5Stack.h>
 
@@ -13,6 +15,7 @@ class Good
     const static constexpr char* json_name = "name";
     const static constexpr char* json_image = "image_path";
     const static constexpr char* json_price = "price";
+    const static constexpr char* json_uuid = "uuid";
 
     static constexpr const uint8_t quantity_max = 20;
 
@@ -30,11 +33,12 @@ class Good
     uint8_t _quantity = 0;
 
     const uint32_t _price;
+    const std::vector<byte> _uuid;
 
     void UpdateQuantity();
 
 public:
-    Good(String& name, String& image_path, const uint32_t price) : _name(name), _image_path(image_path), _price(price)
+    Good(String& name, String& image_path, const uint32_t price, const std::vector<byte>& uuid) : _name(name), _image_path(image_path), _price(price), _uuid(uuid)
     {
 
     }
@@ -52,6 +56,13 @@ public:
     {
         return _price * _quantity;
     }
+
+    const std::vector<byte>& GetUUID()
+    {
+        return _uuid;
+    }
+
+    const bool IsMatchUUID(const std::vector<byte>& uuid);
 
     void Up();
 

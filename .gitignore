@@ -1,5 +1,7 @@
 .vscode/
 bin/
 
+goods.json
+
 MFRC522_I2C.h
 MFRC522_I2C.cpp

@@ -1,5 +1,7 @@
 #include "rfid.h"
 
+using namespace std;
+
 void RFID::Begin()
 {
     Wire.begin();
@@ -9,6 +11,12 @@ void RFID::Begin()
 
 void RFID::Update()
 {
+    if (_period_ms < min_interval_ms)
+    {
+        _period_ms += _delay_ms;
+        return;
+    }
+
     if(!_mfrc522.PICC_IsNewCardPresent())
     {
         return;
@@ -19,9 +27,34 @@ void RFID::Update()
         return;
     }
 
-    for (uint8_t i = 0; i < _mfrc522.uid.size; i++)
+    // M5.Speaker.tone(440, 50);
+
+    uint16_t length = _mfrc522.uid.size;
+    vector<byte> uuid;
+    uuid.reserve(length);
+
+    for (uint16_t i = 0; i < length; i++)
     {
-        Serial.print(_mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " ");
-        Serial.print(_mfrc522.uid.uidByte[i], HEX);
+        byte uuid_byte = _mfrc522.uid.uidByte[i];
+        uuid.push_back(uuid_byte);
+
+        String output;
+        if (uuid_byte < 10)
+        {
+            output = "0" + String(uuid_byte);
+        }
+        else 
+        {
+            output = String(uuid_byte, HEX);
+        }
+        Serial.print(output);
     }
+    Serial.print("\n");
+
+    if (on_rfid_received != nullptr)
+    {
+        on_rfid_received(uuid);
+    }
+
+    _period_ms = 0;
 }

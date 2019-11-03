@@ -31,8 +31,6 @@ class GoodsList
         return _goods.size() - 1;
     }
 
-    void DrawSumPrice();
-
 public:
     GoodsList(const char* file_name) : _file_name(file_name), _json_document(StaticJsonDocument<json_size>()), _goods(std::vector<Good>()), _current(0)
     {
@@ -52,6 +50,10 @@ public:
     void Down();
 
     void Reset();
+
+    void RFIDReceived(const std::vector<byte>& uuid);
+
+    void DrawSumPrice();
 
     size_t GetCurrentIndex()
     {

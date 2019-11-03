@@ -1,5 +1,8 @@
 #define ESP32
 
+#include <functional>
+#include <vector>
+
 #include <M5Stack.h>
 #include <ArduinoJson.h>
 
@@ -14,8 +17,15 @@
 #include "game-boy.h"
 #include "rfid.h"
 
-constexpr const char* json_filename = "/goods.json";
-constexpr const uint8_t mfrc522_address = 0x28;
+using namespace std;
+
+namespace
+{
+    constexpr const char* json_filename = "/goods.json";
+    constexpr const uint8_t mfrc522_address = 0x28;
+    constexpr const uint32_t delay_ms = 20;
+}
+
 
 Header header;
 Footer footer;
@@ -23,13 +33,15 @@ GoodsList goods_list(json_filename);
 GoodsState goods_state(&goods_list);
 
 GameBoy gameboy;
-RFID rfid(mfrc522_address);
+RFID rfid(mfrc522_address, delay_ms);
 
 void setup()
 {
     M5.begin();
     Serial.begin(115200);
     SD.begin();
+
+    M5.Speaker.begin();
 
     gameboy.Begin();
     gameboy.on_up_pressed = [&]{ goods_state.Up(); };
@@ -39,6 +51,7 @@ void setup()
     gameboy.on_select_pressed = [&]{ goods_state.Select(); };
 
     rfid.Begin();
+    rfid.on_rfid_received = [&](vector<byte> uuid){ goods_state.RFIDReceived(uuid); };
 
     LCD::FillScreen(color_black);
     LCD::LoadFont(font_20pt);
@@ -56,5 +69,5 @@ void loop()
     gameboy.Update();
     rfid.Update();
 
-    delay(20);
+    delay(delay_ms);
 }

@@ -1,5 +1,7 @@
 #include "goods-state.h"
 
+using namespace std;
+
 constexpr Vector2<int32_t> GoodsState::left_tr0;
 constexpr Vector2<int32_t> GoodsState::left_tr1;
 constexpr Vector2<int32_t> GoodsState::left_tr2;
@@ -51,4 +53,14 @@ void GoodsState::Right()
 void GoodsState::Select()
 {
     _goods_list->Reset();
+}
+
+void GoodsState::Start()
+{
+
+}
+
+void GoodsState::RFIDReceived(const vector<byte>& uuid)
+{
+    _goods_list->RFIDReceived(uuid);
 }

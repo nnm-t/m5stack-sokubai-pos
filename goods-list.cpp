@@ -1,5 +1,7 @@
 #include "goods-list.h"
 
+using namespace std;
+
 constexpr Vector2<int32_t> GoodsList::sum_pos;
 constexpr Vector2<int32_t> GoodsList::sum_rect_pos;
 constexpr Rect<int32_t> GoodsList::sum_rect;
@@ -110,4 +112,21 @@ void GoodsList::Reset()
     }
 
     DrawSumPrice();
+}
+
+void GoodsList::RFIDReceived(const vector<byte>& uuid)
+{
+    for (size_t i = 0; i < _goods.size(); i++)
+    {
+        if (_goods[i].IsMatchUUID(uuid))
+        {
+            _current = i;
+
+            _goods[i].Draw();
+            _goods[i].Up();
+            DrawSumPrice();
+
+            return;
+        }
+    }
 }
