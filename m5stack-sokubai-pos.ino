@@ -12,6 +12,7 @@
 #include "color16.h"
 #include "header.h"
 #include "footer.h"
+#include "i-state.h"
 #include "goods-list.h"
 #include "goods-state.h"
 #include "game-boy.h"
@@ -33,6 +34,8 @@ Footer footer;
 GoodsList goods_list(json_filename);
 GoodsState goods_state(&goods_list);
 
+IState* state = &goods_state;
+
 GameBoy gameboy;
 Speaker speaker;
 RFID rfid(&speaker, mfrc522_address, delay_ms);
@@ -44,11 +47,12 @@ void setup()
     SD.begin();
 
     gameboy.Begin();
-    gameboy.on_up_pressed = [&]{ goods_state.Up(); };
-    gameboy.on_down_pressed = [&]{ goods_state.Down(); };
-    gameboy.on_left_pressed = [&]{ goods_state.Left(); };
-    gameboy.on_right_pressed = [&]{ goods_state.Right(); };
-    gameboy.on_select_pressed = [&]{ goods_state.Select(); };
+    gameboy.on_up_pressed = [&]{ state->Up(); };
+    gameboy.on_down_pressed = [&]{ state->Down(); };
+    gameboy.on_left_pressed = [&]{ state->Left(); };
+    gameboy.on_right_pressed = [&]{ state->Right(); };
+    gameboy.on_start_pressed = [&]{ state->Start(); };
+    gameboy.on_select_pressed = [&]{ state->Select(); };
 
     speaker.Begin();
 

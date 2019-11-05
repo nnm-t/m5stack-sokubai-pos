@@ -5,13 +5,13 @@
 #include <Arduino.h>
 #include <M5Stack.h>
 
-#include "state-base.h"
+#include "i-state.h"
 #include "goods-list.h"
 #include "lcd.h"
 #include "vector2.h"
 #include "constants.h"
 
-class GoodsState : public StateBase
+class GoodsState : public IState
 {
     static constexpr const Vector2<int32_t> left_tr0 = Vector2<int32_t>(30, 105);
     static constexpr const Vector2<int32_t> left_tr1 = Vector2<int32_t>(10, 120);
@@ -35,17 +35,17 @@ public:
 
     void Loop() override;
 
-    void Up();
+    void Up() override;
 
-    void Down();
+    void Down() override;
 
-    void Left();
+    void Left() override;
 
-    void Right();
+    void Right() override;
 
-    void Select();
+    void Select() override;
 
-    void Start();
+    void Start() override;
 
     void RFIDReceived(const std::vector<byte>& uuid);
 };
