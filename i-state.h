@@ -20,4 +20,10 @@ public:
     virtual void Select() = 0;
 
     virtual void Start() = 0;
+
+    virtual void ButtonA() = 0;
+
+    virtual void ButtonB() = 0;
+
+    virtual void ButtonC() = 0;
 };

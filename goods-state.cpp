@@ -60,6 +60,21 @@ void GoodsState::Start()
 
 }
 
+void GoodsState::ButtonA()
+{
+
+}
+
+void GoodsState::ButtonB()
+{
+
+}
+
+void GoodsState::ButtonC()
+{
+
+}
+
 void GoodsState::RFIDReceived(const vector<byte>& uuid)
 {
     _goods_list->RFIDReceived(uuid);

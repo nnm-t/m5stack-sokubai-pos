@@ -47,5 +47,11 @@ public:
 
     void Start() override;
 
+    void ButtonA() override;
+
+    void ButtonB() override;
+
+    void ButtonC() override;
+
     void RFIDReceived(const std::vector<byte>& uuid);
 };

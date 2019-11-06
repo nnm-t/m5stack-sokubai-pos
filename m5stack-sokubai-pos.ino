@@ -16,6 +16,7 @@
 #include "goods-list.h"
 #include "goods-state.h"
 #include "game-boy.h"
+#include "m5-button.h"
 #include "rfid.h"
 #include "speaker.h"
 
@@ -38,6 +39,7 @@ IState* state = &goods_state;
 
 GameBoy gameboy;
 Speaker speaker;
+M5Button m5_button;
 RFID rfid(&speaker, mfrc522_address, delay_ms);
 
 void setup()
@@ -53,6 +55,11 @@ void setup()
     gameboy.on_right_pressed = [&]{ state->Right(); };
     gameboy.on_start_pressed = [&]{ state->Start(); };
     gameboy.on_select_pressed = [&]{ state->Select(); };
+
+    m5_button.Begin();
+    m5_button.on_button_a_pressed = [&]{ state->ButtonA(); };
+    m5_button.on_button_b_pressed = [&]{ state->ButtonB(); };
+    m5_button.on_button_c_pressed = [&]{ state->ButtonC(); };
 
     speaker.Begin();
 
@@ -73,6 +80,7 @@ void loop()
     M5.update();
 
     gameboy.Update();
+    m5_button.Update();
     rfid.Update();
 
     delay(delay_ms);
