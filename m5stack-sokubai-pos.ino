@@ -15,6 +15,7 @@
 #include "i-state.h"
 #include "goods-list.h"
 #include "goods-state.h"
+#include "amount-state.h"
 #include "game-boy.h"
 #include "m5-button.h"
 #include "rfid.h"
@@ -34,6 +35,7 @@ Header header;
 Footer footer;
 GoodsList goods_list(json_filename);
 GoodsState goods_state(&goods_list);
+AmountState amount_state;
 
 IState* state = &goods_state;
 

@@ -21,19 +21,19 @@ class GoodsState : public IState
     static constexpr const Vector2<int32_t> right_tr1 = Vector2<int32_t>(310, 120);
     static constexpr const Vector2<int32_t> right_tr2 = Vector2<int32_t>(290, 135);
 
-    GoodsList* _goods_list;
+    GoodsList* const _goods_list;
 
 public:
-    GoodsState(GoodsList* goods_list) : _goods_list(goods_list)
+    GoodsState(GoodsList* const goods_list) : _goods_list(goods_list)
     {
 
     }
 
     void Begin() override;
 
-    void Draw() override;
+    void Update() override;
 
-    void Loop() override;
+    void Draw() override;
 
     void Up() override;
 
