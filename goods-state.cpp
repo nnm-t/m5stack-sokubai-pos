@@ -65,6 +65,7 @@ void GoodsState::Start()
 
 void GoodsState::ButtonA()
 {
+    _selector->ToAmountState();
 }
 
 void GoodsState::ButtonB()

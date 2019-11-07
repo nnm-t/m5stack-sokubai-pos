@@ -12,6 +12,7 @@
 #include "lcd.h"
 #include "text-datum.h"
 #include "price-place.h"
+#include "state-selector.h"
 
 class AmountState : public IState
 {
@@ -35,6 +36,8 @@ class AmountState : public IState
     static constexpr const int32_t price_max = 9900;
     static constexpr const int32_t price_min = -9900;
 
+    StateSelector* const _selector;
+
     int32_t _price = 0;
     PricePlace _price_place = PricePlace::Lower;
 
@@ -43,7 +46,7 @@ class AmountState : public IState
     void DrawPricePlace();
 
 public:
-    AmountState()
+    AmountState(StateSelector* const selector) : _selector(selector)
     {
 
     }

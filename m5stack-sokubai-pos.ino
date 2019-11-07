@@ -14,6 +14,7 @@
 #include "footer.h"
 #include "i-state.h"
 #include "goods-list.h"
+#include "state-selector.h"
 #include "goods-state.h"
 #include "amount-state.h"
 #include "game-boy.h"
@@ -34,8 +35,10 @@ namespace
 Header header;
 Footer footer;
 GoodsList goods_list(json_filename);
-GoodsState goods_state(&goods_list);
-AmountState amount_state;
+
+StateSelector selector;
+GoodsState goods_state(&selector, &goods_list);
+AmountState amount_state(&selector);
 
 IState* state = &goods_state;
 
@@ -50,23 +53,35 @@ void setup()
     Serial.begin(115200);
     SD.begin();
 
+    selector.goods_state = &goods_state;
+    selector.amount_state = &amount_state;
+    selector.Begin();
+
     gameboy.Begin();
-    gameboy.on_up_pressed = [&]{ state->Up(); };
-    gameboy.on_down_pressed = [&]{ state->Down(); };
-    gameboy.on_left_pressed = [&]{ state->Left(); };
-    gameboy.on_right_pressed = [&]{ state->Right(); };
-    gameboy.on_start_pressed = [&]{ state->Start(); };
-    gameboy.on_select_pressed = [&]{ state->Select(); };
+    gameboy.on_up_pressed = [&]{ selector.Up(); };
+    gameboy.on_down_pressed = [&]{ selector.Down(); };
+    gameboy.on_left_pressed = [&]{ selector.Left(); };
+    gameboy.on_right_pressed = [&]{ selector.Right(); };
+    gameboy.on_start_pressed = [&]{ selector.Start(); };
+    gameboy.on_select_pressed = [&]{ selector.Select(); };
 
     m5_button.Begin();
-    m5_button.on_button_a_pressed = [&]{ state->ButtonA(); };
-    m5_button.on_button_b_pressed = [&]{ state->ButtonB(); };
-    m5_button.on_button_c_pressed = [&]{ state->ButtonC(); };
+    m5_button.on_button_a_pressed = [&]{ selector.ButtonA(); };
+    m5_button.on_button_b_pressed = [&]{ selector.ButtonB(); };
+    m5_button.on_button_c_pressed = [&]{ selector.ButtonC(); };
 
     speaker.Begin();
 
     rfid.Begin();
-    rfid.on_rfid_received = [&](vector<byte> uuid){ goods_state.RFIDReceived(uuid); };
+    rfid.on_rfid_received = [&](vector<byte> uuid)
+    { 
+        if (!selector.IsGoodsState())
+        {
+            return;
+        }
+
+        goods_state.RFIDReceived(uuid);
+    };
 
     LCD::FillScreen(color_black);
     LCD::LoadFont(font_20pt);

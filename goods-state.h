@@ -10,6 +10,7 @@
 #include "lcd.h"
 #include "vector2.h"
 #include "constants.h"
+#include "state-selector.h"
 
 class GoodsState : public IState
 {
@@ -21,10 +22,12 @@ class GoodsState : public IState
     static constexpr const Vector2<int32_t> right_tr1 = Vector2<int32_t>(310, 120);
     static constexpr const Vector2<int32_t> right_tr2 = Vector2<int32_t>(290, 135);
 
+    StateSelector* const _selector;
+
     GoodsList* const _goods_list;
 
 public:
-    GoodsState(GoodsList* const goods_list) : _goods_list(goods_list)
+    GoodsState(StateSelector* const selector, GoodsList* const goods_list) : _selector(selector), _goods_list(goods_list)
     {
 
     }
