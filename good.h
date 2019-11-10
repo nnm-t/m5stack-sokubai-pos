@@ -9,6 +9,7 @@
 
 #include "lcd.h"
 #include "constants.h"
+#include "sprite.h"
 
 class Good
 {
