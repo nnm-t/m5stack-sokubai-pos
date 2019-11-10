@@ -32,6 +32,8 @@ public:
 
     }
 
+    FooterText GetFooterText() override;
+
     void Begin() override;
 
     void Update() override;

@@ -21,6 +21,11 @@ constexpr const Vector2<int32_t> AmountState::price_place_lower2;
 constexpr const Rect<int32_t> AmountState::price_rect;
 constexpr const Rect<int32_t> AmountState::price_place_rect;
 
+FooterText AmountState::GetFooterText()
+{
+    return FooterText("商品入力", "売上", "会計");
+}
+
 void AmountState::Draw()
 {
     LCD::FillRect(bg_pos, bg_rect, color_black);

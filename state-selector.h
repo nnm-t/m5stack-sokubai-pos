@@ -4,15 +4,26 @@
 #include <M5Stack.h>
 
 #include "i-state.h"
+#include "footer.h"
 
-class StateSelector : public IState
+class StateSelector
 {
+    Footer* const _footer;
+
     IState* _current = nullptr;
+
+    void DrawState()
+    {
+        _footer->Draw(_current->GetFooterText());
+
+        _current->Draw();
+    }
+
 public:
     IState* amount_state = nullptr;
     IState* goods_state = nullptr;
 
-    StateSelector()
+    StateSelector(Footer* const footer) : _footer(footer)
     {
 
     }
@@ -27,35 +38,25 @@ public:
         return _current == goods_state;
     }
 
-    void Begin() override;
+    void Begin();
 
-    void Update() override
-    {
+    void Left();
 
-    }
+    void Right();
 
-    void Draw() override
-    {
+    void Up();
 
-    }
+    void Down();
 
-    void Left() override;
+    void Start();
 
-    void Right() override;
+    void Select();
 
-    void Up() override;
+    void ButtonA();
 
-    void Down() override;
+    void ButtonB();
 
-    void Start() override;
-
-    void Select() override;
-
-    void ButtonA() override;
-
-    void ButtonB() override;
-
-    void ButtonC() override;
+    void ButtonC();
 
     void ToAmountState();
 

@@ -12,16 +12,18 @@ constexpr Vector2<int32_t> Footer::left_text_pos;
 constexpr Vector2<int32_t> Footer::center_text_pos;
 constexpr Vector2<int32_t> Footer::right_text_pos;
 
-void Footer::Draw()
+void Footer::Draw(const FooterText& footer_text)
 {
+    LCD::LoadFont(font_20pt);
+
     LCD::FillRect(background_pos, background_rect, color_white);
 
     LCD::SetTextDatum(TextDatum::TopCenter);
     LCD::SetTextColor(color_black, color_white);
 
-    LCD::DrawString("反転", left_text_pos);
-    LCD::DrawString("金額入力", center_text_pos);
-    LCD::DrawString("会計", right_text_pos);
+    LCD::DrawString(footer_text.GetLeft(), left_text_pos);
+    LCD::DrawString(footer_text.GetCenter(), center_text_pos);
+    LCD::DrawString(footer_text.GetRight(), right_text_pos);
 
     LCD::DrawRect(left_pos, border_rect, color_black);
     LCD::DrawRect(center_pos, border_rect, color_black);

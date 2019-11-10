@@ -10,6 +10,11 @@ constexpr Vector2<int32_t> GoodsState::right_tr0;
 constexpr Vector2<int32_t> GoodsState::right_tr1;
 constexpr Vector2<int32_t> GoodsState::right_tr2;
 
+FooterText GoodsState::GetFooterText()
+{
+    return FooterText("金額入力", "売上", "会計");
+}
+
 void GoodsState::Begin()
 {
     _goods_list->Begin();

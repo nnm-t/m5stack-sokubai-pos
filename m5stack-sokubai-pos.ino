@@ -36,11 +36,9 @@ Header header;
 Footer footer;
 GoodsList goods_list(json_filename);
 
-StateSelector selector;
+StateSelector selector(&footer);
 GoodsState goods_state(&selector, &goods_list);
 AmountState amount_state(&selector);
-
-IState* state = &goods_state;
 
 GameBoy gameboy;
 Speaker speaker;
@@ -55,7 +53,6 @@ void setup()
 
     selector.goods_state = &goods_state;
     selector.amount_state = &amount_state;
-    selector.Begin();
 
     gameboy.Begin();
     gameboy.on_up_pressed = [&]{ selector.Up(); };
@@ -86,10 +83,8 @@ void setup()
     LCD::FillScreen(color_black);
     LCD::LoadFont(font_20pt);
 
+    selector.Begin();
     header.Draw();
-    footer.Draw();
-
-    goods_state.Begin();
 }
 
 void loop()

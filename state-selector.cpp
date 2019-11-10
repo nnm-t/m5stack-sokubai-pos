@@ -3,6 +3,9 @@
 void StateSelector::Begin()
 {
     _current = goods_state;
+
+    _footer->Draw(_current->GetFooterText());
+    _current->Begin();
 }
 
 void StateSelector::Left()
@@ -53,11 +56,11 @@ void StateSelector::ButtonC()
 void StateSelector::ToAmountState()
 {
     _current = amount_state;
-    _current->Draw();
+    DrawState();
 }
 
 void StateSelector::ToGoodsState()
 {
     _current = goods_state;
-    _current->Draw();
+    DrawState();
 }

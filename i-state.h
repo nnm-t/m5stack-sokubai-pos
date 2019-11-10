@@ -1,8 +1,12 @@
 #pragma once
 
+#include "footer-text.h"
+
 class IState
 {
 public:
+    virtual FooterText GetFooterText() = 0;
+
     virtual void Begin() = 0;
 
     virtual void Update() = 0;

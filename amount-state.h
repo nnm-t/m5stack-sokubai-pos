@@ -54,6 +54,8 @@ public:
 
     }
 
+    FooterText GetFooterText() override;
+
     void Begin() override
     {
 
