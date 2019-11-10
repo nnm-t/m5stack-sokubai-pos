@@ -17,7 +17,8 @@ class Good
     const static constexpr char* json_price = "price";
     const static constexpr char* json_uuid = "uuid";
 
-    static constexpr const uint8_t quantity_max = 20;
+    static constexpr const int8_t quantity_max = 20;
+    static constexpr const int8_t quantity_min = -20;
 
     static constexpr Vector2<uint16_t> image_pos = Vector2<uint16_t>(40, 60);
     static constexpr Vector2<int32_t> name_pos = Vector2<int32_t>(170, 70);
@@ -30,15 +31,15 @@ class Good
     String _name;
     String _image_path;
 
-    uint8_t _quantity = 0;
+    int8_t _quantity = 0;
 
-    const uint32_t _price;
+    const int32_t _price;
     const std::vector<byte> _uuid;
 
     void UpdateQuantity();
 
 public:
-    Good(String& name, String& image_path, const uint32_t price, const std::vector<byte>& uuid) : _name(name), _image_path(image_path), _price(price), _uuid(uuid)
+    Good(String& name, String& image_path, const int32_t price, const std::vector<byte>& uuid) : _name(name), _image_path(image_path), _price(price), _uuid(uuid)
     {
 
     }
@@ -47,12 +48,12 @@ public:
 
     static Good Deserialize(JsonVariant& json);
 
-    const uint32_t GetPrice() const
+    const int32_t GetPrice() const
     {
         return _price;
     }
 
-    const uint32_t GetSumPrice()
+    const int32_t GetSumPrice()
     {
         return _price * _quantity;
     }

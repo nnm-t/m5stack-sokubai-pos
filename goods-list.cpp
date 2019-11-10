@@ -90,7 +90,7 @@ void GoodsList::Down()
 
 void GoodsList::DrawSumPrice()
 {
-    uint32_t sum = 0;
+    int32_t sum = 0;
 
     for (Good& good : _goods)
     {

@@ -14,7 +14,7 @@ Good Good::Deserialize(JsonVariant& json)
 {
     String name = json[json_name].as<String>();
     String image_path = json[json_image].as<String>();
-    uint32_t price = json[json_price].as<uint32_t>();
+    int32_t price = json[json_price].as<int32_t>();
 
     vector<byte> uuid;
 
@@ -71,7 +71,7 @@ void Good::Up()
 
 void Good::Down()
 {
-    if (_quantity < 1)
+    if (_quantity < quantity_min)
     {
         return;
     }
