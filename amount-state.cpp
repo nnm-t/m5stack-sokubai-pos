@@ -7,6 +7,7 @@ constexpr const Vector2<int32_t> AmountState::price_1000_pos;
 constexpr const Vector2<int32_t> AmountState::price_100_pos;
 constexpr const Vector2<int32_t> AmountState::price_lower_pos;
 
+constexpr const Vector2<int32_t> AmountState::price_rect_pos;
 constexpr const Vector2<int32_t> AmountState::price_place_pos;
 
 constexpr const Vector2<int32_t> AmountState::price_place_upper0;
@@ -17,6 +18,7 @@ constexpr const Vector2<int32_t> AmountState::price_place_lower0;
 constexpr const Vector2<int32_t> AmountState::price_place_lower1;
 constexpr const Vector2<int32_t> AmountState::price_place_lower2;
 
+constexpr const Rect<int32_t> AmountState::price_rect;
 constexpr const Rect<int32_t> AmountState::price_place_rect;
 
 void AmountState::Draw()
@@ -59,9 +61,17 @@ void AmountState::Down()
 
 void AmountState::DrawPrice()
 {
+    LCD::FillRect(price_rect_pos, price_rect, color_black);
     LCD::SetTextDatum(TextDatum::MiddleRight);
-    LCD::DrawString(String(_price / 1000), price_1000_pos);
     LCD::DrawString(String(abs((_price % 1000) / 100)), price_100_pos);
+    
+    if (_price < 0 && _price > -1000)
+    {
+        LCD::DrawString("-", price_1000_pos);
+        return;
+    }
+
+    LCD::DrawString(String(_price / 1000), price_1000_pos);
 }
 
 void AmountState::Left()
