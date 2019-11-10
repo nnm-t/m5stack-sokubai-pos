@@ -117,10 +117,10 @@ void AmountState::ButtonA()
 
 void AmountState::ButtonB()
 {
-
+    _selector->ToSalesState();
 }
 
 void AmountState::ButtonC()
 {
-
+    _selector->ToPaymentState();
 }

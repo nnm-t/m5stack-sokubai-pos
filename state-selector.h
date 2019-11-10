@@ -22,6 +22,8 @@ class StateSelector
 public:
     IState* amount_state = nullptr;
     IState* goods_state = nullptr;
+    IState* payment_state = nullptr;
+    IState* sales_state = nullptr;
 
     StateSelector(Footer* const footer) : _footer(footer)
     {
@@ -61,4 +63,8 @@ public:
     void ToAmountState();
 
     void ToGoodsState();
+
+    void ToPaymentState();
+
+    void ToSalesState();
 };

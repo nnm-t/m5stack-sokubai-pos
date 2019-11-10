@@ -75,12 +75,12 @@ void GoodsState::ButtonA()
 
 void GoodsState::ButtonB()
 {
-
+    _selector->ToSalesState();
 }
 
 void GoodsState::ButtonC()
 {
-
+    _selector->ToPaymentState();
 }
 
 void GoodsState::RFIDReceived(const vector<byte>& uuid)

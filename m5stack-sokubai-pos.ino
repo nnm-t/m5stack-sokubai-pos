@@ -17,6 +17,8 @@
 #include "state-selector.h"
 #include "goods-state.h"
 #include "amount-state.h"
+#include "payment-state.h"
+#include "sales-state.h"
 #include "game-boy.h"
 #include "m5-button.h"
 #include "rfid.h"
@@ -39,6 +41,8 @@ GoodsList goods_list(json_filename);
 StateSelector selector(&footer);
 GoodsState goods_state(&selector, &goods_list);
 AmountState amount_state(&selector);
+PaymentState payment_state(&selector);
+SalesState sales_state(&selector);
 
 GameBoy gameboy;
 Speaker speaker;
@@ -53,6 +57,8 @@ void setup()
 
     selector.goods_state = &goods_state;
     selector.amount_state = &amount_state;
+    selector.payment_state = &payment_state;
+    selector.sales_state = &sales_state;
 
     gameboy.Begin();
     gameboy.on_up_pressed = [&]{ selector.Up(); };
@@ -83,8 +89,8 @@ void setup()
     LCD::FillScreen(color_black);
     LCD::LoadFont(font_20pt);
 
-    selector.Begin();
     header.Draw();
+    selector.Begin();
 }
 
 void loop()

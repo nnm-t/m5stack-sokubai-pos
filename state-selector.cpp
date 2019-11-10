@@ -64,3 +64,15 @@ void StateSelector::ToGoodsState()
     _current = goods_state;
     DrawState();
 }
+
+void StateSelector::ToPaymentState()
+{
+    _current = payment_state;
+    DrawState();
+}
+
+void StateSelector::ToSalesState()
+{
+    _current = sales_state;
+    DrawState();
+}
