@@ -10,6 +10,7 @@
 #include "good.h"
 #include "lcd.h"
 #include "constants.h"
+#include "sprite.h"
 
 class GoodsList
 {
@@ -17,12 +18,15 @@ class GoodsList
 
     static constexpr Vector2<int32_t> sum_pos = Vector2<int32_t>(170, 190);
     static constexpr Vector2<int32_t> sum_rect_pos = Vector2<int32_t>(170, 189);
+
     static constexpr Rect<int32_t> sum_rect = Rect<int32_t>(150, 21);
+    static constexpr Rect<int16_t> name_rect = Rect<int16_t>(140, 20);
 
     const char* _file_name;
 
     StaticJsonDocument<json_size> _json_document;
     std::vector<Good> _goods;
+    Sprite* const _sprite;
 
     size_t _current;
 
@@ -31,8 +35,10 @@ class GoodsList
         return _goods.size() - 1;
     }
 
+    void BeginSprite();
+
 public:
-    GoodsList(const char* file_name) : _file_name(file_name), _json_document(StaticJsonDocument<json_size>()), _goods(std::vector<Good>()), _current(0)
+    GoodsList(const char* file_name, Sprite* const sprite) : _file_name(file_name), _sprite(sprite), _json_document(StaticJsonDocument<json_size>()), _goods(std::vector<Good>()), _current(0)
     {
 
     }

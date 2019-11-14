@@ -42,10 +42,9 @@ class Good
 public:
     Good(String& name, String& image_path, const int32_t price, const std::vector<byte>& uuid) : _name(name), _image_path(image_path), _price(price), _uuid(uuid)
     {
-
     }
 
-    void Draw();
+    void Draw(Sprite* const sprite);
 
     static Good Deserialize(JsonVariant& json);
 

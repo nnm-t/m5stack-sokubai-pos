@@ -38,9 +38,9 @@ public:
 
     void Scroll(const Vector2<int16_t>& position);
 
-    void DrawString(const char* string, const Vector2<int32_t>& position);
+    int16_t DrawString(const char* string, const Vector2<int32_t>& position);
 
-    void DrawString(const String& string, const Vector2<int32_t>& position);
+    int16_t DrawString(const String& string, const Vector2<int32_t>& position);
 
     void DrawRect(const Vector2<int32_t>& position, const Rect<int32_t>& size, const Color16& color);
 

@@ -33,10 +33,10 @@ namespace
     constexpr const uint32_t delay_ms = 20;
 }
 
-
 Header header;
 Footer footer;
-GoodsList goods_list(json_filename);
+Sprite name_sprite;
+GoodsList goods_list(json_filename, &name_sprite);
 
 StateSelector selector(&footer);
 GoodsState goods_state(&selector, &goods_list);
@@ -91,6 +91,7 @@ void setup()
 
     header.Draw();
     selector.Begin();
+
 }
 
 void loop()

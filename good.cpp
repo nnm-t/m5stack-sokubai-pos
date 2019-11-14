@@ -42,13 +42,13 @@ void Good::UpdateQuantity()
     LCD::DrawString("数量: " + String(_quantity), qty_pos);
 }
 
-void Good::Draw()
+void Good::Draw(Sprite* const sprite)
 {
     LCD::DrawBmpFile(image_pos, _image_path);
 
-    LCD::SetTextDatum(TextDatum::TopLeft);
-    LCD::SetTextColor(color_white, color_black);
-    LCD::DrawString(_name, name_pos);
+    sprite->Fill(color_black);
+    sprite->DrawString(_name, Vector2<int32_t>::Zero());
+    sprite->Push(name_pos);
 
     LCD::SetTextColor(color_red, color_black);
     LCD::FillRect(price_pos, price_bg_rect, color_black);

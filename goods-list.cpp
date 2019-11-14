@@ -4,10 +4,22 @@ using namespace std;
 
 constexpr Vector2<int32_t> GoodsList::sum_pos;
 constexpr Vector2<int32_t> GoodsList::sum_rect_pos;
+
 constexpr Rect<int32_t> GoodsList::sum_rect;
+constexpr Rect<int16_t> GoodsList::name_rect;
+
+void GoodsList::BeginSprite()
+{
+    _sprite->Create(name_rect);
+    _sprite->LoadFont(font_20pt);
+    _sprite->SetTextDatum(TextDatum::TopLeft);
+    _sprite->SetTextColor(color_white);
+}
 
 void GoodsList::Begin()
 {
+    BeginSprite();
+
     File file = SD.open(_file_name, FILE_READ);
 
     String json_text;
@@ -44,7 +56,7 @@ void GoodsList::Draw()
         return;
     }
 
-    _goods[_current].Draw();
+    _goods[_current].Draw(_sprite);
     DrawSumPrice();
 }
 
@@ -122,7 +134,7 @@ void GoodsList::RFIDReceived(const vector<byte>& uuid)
         {
             _current = i;
 
-            _goods[i].Draw();
+            _goods[i].Draw(_sprite);
             _goods[i].Up();
             DrawSumPrice();
 

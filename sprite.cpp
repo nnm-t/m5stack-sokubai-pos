@@ -36,14 +36,14 @@ void Sprite::Scroll(const Vector2<int16_t>& position)
     _sprite.scroll(position.X(), position.Y());
 }
 
-void Sprite::DrawString(const char* string, const Vector2<int32_t>& position)
+int16_t Sprite::DrawString(const char* string, const Vector2<int32_t>& position)
 {
-    _sprite.drawString(string, position.X(), position.Y());
+    return _sprite.drawString(string, position.X(), position.Y());
 }
 
-void Sprite::DrawString(const String& string, const Vector2<int32_t>& position)
+int16_t Sprite::DrawString(const String& string, const Vector2<int32_t>& position)
 {
-    _sprite.drawString(string, position.X(), position.Y());
+    return _sprite.drawString(string, position.X(), position.Y());
 }
 
 void Sprite::DrawRect(const Vector2<int32_t>& position, const Rect<int32_t>& size, const Color16& color)
