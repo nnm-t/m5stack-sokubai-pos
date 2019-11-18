@@ -8,6 +8,15 @@ void StateSelector::Begin()
     _current->Begin();
 }
 
+void StateSelector::Update()
+{
+    if (_current == nullptr)
+    {
+        return;
+    }
+
+    _current->Update();
+}
 void StateSelector::Left()
 {
     _current->Left();

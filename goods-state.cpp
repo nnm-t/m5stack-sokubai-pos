@@ -24,7 +24,7 @@ void GoodsState::Begin()
 
 void GoodsState::Update()
 {
-
+    _goods_list->Update();
 }
 
 void GoodsState::Draw()

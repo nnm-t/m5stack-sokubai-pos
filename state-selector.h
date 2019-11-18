@@ -42,6 +42,8 @@ public:
 
     void Begin();
 
+    void Update();
+
     void Left();
 
     void Right();

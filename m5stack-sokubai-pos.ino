@@ -100,6 +100,7 @@ void loop()
 
     gameboy.Update();
     m5_button.Update();
+    selector.Update();
     rfid.Update();
 
     delay(delay_ms);

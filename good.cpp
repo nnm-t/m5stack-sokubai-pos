@@ -7,6 +7,7 @@ constexpr Vector2<int32_t> Good::name_pos;
 constexpr Vector2<int32_t> Good::price_pos;
 constexpr Vector2<int32_t> Good::qty_pos;
 
+constexpr Rect<int32_t> Good::name_rect;
 constexpr Rect<int32_t> Good::price_bg_rect;
 constexpr Rect<int32_t> Good::qty_bg_rect;
 
@@ -47,14 +48,37 @@ void Good::Draw(Sprite* const sprite)
     LCD::DrawBmpFile(image_pos, _image_path);
 
     sprite->Fill(color_black);
-    sprite->DrawString(_name, Vector2<int32_t>::Zero());
+
+    DrawName(sprite);
+
     sprite->Push(name_pos);
 
+    LCD::SetTextDatum(TextDatum::TopLeft);
     LCD::SetTextColor(color_red, color_black);
     LCD::FillRect(price_pos, price_bg_rect, color_black);
     LCD::DrawString("単価: " + String(_price) + "円", price_pos);
 
     UpdateQuantity();
+}
+
+void Good::DrawName(Sprite* const sprite)
+{
+    name_x = name_rect.Width();
+    sprite->DrawString(_name, Vector2<int32_t>(title_rect.Width(), 0));
+    sprite->SetScrollRect(Vector2<int32_t>::Zero(), name_rect, color_black);
+}
+
+void Good::Update(Sprite* const sprite)
+{
+    sprite->Push(name_pos);
+
+    sprite->Scroll(Vector2<int16_t>(name_dx, 0));
+    name_x += name_dx;
+
+    if (name_x < name_scroll_end)
+    {
+        DrawName(sprite);
+    }
 }
 
 void Good::Up()

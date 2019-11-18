@@ -60,6 +60,16 @@ void GoodsList::Draw()
     DrawSumPrice();
 }
 
+void GoodsList::Update()
+{
+    if (_goods.size() < 1)
+    {
+        return;
+    }
+
+    _goods[_current].Update(_sprite);
+}
+
 void GoodsList::Next()
 {
     if (_current >= GetLastIndex())

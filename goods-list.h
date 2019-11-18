@@ -19,8 +19,8 @@ class GoodsList
     static constexpr Vector2<int32_t> sum_pos = Vector2<int32_t>(170, 190);
     static constexpr Vector2<int32_t> sum_rect_pos = Vector2<int32_t>(170, 189);
 
+    static constexpr Rect<int16_t> name_rect = Rect<int16_t>(title_rect.Width() + title_width, title_rect.Height());
     static constexpr Rect<int32_t> sum_rect = Rect<int32_t>(150, 21);
-    static constexpr Rect<int16_t> name_rect = Rect<int16_t>(140, 20);
 
     const char* _file_name;
 
@@ -46,6 +46,8 @@ public:
     void Begin();
 
     void Draw();
+
+    void Update();
 
     void Next();
 
