@@ -25,6 +25,10 @@ public:
 
     virtual void Start() = 0;
 
+    virtual void GameboyA() = 0;
+
+    virtual void GameboyB() = 0;
+
     virtual void ButtonA() = 0;
 
     virtual void ButtonB() = 0;

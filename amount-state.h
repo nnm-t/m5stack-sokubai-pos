@@ -83,6 +83,16 @@ public:
 
     }
 
+    void GameboyA() override
+    {
+        Up();
+    }
+
+    void GameboyB() override
+    {
+        Down();
+    }
+
     void ButtonA() override;
 
     void ButtonB() override;

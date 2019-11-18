@@ -67,6 +67,8 @@ void setup()
     gameboy.on_right_pressed = [&]{ selector.Right(); };
     gameboy.on_start_pressed = [&]{ selector.Start(); };
     gameboy.on_select_pressed = [&]{ selector.Select(); };
+    gameboy.on_a_pressed = [&]{ selector.GameboyA(); };
+    gameboy.on_b_pressed = [&]{ selector.GameboyB(); };
 
     m5_button.Begin();
     m5_button.on_button_a_pressed = [&]{ selector.ButtonA(); };

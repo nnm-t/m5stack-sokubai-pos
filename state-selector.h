@@ -56,6 +56,10 @@ public:
 
     void Select();
 
+    void GameboyA();
+
+    void GameboyB();
+
     void ButtonA();
 
     void ButtonB();

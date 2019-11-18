@@ -47,6 +47,16 @@ void StateSelector::Select()
     _current->Select();
 }
 
+void StateSelector::GameboyA()
+{
+    _current->GameboyA();
+}
+
+void StateSelector::GameboyB()
+{
+    _current->GameboyB();
+}
+
 void StateSelector::ButtonA()
 {
     _current->ButtonA();
