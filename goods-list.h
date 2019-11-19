@@ -67,4 +67,9 @@ public:
     {
         return _current;
     }
+
+    std::vector<Good>& GetGoods()
+    {
+        return _goods;
+    }
 };

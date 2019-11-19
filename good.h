@@ -56,6 +56,16 @@ public:
 
     static Good Deserialize(JsonVariant& json);
 
+    String GetName()
+    {
+        return _name;
+    }
+
+    const int8_t GetQuantity()
+    {
+        return _quantity;
+    }
+
     const int32_t GetPrice() const
     {
         return _price;

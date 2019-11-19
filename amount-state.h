@@ -98,4 +98,9 @@ public:
     void ButtonB() override;
 
     void ButtonC() override;
+
+    const int32_t GetPrice()
+    {
+        return _price;
+    }
 };
