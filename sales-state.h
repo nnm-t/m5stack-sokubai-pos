@@ -9,6 +9,8 @@
 
 class SalesState : public IState
 {
+    static constexpr const Vector2<int32_t> title_pos = Vector2<int32_t>(10, 30);
+
     StateSelector* const _selector;
 
 public:
