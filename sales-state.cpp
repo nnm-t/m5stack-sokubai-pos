@@ -9,7 +9,6 @@ FooterText SalesState::GetFooterText()
 
 void SalesState::Draw()
 {
-    LCD::LoadFont(font_20pt);
     LCD::FillRect(bg_pos, bg_rect, color_black);
 
     LCD::SetTextDatum(TextDatum::TopLeft);

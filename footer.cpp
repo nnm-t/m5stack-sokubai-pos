@@ -14,8 +14,6 @@ constexpr Vector2<int32_t> Footer::right_text_pos;
 
 void Footer::Draw(const FooterText& footer_text)
 {
-    LCD::LoadFont(font_20pt);
-
     LCD::FillRect(background_pos, background_rect, color_white);
 
     LCD::SetTextDatum(TextDatum::TopCenter);

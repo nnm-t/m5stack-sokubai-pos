@@ -30,7 +30,6 @@ void AmountState::Draw()
 {
     LCD::FillRect(bg_pos, bg_rect, color_black);
 
-    LCD::LoadFont(font_30pt);
     LCD::SetTextColor(color_white, color_black);
     LCD::SetTextDatum(TextDatum::TopLeft);
     LCD::DrawString("金額入力", title_pos);

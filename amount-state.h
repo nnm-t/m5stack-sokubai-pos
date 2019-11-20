@@ -17,21 +17,21 @@
 class AmountState : public IState
 {
     static constexpr const Vector2<int32_t> title_pos = Vector2<int32_t>(10, 30);
-    static constexpr const Vector2<int32_t> price_1000_pos = Vector2<int32_t>(125, 120);
-    static constexpr const Vector2<int32_t> price_100_pos = Vector2<int32_t>(155, 120);
-    static constexpr const Vector2<int32_t> price_lower_pos = Vector2<int32_t>(160, 120);
+    static constexpr const Vector2<int32_t> price_1000_pos = Vector2<int32_t>(140, 120);
+    static constexpr const Vector2<int32_t> price_100_pos = Vector2<int32_t>(160, 120);
+    static constexpr const Vector2<int32_t> price_lower_pos = Vector2<int32_t>(165, 120);
 
     static constexpr const Vector2<int32_t> price_rect_pos = Vector2<int32_t>(70, 105);
 
-    static constexpr const Vector2<int32_t> price_place_pos = Vector2<int32_t>(105, 90);
+    static constexpr const Vector2<int32_t> price_place_pos = Vector2<int32_t>(110, 90);
 
-    static constexpr const Vector2<int32_t> price_place_upper0 = Vector2<int32_t>(115, 100);
-    static constexpr const Vector2<int32_t> price_place_upper1 = Vector2<int32_t>(105, 90);
-    static constexpr const Vector2<int32_t> price_place_upper2 = Vector2<int32_t>(125, 90);
+    static constexpr const Vector2<int32_t> price_place_upper0 = Vector2<int32_t>(130, 100);
+    static constexpr const Vector2<int32_t> price_place_upper1 = Vector2<int32_t>(120, 90);
+    static constexpr const Vector2<int32_t> price_place_upper2 = Vector2<int32_t>(140, 90);
 
-    static constexpr const Vector2<int32_t> price_place_lower0 = Vector2<int32_t>(145, 100);
-    static constexpr const Vector2<int32_t> price_place_lower1 = Vector2<int32_t>(135, 90);
-    static constexpr const Vector2<int32_t> price_place_lower2 = Vector2<int32_t>(155, 90);
+    static constexpr const Vector2<int32_t> price_place_lower0 = Vector2<int32_t>(150, 100);
+    static constexpr const Vector2<int32_t> price_place_lower1 = Vector2<int32_t>(140, 90);
+    static constexpr const Vector2<int32_t> price_place_lower2 = Vector2<int32_t>(160, 90);
 
     static constexpr const Rect<int32_t> price_rect = Rect<int32_t>(90, 30);
     static constexpr const Rect<int32_t> price_place_rect = Rect<int32_t>(51, 11);
