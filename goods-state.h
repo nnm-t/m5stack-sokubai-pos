@@ -14,6 +14,8 @@
 
 class GoodsState : public IState
 {
+    static constexpr const Vector2<int32_t> title_pos = Vector2<int32_t>(10, 30);
+
     static constexpr const Vector2<int32_t> left_tr0 = Vector2<int32_t>(30, 105);
     static constexpr const Vector2<int32_t> left_tr1 = Vector2<int32_t>(10, 120);
     static constexpr const Vector2<int32_t> left_tr2 = Vector2<int32_t>(30, 135);

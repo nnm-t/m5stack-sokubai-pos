@@ -2,6 +2,8 @@
 
 using namespace std;
 
+constexpr Vector2<int32_t> GoodsState::title_pos;
+
 constexpr Vector2<int32_t> GoodsState::left_tr0;
 constexpr Vector2<int32_t> GoodsState::left_tr1;
 constexpr Vector2<int32_t> GoodsState::left_tr2;
@@ -29,6 +31,10 @@ void GoodsState::Update()
 
 void GoodsState::Draw()
 {
+    LCD::SetTextColor(color_white, color_black);
+    LCD::SetTextDatum(TextDatum::TopLeft);
+    LCD::DrawString("商品入力", title_pos);
+
     LCD::FillRect(bg_pos, bg_rect, color_black);
 
     LCD::FillTriangle(left_tr0, left_tr1, left_tr2, color_red);
