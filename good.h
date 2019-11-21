@@ -15,6 +15,7 @@ class Good
 {
     const static constexpr char* json_name = "name";
     const static constexpr char* json_image = "image_path";
+    const static constexpr char* json_sales = "sales";
     const static constexpr char* json_price = "price";
     const static constexpr char* json_uuid = "uuid";
 
@@ -35,8 +36,9 @@ class Good
     String _name;
     String _image_path;
 
+    int16_t _sales;
     int8_t _quantity = 0;
-    int16_t name_x = 0;
+    int16_t _name_x = 0;
 
     const int32_t _price;
     const std::vector<byte> _uuid;
@@ -44,7 +46,7 @@ class Good
     void UpdateQuantity();
 
 public:
-    Good(String& name, String& image_path, const int32_t price, const std::vector<byte>& uuid) : _name(name), _image_path(image_path), _price(price), _uuid(uuid)
+    Good(String& name, String& image_path, const int16_t sales, const int32_t price, const std::vector<byte>& uuid) : _name(name), _image_path(image_path), _sales(sales), _price(price), _uuid(uuid)
     {
     }
 
@@ -56,6 +58,8 @@ public:
 
     static Good Deserialize(JsonVariant& json);
 
+    void Serialize(JsonVariant& json);
+
     String GetName()
     {
         return _name;
@@ -64,6 +68,11 @@ public:
     const int8_t GetQuantity()
     {
         return _quantity;
+    }
+
+    const int16_t GetSales()
+    {
+        return _sales;
     }
 
     const int32_t GetPrice() const

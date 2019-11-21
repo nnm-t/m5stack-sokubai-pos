@@ -41,6 +41,22 @@ void AmountState::Draw()
     DrawPricePlace();
 }
 
+void AmountState::Deserialize(JsonArray& json_array)
+{
+    for (JsonVariant json_variant : json_array)
+    {
+        _amounts.push_back(json_variant.as<int32_t>());
+    }
+}
+
+void AmountState::Serialize(JsonArray& json_array)
+{
+    for (int32_t amount : _amounts)
+    {
+        json_array.add(amount);
+    }
+}
+
 void AmountState::Up()
 {
     if (_price >= price_max)

@@ -1,9 +1,12 @@
 #pragma once
 
 #include <cmath>
+#include <vector>
 
 #include <Arduino.h>
 #include <M5Stack.h>
+
+#include <ArduinoJson.h>
 
 #include "i-state.h"
 #include "vector2.h"
@@ -42,6 +45,7 @@ class AmountState : public IState
     StateSelector* const _selector;
 
     int32_t _price = 0;
+    std::vector<int32_t> _amounts;
     PricePlace _price_place = PricePlace::Lower;
 
     void DrawPrice();
@@ -49,10 +53,14 @@ class AmountState : public IState
     void DrawPricePlace();
 
 public:
-    AmountState(StateSelector* const selector) : _selector(selector)
+    AmountState(StateSelector* const selector) : _selector(selector), _amounts(std::vector<int32_t>())
     {
 
     }
+
+    void Deserialize(JsonArray& json_array);
+
+    void Serialize(JsonArray& json_array);
 
     FooterText GetFooterText() override;
 

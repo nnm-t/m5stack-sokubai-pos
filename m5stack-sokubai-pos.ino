@@ -23,6 +23,7 @@
 #include "m5-button.h"
 #include "rfid.h"
 #include "speaker.h"
+#include "json-io.h"
 
 using namespace std;
 
@@ -36,13 +37,15 @@ namespace
 Header header;
 Footer footer;
 Sprite name_sprite;
-GoodsList goods_list(json_filename, &name_sprite);
+GoodsList goods_list(&name_sprite);
 
 StateSelector selector(&footer);
 GoodsState goods_state(&selector, &goods_list);
 AmountState amount_state(&selector);
 PaymentState payment_state(&selector, &amount_state, &goods_list);
 SalesState sales_state(&selector);
+
+JsonIO json_io(json_filename, &goods_list, &amount_state);
 
 GameBoy gameboy;
 Speaker speaker;
@@ -87,6 +90,8 @@ void setup()
 
         goods_state.RFIDReceived(uuid);
     };
+
+    json_io.Read();
 
     LCD::FillScreen(color_black);
     LCD::LoadFont(font_20pt);

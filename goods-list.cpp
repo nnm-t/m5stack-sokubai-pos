@@ -16,35 +16,26 @@ void GoodsList::BeginSprite()
     _sprite->SetTextColor(color_white);
 }
 
-void GoodsList::Begin()
+void GoodsList::Deserialize(JsonArray& json_array)
 {
-    BeginSprite();
-
-    File file = SD.open(_file_name, FILE_READ);
-
-    String json_text;
-
-    while (file.available())
-    {
-        json_text += static_cast<char>(file.read());
-    }
-
-    file.close();
-
-    DeserializationError error = deserializeJson(_json_document, json_text);
-
-    if (error != DeserializationError::Code::Ok)
-    {
-        Serial.println("JSON deserialize failed.");
-        return;
-    }
-
-    JsonArray json_array = _json_document.as<JsonArray>();
-
     for (JsonVariant json_variant : json_array)
     {
         _goods.push_back(Good::Deserialize(json_variant));
     }
+}
+
+void GoodsList::Serialize(JsonArray& json_array)
+{
+    for (Good& good : _goods)
+    {
+        JsonVariant json_variant = json_array.createNestedObject();
+        good.Serialize(json_variant);
+    }
+}
+
+void GoodsList::Begin()
+{
+    BeginSprite();
 
     Draw();
 }

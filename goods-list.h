@@ -14,17 +14,12 @@
 
 class GoodsList
 {
-    static constexpr size_t json_size = 1024;
-
     static constexpr Vector2<int32_t> sum_pos = Vector2<int32_t>(170, 190);
     static constexpr Vector2<int32_t> sum_rect_pos = Vector2<int32_t>(170, 189);
 
     static constexpr Rect<int16_t> name_rect = Rect<int16_t>(title_rect.Width() + title_width, title_rect.Height());
     static constexpr Rect<int32_t> sum_rect = Rect<int32_t>(150, 21);
 
-    const char* _file_name;
-
-    StaticJsonDocument<json_size> _json_document;
     std::vector<Good> _goods;
     Sprite* const _sprite;
 
@@ -38,10 +33,14 @@ class GoodsList
     void BeginSprite();
 
 public:
-    GoodsList(const char* file_name, Sprite* const sprite) : _file_name(file_name), _sprite(sprite), _json_document(StaticJsonDocument<json_size>()), _goods(std::vector<Good>()), _current(0)
+    GoodsList(Sprite* const sprite) : _sprite(sprite), _goods(std::vector<Good>()), _current(0)
     {
 
     }
+
+    void Deserialize(JsonArray& json_array);
+
+    void Serialize(JsonArray& json_array);
 
     void Begin();
 

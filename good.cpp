@@ -15,6 +15,7 @@ Good Good::Deserialize(JsonVariant& json)
 {
     String name = json[json_name].as<String>();
     String image_path = json[json_image].as<String>();
+    int16_t sales = json[json_sales].as<int16_t>();
     int32_t price = json[json_price].as<int32_t>();
 
     vector<byte> uuid;
@@ -31,7 +32,22 @@ Good Good::Deserialize(JsonVariant& json)
         }
     }
 
-    return Good(name, image_path, price, uuid);
+    return Good(name, image_path, sales, price, uuid);
+}
+
+void Good::Serialize(JsonVariant& json)
+{
+    json[json_name] = _name;
+    json[json_image] = _image_path;
+    json[json_sales] = _sales;
+    json[json_price] = _price;
+
+    JsonArray uuid = json.createNestedArray(json_uuid);
+
+    for (byte uuid_byte : _uuid)
+    {
+        uuid.add(uuid_byte);
+    }
 }
 
 void Good::UpdateQuantity()
@@ -63,7 +79,7 @@ void Good::Draw(Sprite* const sprite)
 
 void Good::DrawName(Sprite* const sprite)
 {
-    name_x = name_rect.Width();
+    _name_x = name_rect.Width();
     sprite->DrawString(_name, Vector2<int32_t>(title_rect.Width(), 0));
     sprite->SetScrollRect(Vector2<int32_t>::Zero(), name_rect, color_black);
 }
@@ -73,9 +89,9 @@ void Good::Update(Sprite* const sprite)
     sprite->Push(name_pos);
 
     sprite->Scroll(Vector2<int16_t>(name_dx, 0));
-    name_x += name_dx;
+    _name_x += name_dx;
 
-    if (name_x < name_scroll_end)
+    if (_name_x < name_scroll_end)
     {
         DrawName(sprite);
     }
