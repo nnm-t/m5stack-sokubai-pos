@@ -71,4 +71,6 @@ public:
     void ButtonC() override;
 
     void RFIDReceived(const std::vector<byte>& uuid);
+
+    void WriteSales() override;
 };

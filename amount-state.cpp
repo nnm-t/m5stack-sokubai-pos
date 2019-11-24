@@ -139,3 +139,11 @@ void AmountState::ButtonC()
 {
     _selector->ToPaymentState();
 }
+
+void AmountState::WriteSales()
+{
+    // 売上を追加
+    _amounts.push_back(_price);
+    // リセット
+    _price = 0;
+}

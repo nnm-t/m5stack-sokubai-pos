@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #include <Arduino.h>
 #include <M5Stack.h>
 
@@ -24,6 +26,8 @@ public:
     IState* goods_state = nullptr;
     IState* payment_state = nullptr;
     IState* sales_state = nullptr;
+
+    std::function<void()> write_json = nullptr;
 
     StateSelector(Footer* const footer) : _footer(footer)
     {
@@ -73,4 +77,6 @@ public:
     void ToPaymentState();
 
     void ToSalesState();
+
+    void WriteSales();
 };

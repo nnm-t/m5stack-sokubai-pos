@@ -71,4 +71,6 @@ public:
     {
         return _goods;
     }
+
+    void WriteSales();
 };

@@ -92,3 +92,9 @@ void GoodsState::RFIDReceived(const vector<byte>& uuid)
 {
     _goods_list->RFIDReceived(uuid);
 }
+
+void GoodsState::WriteSales()
+{
+    // 売上を追加
+    _goods_list->WriteSales();
+}

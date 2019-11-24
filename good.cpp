@@ -151,3 +151,11 @@ const bool Good::IsMatchUUID(const vector<byte>& uuid)
 
     return true;
 }
+
+void Good::WriteSales()
+{
+    // 売上を追加
+    _sales += _quantity;
+    // リセット
+    _quantity = 0;
+}

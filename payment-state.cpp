@@ -73,6 +73,7 @@ void PaymentState::ButtonC()
 {
     // 決定
     // 支払いを記録
+    _selector->WriteSales();
 
     _selector->ToGoodsState();
 }

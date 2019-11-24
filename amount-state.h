@@ -107,6 +107,8 @@ public:
 
     void ButtonC() override;
 
+    void WriteSales() override;
+
     const int32_t GetPrice()
     {
         return _price;

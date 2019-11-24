@@ -31,13 +31,6 @@ class PaymentState : public IState
     static constexpr const Vector2<int32_t> price_left_pos = Vector2<int32_t>(good_x_left, price_y);
     static constexpr const Vector2<int32_t> price_right_pos = Vector2<int32_t>(good_x_right, price_y);
 
-    static constexpr const int32_t good_x_left = 10;
-    static constexpr const int32_t good_x_right = 310;
-    static constexpr const int32_t good_y = 60;
-    static constexpr const int32_t good_y_span = 20;
-
-    static constexpr const int32_t amount_y = 160;
-
     StateSelector* const _selector;
     AmountState* const _amount_state;
     GoodsList* const _goods_list;
@@ -110,4 +103,9 @@ public:
     }
 
     void ButtonC() override;
+
+    void WriteSales() override
+    {
+
+    }
 };

@@ -143,3 +143,11 @@ void GoodsList::RFIDReceived(const vector<byte>& uuid)
         }
     }
 }
+
+void GoodsList::WriteSales()
+{
+    for (Good& good : _goods)
+    {
+        good.WriteSales();
+    }
+}

@@ -95,3 +95,24 @@ void StateSelector::ToSalesState()
     _current = sales_state;
     DrawState();
 }
+
+void StateSelector::WriteSales()
+{
+    // 売上を記録
+    if (goods_state != nullptr)
+    {
+        goods_state->WriteSales();
+    }
+    if (amount_state != nullptr)
+    {
+        amount_state->WriteSales();
+    }
+
+    if (write_json == nullptr)
+    {
+        return;
+    }
+
+    // JSON 書き出し
+    write_json();
+}

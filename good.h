@@ -97,4 +97,6 @@ public:
     void Down();
 
     void Reset();
+
+    void WriteSales();
 };

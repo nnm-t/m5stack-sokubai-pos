@@ -81,4 +81,9 @@ public:
     {
 
     }
+
+    void WriteSales() override
+    {
+
+    }
 };

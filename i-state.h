@@ -34,4 +34,6 @@ public:
     virtual void ButtonB() = 0;
 
     virtual void ButtonC() = 0;
+
+    virtual void WriteSales() = 0;
 };
