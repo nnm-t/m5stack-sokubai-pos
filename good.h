@@ -75,6 +75,11 @@ public:
         return _sales;
     }
 
+    const int32_t GetSumSales()
+    {
+        return _price * _sales;
+    }
+
     const int32_t GetPrice() const
     {
         return _price;

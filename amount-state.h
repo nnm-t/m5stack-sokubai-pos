@@ -113,4 +113,11 @@ public:
     {
         return _price;
     }
+
+    std::vector<int32_t>& GetAmounts()
+    {
+        return _amounts;
+    }
+
+    const int32_t GetSumSales();
 };

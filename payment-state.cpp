@@ -40,6 +40,7 @@ void PaymentState::Draw()
         LCD::DrawString(good_left, Vector2<int32_t>(good_x_left, y));
         LCD::SetTextDatum(TextDatum::TopRight);
         LCD::DrawString(good_right, Vector2<int32_t>(good_x_right, y));
+
         y += good_y_span;
         sum_price += good_price;
     }

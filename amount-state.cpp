@@ -147,3 +147,15 @@ void AmountState::WriteSales()
     // リセット
     _price = 0;
 }
+
+const int32_t AmountState::GetSumSales()
+{
+    int32_t sales = 0;
+
+    for (const int32_t amount : _amounts)
+    {
+        sales += amount;
+    }
+
+    return sales;
+}
