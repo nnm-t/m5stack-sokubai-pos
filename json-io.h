@@ -5,13 +5,12 @@
 
 #include <ArduinoJson.h>
 
+#include "constants.h"
 #include "goods-list.h"
 #include "amount-state.h"
 
 class JsonIO
 {
-    static constexpr const size_t json_size = 1024;
-
     static constexpr const char* json_goods = "goods";
     static constexpr const char* json_amounts = "amounts";
 
