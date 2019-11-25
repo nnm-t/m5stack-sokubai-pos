@@ -17,7 +17,7 @@ void JsonIO::Read()
 
     if (error != DeserializationError::Code::Ok)
     {
-        Serial.println("JSON deserialize failed.");
+        _serial->Println("JSON deserialize failed.");
         return;
     }
 

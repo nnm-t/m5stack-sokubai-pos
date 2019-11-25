@@ -24,15 +24,19 @@
 #include "rfid.h"
 #include "speaker.h"
 #include "json-io.h"
+#include "bluetooth-spp.h"
 
 using namespace std;
 
 namespace
 {
     constexpr const char* json_filename = "/goods.json";
+    constexpr const char* bluetooth_name = "M5Stack-Sokubai-POS";
     constexpr const uint8_t mfrc522_address = 0x28;
     constexpr const uint32_t delay_ms = 20;
 }
+
+BluetoothSPP bluetooth;
 
 Header header;
 Footer footer;
@@ -45,18 +49,19 @@ AmountState amount_state(&selector);
 PaymentState payment_state(&selector, &amount_state, &goods_list);
 SalesState sales_state(&selector, &amount_state, &goods_list);
 
-JsonIO json_io(json_filename, &goods_list, &amount_state);
+JsonIO json_io(json_filename, &bluetooth, &goods_list, &amount_state);
 
 GameBoy gameboy;
 Speaker speaker;
 M5Button m5_button;
-RFID rfid(&speaker, mfrc522_address, delay_ms);
+RFID rfid(&bluetooth, &speaker, mfrc522_address, delay_ms);
 
 void setup()
 {
     M5.begin();
-    Serial.begin(115200);
     SD.begin();
+
+    bluetooth.Begin(bluetooth_name);
 
     selector.goods_state = &goods_state;
     selector.amount_state = &amount_state;
