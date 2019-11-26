@@ -6,8 +6,8 @@
 class Power
 {
 public:
-    static String GetBatteryLevel()
+    static const uint8_t GetBatteryLevel()
     {
-        return String(M5.Power.getBatteryLevel());
+        return M5.Power.getBatteryLevel();
     }
 };

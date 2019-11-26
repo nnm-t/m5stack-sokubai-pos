@@ -41,7 +41,7 @@ Ticker ticker;
 
 BluetoothSPP bluetooth;
 
-Header header;
+Header header(ticker_ms);
 Footer footer;
 Sprite name_sprite;
 GoodsList goods_list(&name_sprite);
@@ -105,7 +105,7 @@ void setup()
     LCD::FillScreen(color_black);
     LCD::LoadFont(font_20pt);
 
-    header.Draw();
+    header.Begin();
     selector.Begin();
 
     ticker.attach_ms(ticker_ms, OnTimerTicked);
@@ -120,8 +120,12 @@ void OnTimerTicked()
 {
     M5.update();
 
+    header.Update();
+
     gameboy.Update();
     m5_button.Update();
+
     selector.Update();
+
     rfid.Update();
 }
