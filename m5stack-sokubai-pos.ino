@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <M5Stack.h>
+#include <Ticker.h>
 #include <ArduinoJson.h>
 
 #include "constants.h"
@@ -33,8 +34,10 @@ namespace
     constexpr const char* json_filename = "/goods.json";
     constexpr const char* bluetooth_name = "M5Stack-Sokubai-POS";
     constexpr const uint8_t mfrc522_address = 0x28;
-    constexpr const uint32_t delay_ms = 20;
+    constexpr const uint32_t ticker_ms = 20;
 }
+
+Ticker ticker;
 
 BluetoothSPP bluetooth;
 
@@ -54,7 +57,7 @@ JsonIO json_io(json_filename, &bluetooth, &goods_list, &amount_state);
 GameBoy gameboy;
 Speaker speaker;
 M5Button m5_button;
-RFID rfid(&bluetooth, &speaker, mfrc522_address, delay_ms);
+RFID rfid(&bluetooth, &speaker, mfrc522_address, ticker_ms);
 
 void setup()
 {
@@ -105,9 +108,15 @@ void setup()
     header.Draw();
     selector.Begin();
 
+    ticker.attach_ms(ticker_ms, OnTimerTicked);
 }
 
 void loop()
+{
+
+}
+
+void OnTimerTicked()
 {
     M5.update();
 
@@ -115,6 +124,4 @@ void loop()
     m5_button.Update();
     selector.Update();
     rfid.Update();
-
-    delay(delay_ms);
 }
