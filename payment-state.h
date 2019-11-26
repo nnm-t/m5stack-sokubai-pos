@@ -12,6 +12,7 @@
 #include "lcd.h"
 #include "vector2.h"
 #include "text-datum.h"
+#include "i-serial.h"
 
 class PaymentState : public IState
 {
@@ -34,9 +35,12 @@ class PaymentState : public IState
     StateSelector* const _selector;
     AmountState* const _amount_state;
     GoodsList* const _goods_list;
+    ISerial* const _serial;
+
+    void PrintSales();
 
 public:
-    PaymentState(StateSelector* const selector, AmountState* const amount_state, GoodsList* const goods_list) : _selector(selector), _amount_state(amount_state), _goods_list(goods_list)
+    PaymentState(StateSelector* const selector, AmountState* const amount_state, GoodsList* const goods_list, ISerial* const serial) : _selector(selector), _amount_state(amount_state), _goods_list(goods_list), _serial(serial)
     {
 
     }

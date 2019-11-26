@@ -49,7 +49,7 @@ GoodsList goods_list(&name_sprite);
 StateSelector selector(&footer);
 GoodsState goods_state(&selector, &goods_list);
 AmountState amount_state(&selector);
-PaymentState payment_state(&selector, &amount_state, &goods_list);
+PaymentState payment_state(&selector, &amount_state, &goods_list, &bluetooth);
 SalesState sales_state(&selector, &amount_state, &goods_list);
 
 JsonIO json_io(json_filename, &bluetooth, &goods_list, &amount_state);

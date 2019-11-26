@@ -75,6 +75,41 @@ void PaymentState::ButtonC()
     // 決定
     // 支払いを記録
     _selector->WriteSales();
+    PrintSales();
 
     _selector->ToGoodsState();
+}
+
+void PaymentState::PrintSales()
+{
+    _serial->Println("[売上登録]");
+
+    int32_t sum_price = 0;
+
+    for (Good& good : _goods_list->GetGoods())
+    {
+        int8_t quantity = good.GetQuantity();
+
+        if (quantity == 0)
+        {
+            return;
+        }
+
+        String name = good.GetName();
+        int32_t price = good.GetSumPrice();
+        sum_price += price;
+
+        _serial->Print(name);
+        _serial->Print(" x" + String(quantity));
+        _serial->Println(" " + String(price) + "円");
+    }
+
+    int32_t amount_price = _amount_state->GetPrice();
+
+    if (amount_price != 0)
+    {
+        _serial->Println("金額入力: " + String(amount_price) + "円");
+    }
+
+    _serial->Println("合計:" + String(sum_price) + "円");
 }
