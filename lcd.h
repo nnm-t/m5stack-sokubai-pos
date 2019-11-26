@@ -31,6 +31,10 @@ public:
 
     static void FillTriangle(const Vector2<int32_t>& pos0, const Vector2<int32_t>& pos1, const Vector2<int32_t>& pos2, const Color16& color);
 
+    static void DrawCircle(const Vector2<int32_t>& center, const int32_t radius, const Color16& color);
+
+    static void FillCircle(const Vector2<int32_t>& center, const int32_t radius, const Color16& color);
+
     static void SetTextColor(const Color16& color);
 
     static void SetTextColor(const Color16& foreground, const Color16& background);

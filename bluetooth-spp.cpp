@@ -1,13 +1,18 @@
 #include "bluetooth-spp.h"
 
-bool BluetoothSPP::Begin(const char* local_name, const bool is_master)
+void BluetoothSPP::Begin()
 {
-    return _serial.begin(local_name, is_master);
+    _serial.begin(_local_name, _is_master);
 }
 
-bool BluetoothSPP::Begin(const String& local_name, const bool is_master)
+void BluetoothSPP::End()
 {
-    return _serial.begin(local_name, is_master);
+    _serial.end();
+}
+
+bool BluetoothSPP::IsReady()
+{
+    return _serial.isReady();
 }
 
 void BluetoothSPP::Print(const char* string)

@@ -1,8 +1,20 @@
 #include "serial.h"
 
-void Serial::Begin(const uint32_t baud_rate)
+void Serial::Begin()
 {
-    _serial->begin(baud_rate);
+    _serial->begin(_baud_rate);
+    _is_ready = true;
+}
+
+void Serial::End()
+{
+    _is_ready = false;
+    _serial->end();
+}
+
+bool Serial::IsReady()
+{
+    return _is_ready;
 }
 
 void Serial::Print(const char* string)

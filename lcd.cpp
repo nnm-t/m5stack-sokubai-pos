@@ -15,6 +15,16 @@ void LCD::FillRect(const Vector2<int32_t>& position, const Rect<int32_t>& size, 
     M5.Lcd.fillRect(position.X(), position.Y(), size.Width(), size.Height(), color.Get());
 }
 
+void LCD::DrawCircle(const Vector2<int32_t>& center, const int32_t radius, const Color16& color)
+{
+    M5.Lcd.drawCircle(center.X(), center.Y(), radius, color.Get());
+}
+
+void LCD::FillCircle(const Vector2<int32_t>& center, const int32_t radius, const Color16& color)
+{
+    M5.Lcd.fillCircle(center.X(), center.Y(), radius, color.Get());
+}
+
 void LCD::LoadFont(String& fontName, fs::FS& ffs)
 {
     M5.Lcd.loadFont(fontName, ffs);

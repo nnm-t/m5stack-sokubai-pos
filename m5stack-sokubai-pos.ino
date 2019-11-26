@@ -39,9 +39,9 @@ namespace
 
 Ticker ticker;
 
-BluetoothSPP bluetooth;
+BluetoothSPP bluetooth(bluetooth_name);
 
-Header header(ticker_ms);
+Header header(&bluetooth, ticker_ms);
 Footer footer;
 Sprite name_sprite;
 GoodsList goods_list(&name_sprite);
@@ -64,7 +64,7 @@ void setup()
     M5.begin();
     SD.begin();
 
-    bluetooth.Begin(bluetooth_name);
+    bluetooth.Begin();
 
     selector.goods_state = &goods_state;
     selector.amount_state = &amount_state;

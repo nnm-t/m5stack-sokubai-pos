@@ -8,17 +8,27 @@
 
 class BluetoothSPP : public ISerial
 {
+    const char* _local_name;
+    const bool _is_master;
+
     BluetoothSerial _serial;
 
 public:
-    BluetoothSPP() : _serial(BluetoothSerial())
+    BluetoothSPP(const char* local_name, const bool is_master = false) : _local_name(local_name), _is_master(is_master), _serial(BluetoothSerial())
     {
 
     }
 
-    bool Begin(const char* local_name, const bool is_master = false);
+    BluetoothSPP(const String& local_name, const bool is_master = false) : _local_name(local_name.c_str()), _is_master(is_master), _serial(BluetoothSerial())
+    {
 
-    bool Begin(const String& local_name, const bool is_master = false);
+    }
+
+    void Begin() override;
+
+    void End() override;
+
+    bool IsReady() override;
 
     void Print(const char* string) override;
 
