@@ -39,7 +39,7 @@ void Header::DrawConnected(const bool is_ready)
         LCD::FillCircle(circle_pos, circle_radius, color_bluetooth);
 
         LCD::SetTextColor(color_bluetooth, color_white);
-        connected = "Bluetooth";
+        connected = "Connected";
     }
     else
     {

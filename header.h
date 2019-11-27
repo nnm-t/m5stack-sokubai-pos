@@ -11,7 +11,7 @@
 #include "text-datum.h"
 #include "lcd.h"
 #include "power.h"
-#include "bluetooth-spp.h"
+#include "i-serial.h"
 
 class Header
 {
@@ -34,7 +34,7 @@ class Header
     static constexpr Vector2<int32_t> battery_rect_pos = Vector2<int32_t>(240, 0);
     static constexpr Vector2<int32_t> connected_pos = Vector2<int32_t>(20, 1);
 
-    BluetoothSPP* const _serial;
+    ISerial* const _serial;
     const uint32_t _delay_ms;
 
     uint32_t _period_ms = 0;
@@ -48,7 +48,7 @@ class Header
     void DrawBatteryLevel(const int8_t battery_level);
 
 public:
-    Header(BluetoothSPP* const serial, const uint32_t delay_ms) : _serial(serial), _delay_ms(delay_ms)
+    Header(ISerial* const serial, const uint32_t delay_ms) : _serial(serial), _delay_ms(delay_ms)
     {
 
     }

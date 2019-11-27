@@ -5,7 +5,7 @@
 
 #include "i-serial.h"
 
-class Serial : public ISerial
+class HardSerial : public ISerial
 {
     const uint32_t _baud_rate;
     HardwareSerial* const _serial;
@@ -13,7 +13,7 @@ class Serial : public ISerial
     bool _is_ready = false;
 
 public:
-    Serial(HardwareSerial* const serial, const uint32_t baud_rate = 115200) :_serial(serial),  _baud_rate(baud_rate)
+    HardSerial(HardwareSerial* const serial = &Serial, const uint32_t baud_rate = 115200) :_serial(serial),  _baud_rate(baud_rate)
     {
 
     }

@@ -25,7 +25,7 @@
 #include "rfid.h"
 #include "speaker.h"
 #include "json-io.h"
-#include "bluetooth-spp.h"
+#include "hard-serial.h"
 
 using namespace std;
 
@@ -39,9 +39,9 @@ namespace
 
 Ticker ticker;
 
-BluetoothSPP bluetooth(bluetooth_name);
+HardSerial serial;
 
-Header header(&bluetooth, ticker_ms);
+Header header(&serial, ticker_ms);
 Footer footer;
 Sprite name_sprite;
 GoodsList goods_list(&name_sprite);
@@ -49,22 +49,22 @@ GoodsList goods_list(&name_sprite);
 StateSelector selector(&footer);
 GoodsState goods_state(&selector, &goods_list);
 AmountState amount_state(&selector);
-PaymentState payment_state(&selector, &amount_state, &goods_list, &bluetooth);
+PaymentState payment_state(&selector, &amount_state, &goods_list, &serial);
 SalesState sales_state(&selector, &amount_state, &goods_list);
 
-JsonIO json_io(json_filename, &bluetooth, &goods_list, &amount_state);
+JsonIO json_io(json_filename, &serial, &goods_list, &amount_state);
 
 GameBoy gameboy;
 Speaker speaker;
 M5Button m5_button;
-RFID rfid(&bluetooth, &speaker, mfrc522_address, ticker_ms);
+RFID rfid(&serial, &speaker, mfrc522_address, ticker_ms);
 
 void setup()
 {
     M5.begin();
     SD.begin();
 
-    bluetooth.Begin();
+    serial.Begin();
 
     selector.goods_state = &goods_state;
     selector.amount_state = &amount_state;
