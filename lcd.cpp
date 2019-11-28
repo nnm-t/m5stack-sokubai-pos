@@ -84,3 +84,8 @@ void LCD::SetTextSize(const uint8_t size)
 {
     M5.Lcd.setTextSize(size);
 }
+
+void LCD::SetBrightness(const uint8_t brightness)
+{
+    M5.Lcd.setBrightness(brightness);
+}

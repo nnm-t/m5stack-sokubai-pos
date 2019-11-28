@@ -26,6 +26,7 @@
 #include "speaker.h"
 #include "json-io.h"
 #include "hard-serial.h"
+#include "brightness.h"
 
 using namespace std;
 
@@ -35,6 +36,8 @@ namespace
     constexpr const char* bluetooth_name = "M5Stack-Sokubai-POS";
     constexpr const uint8_t mfrc522_address = 0x28;
     constexpr const uint32_t ticker_ms = 20;
+    constexpr const uint8_t brightness_initial = 63;
+    constexpr const uint8_t brightness_step = 16;
 }
 
 Ticker ticker;
@@ -58,6 +61,7 @@ GameBoy gameboy;
 Speaker speaker;
 M5Button m5_button;
 RFID rfid(&serial, &speaker, mfrc522_address, ticker_ms);
+Brightness brightness(brightness_initial, brightness_step);
 
 void setup()
 {
@@ -65,6 +69,7 @@ void setup()
     SD.begin();
 
     serial.Begin();
+    brightness.Begin();
 
     selector.goods_state = &goods_state;
     selector.amount_state = &amount_state;
@@ -77,10 +82,11 @@ void setup()
     gameboy.on_down_pressed = [&]{ selector.Down(); };
     gameboy.on_left_pressed = [&]{ selector.Left(); };
     gameboy.on_right_pressed = [&]{ selector.Right(); };
-    gameboy.on_start_pressed = [&]{ selector.Start(); };
     gameboy.on_select_pressed = [&]{ selector.Select(); };
     gameboy.on_a_pressed = [&]{ selector.GameboyA(); };
     gameboy.on_b_pressed = [&]{ selector.GameboyB(); };
+
+    gameboy.on_start_pressed = [&]{ brightness.Up(); };
 
     m5_button.Begin();
     m5_button.on_button_a_pressed = [&]{ selector.ButtonA(); };
