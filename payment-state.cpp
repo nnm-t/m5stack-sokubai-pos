@@ -1,10 +1,17 @@
 #include "payment-state.h"
 
+using namespace std;
+
 constexpr Vector2<int32_t> PaymentState::title_pos;
 constexpr Vector2<int32_t> PaymentState::amount_left_pos;
 constexpr Vector2<int32_t> PaymentState::amount_right_pos;
 constexpr Vector2<int32_t> PaymentState::price_left_pos;
 constexpr Vector2<int32_t> PaymentState::price_right_pos;
+
+constexpr Vector2<int32_t> PaymentState::goods_bg_pos;
+
+constexpr Rect<int32_t> PaymentState::goods_bg_rect;
+constexpr Rect<int32_t> PaymentState::triangle_rect;
 
 FooterText PaymentState::GetFooterText()
 {
@@ -19,31 +26,28 @@ void PaymentState::Draw()
     LCD::SetTextColor(color_white, color_black);
     LCD::DrawString("支払", title_pos);
 
-    int32_t y = good_y;
-    int32_t sum_price = 0;
+    _goods_index.clear();
 
-    for(Good& good : _goods_list->GetGoods())
+    _page = 0;
+    _sum_price = 0;
+
+    vector<Good>& goods = _goods_list->GetGoods();
+
+    for(size_t i = 0; i < GetGoodsSize(); i++)
     {
-        // todo: スクロール
-        int8_t quantity = good.GetQuantity();
-        int32_t good_price = good.GetSumPrice();
+        int8_t quantity = goods[i].GetQuantity();
+        int32_t good_price = goods[i].GetSumPrice();
 
         if (quantity == 0)
         {
             continue;
         }
 
-        String good_left = good.GetName() + " x" + String(quantity);
-        String good_right = String(good_price) + "円";
-
-        LCD::SetTextDatum(TextDatum::TopLeft);
-        LCD::DrawString(good_left, Vector2<int32_t>(good_x_left, y));
-        LCD::SetTextDatum(TextDatum::TopRight);
-        LCD::DrawString(good_right, Vector2<int32_t>(good_x_right, y));
-
-        y += good_y_span;
-        sum_price += good_price;
+        _goods_index.push_back(i);
+        _sum_price += good_price;
     }
+
+    DrawGoods();
 
     int32_t amount_price = _amount_state->GetPrice();
 
@@ -54,14 +58,92 @@ void PaymentState::Draw()
         LCD::SetTextDatum(TextDatum::TopRight);
         LCD::DrawString(String(amount_price) +  "円", amount_right_pos);
 
-        sum_price += amount_price;
+        _sum_price += amount_price;
     }
 
     LCD::SetTextColor(color_yellow, color_black);
     LCD::SetTextDatum(TextDatum::TopLeft);
     LCD::DrawString("合計", price_left_pos);
     LCD::SetTextDatum(TextDatum::TopRight);
-    LCD::DrawString(String(sum_price) + "円", price_right_pos);
+    LCD::DrawString(String(_sum_price) + "円", price_right_pos);
+}
+
+void PaymentState::DrawGoods()
+{
+    LCD::FillRect(goods_bg_pos, goods_bg_rect, color_black);
+
+    LCD::FillRect(Vector2<int32_t>(289, 189), triangle_rect, color_black);
+    LCD::FillRect(Vector2<int32_t>(289, 29), triangle_rect, color_black);
+
+    if (_page > 0)
+    {
+        LCD::FillTriangle(Vector2<int32_t>(290, 190), Vector2<int32_t>(310, 190), Vector2<int32_t>(300, 210), color_red);
+    }
+
+    if (_page != GetGoodsPages() - 1)
+    {
+        LCD::FillTriangle(Vector2<int32_t>(290, 30), Vector2<int32_t>(310, 30), Vector2<int32_t>(300, 50), color_red);
+    }
+
+    const size_t index_size = _goods_index.size();
+
+    if (index_size == 0)
+    {
+        return;
+    }
+
+    int32_t y = good_y;
+
+    vector<Good>& goods = _goods_list->GetGoods();
+
+    for (size_t i = 0; i < page_goods; i++)
+    {
+        const size_t index_i = _page * page_goods + i;
+
+        if (index_i > index_size - 1)
+        {
+            continue;
+        }
+
+        const size_t index = _goods_index[index_i];
+
+        int8_t quantity = goods[index].GetQuantity();
+        int32_t good_price = goods[index].GetSumPrice();
+
+        String good_left = goods[index].GetName() + " x" + String(quantity);
+        String good_right = String(good_price) + "円";
+
+        LCD::SetTextDatum(TextDatum::TopLeft);
+        LCD::DrawString(good_left, Vector2<int32_t>(good_x_left, y));
+        LCD::SetTextDatum(TextDatum::TopRight);
+        LCD::DrawString(good_right, Vector2<int32_t>(good_x_right, y));
+
+        y += good_y_span;
+    }
+}
+
+void PaymentState::Up()
+{
+    if (_page <= 0)
+    {
+        return;
+    }
+
+    _page--;
+
+    DrawGoods();
+}
+
+void PaymentState::Down()
+{
+    if (_page >= GetGoodsPages() - 1)
+    {
+        return;
+    }
+
+    _page++;
+
+    DrawGoods();
 }
 
 void PaymentState::ButtonA()
