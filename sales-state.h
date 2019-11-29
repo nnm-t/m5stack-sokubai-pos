@@ -9,6 +9,7 @@
 #include "amount-state.h"
 #include "goods-list.h"
 #include "good.h"
+#include "i-serial.h"
 
 class SalesState : public IState
 {
@@ -31,9 +32,14 @@ class SalesState : public IState
     StateSelector* const _selector;
     AmountState* const _amount_state;
     GoodsList* const _goods_list;
+    ISerial* const _serial;
+
+    bool _is_amount = false;
+
+    void PrintSales();
 
 public:
-    SalesState(StateSelector* const selector, AmountState* const amount_state, GoodsList* const goods_list) : _selector(selector), _amount_state(amount_state), _goods_list(goods_list)
+    SalesState(StateSelector* const selector, AmountState* const amount_state, GoodsList* const goods_list, ISerial* const serial) : _selector(selector), _amount_state(amount_state), _goods_list(goods_list), _serial(serial)
     {
 
     }
@@ -96,10 +102,7 @@ public:
 
     void ButtonB() override;
 
-    void ButtonC() override
-    {
-
-    }
+    void ButtonC() override;
 
     void WriteSales() override
     {

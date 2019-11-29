@@ -9,7 +9,12 @@ constexpr const Vector2<int32_t> SalesState::price_right_pos;
 
 FooterText SalesState::GetFooterText()
 {
-    return FooterText("商品入力", "金額入力", String());
+    if (_is_amount)
+    {
+        return FooterText("戻る", "商品売上", "送信");
+    }
+
+    return FooterText("戻る", "額入売上", "送信");
 }
 
 void SalesState::Draw()
@@ -25,6 +30,7 @@ void SalesState::Draw()
 
     for (Good& good : _goods_list->GetGoods())
     {
+        // todo: スクロール
         int16_t sales = good.GetSales();
         int32_t good_price = good.GetSumSales();
 
@@ -50,6 +56,7 @@ void SalesState::Draw()
 
     if (amount_sales != 0)
     {
+        // todo: 金額ごとカウントに変更
         LCD::SetTextDatum(TextDatum::TopLeft);
         LCD::DrawString("金額入力", amount_left_pos);
         LCD::SetTextDatum(TextDatum::TopRight);
@@ -72,5 +79,39 @@ void SalesState::ButtonA()
 
 void SalesState::ButtonB()
 {
-    _selector->ToAmountState();
+    _is_amount = !_is_amount;
+    _selector->ToSalesState();
+}
+
+void SalesState::ButtonC()
+{
+    PrintSales();
+}
+
+void SalesState::PrintSales()
+{
+    int32_t sum_price = 0;
+
+    _serial->Println("[売上累計]");
+
+    for (Good& good : _goods_list->GetGoods())
+    {
+        int16_t sales = good.GetSales();
+
+        if (sales == 0)
+        {
+            continue;
+        }
+
+        String name = good.GetName();
+        int32_t amount_sales = good.GetSumSales();
+
+        _serial->Print(name);
+        _serial->Print(" x" + String(sales));
+        _serial->Println(" " + String(amount_sales) + "円");
+
+        sum_price += amount_sales;
+    }
+
+    // todo: 金額入力
 }

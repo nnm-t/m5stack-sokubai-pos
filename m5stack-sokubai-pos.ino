@@ -53,7 +53,7 @@ StateSelector selector(&footer);
 GoodsState goods_state(&selector, &goods_list);
 AmountState amount_state(&selector);
 PaymentState payment_state(&selector, &amount_state, &goods_list, &serial);
-SalesState sales_state(&selector, &amount_state, &goods_list);
+SalesState sales_state(&selector, &amount_state, &goods_list, &serial);
 
 JsonIO json_io(json_filename, &serial, &goods_list, &amount_state);
 
