@@ -142,6 +142,12 @@ void AmountState::ButtonC()
 
 void AmountState::WriteSales()
 {
+    if (_price == 0)
+    {
+        // ゼロ円は入力しない
+        return;
+    }
+
     // 売上を追加
     _amounts.push_back(_price);
     // リセット

@@ -1,11 +1,16 @@
 #include "sales-state.h"
 
+using namespace std;
+
 constexpr const Vector2<int32_t> SalesState::title_pos;
 
 constexpr const Vector2<int32_t> SalesState::amount_left_pos;
 constexpr const Vector2<int32_t> SalesState::amount_right_pos;
 constexpr const Vector2<int32_t> SalesState::price_left_pos;
 constexpr const Vector2<int32_t> SalesState::price_right_pos;
+
+constexpr const Vector2<int32_t> SalesState::bg_list_pos;
+constexpr const Rect<int32_t> SalesState::bg_list_rect;
 
 FooterText SalesState::GetFooterText()
 {
@@ -17,29 +22,41 @@ FooterText SalesState::GetFooterText()
     return FooterText("戻る", "額入売上", "送信");
 }
 
-void SalesState::Draw()
+const size_t SalesState::GetMaxPages()
 {
-    LCD::FillRect(bg_pos, bg_rect, color_black);
+    if (_is_amount)
+    {
+        return GetAmountsPages();
+    }
+
+    return GetGoodsPages();
+}
+
+void SalesState::DrawGoods()
+{
+    LCD::FillRect(bg_list_pos, bg_list_rect, color_black);
 
     LCD::SetTextDatum(TextDatum::TopLeft);
     LCD::SetTextColor(color_white, color_black);
-    LCD::DrawString("売上", title_pos);
+    LCD::DrawString("商品売上", title_pos);
 
     int32_t y = good_y;
-    int32_t sum_price = 0;
+    vector<Good> goods = _goods_list->GetGoods();
 
-    for (Good& good : _goods_list->GetGoods())
+    for (size_t i = 0; i < page_values; i++)
     {
         // todo: スクロール
-        int16_t sales = good.GetSales();
-        int32_t good_price = good.GetSumSales();
+        const size_t index = _page * page_values + i;
 
-        if (sales == 0)
+        if (index > GetGoodsSize() - 1)
         {
-            continue;
+            return;
         }
 
-        String good_left = good.GetName() + " x" + String(sales);
+        int16_t sales = goods[index].GetSales();
+        int32_t good_price = goods[index].GetSumSales();
+
+        String good_left = goods[index].GetName() + " x" + String(sales);
         String good_right = String(good_price) + "円";
 
         LCD::SetTextDatum(TextDatum::TopLeft);
@@ -49,20 +66,97 @@ void SalesState::Draw()
         LCD::DrawString(good_right, Vector2<int32_t>(good_x_right, y));
 
         y += good_y_span;
+    }
+}
+
+void SalesState::DrawAmounts()
+{
+    LCD::FillRect(bg_list_pos, bg_list_rect, color_black);
+
+    LCD::SetTextDatum(TextDatum::TopLeft);
+    LCD::SetTextColor(color_white, color_black);
+    LCD::DrawString("金額入力売上", title_pos);
+
+    // todo: スクロール
+    // unordered_map の途中からの iterate
+    auto iterator = _amounts.begin();
+    int32_t y = good_y;
+
+    // 予め iterator を動かす
+    for (size_t i = 0; i < _page * page_values; i++)
+    {
+        iterator++;
+    }
+
+    for (size_t i = 0; i < page_values; i++)
+    {
+        if (iterator == _amounts.end())
+        {
+            return;
+        }
+
+        const int32_t unit_price = iterator->first;
+        const int16_t quantity = iterator->second;
+        const int32_t amount_price = unit_price * quantity;
+
+        String amount_left = String(unit_price) + "円 x" + String(quantity);
+        String amount_right = String(amount_price) + "円";
+
+        LCD::SetTextDatum(TextDatum::TopLeft);
+        LCD::DrawString(amount_left, Vector2<int32_t>(good_x_left, y));
+        LCD::SetTextDatum(TextDatum::TopRight);
+        LCD::DrawString(amount_right, Vector2<int32_t>(good_x_right, y));
+
+        iterator++;
+        y += good_y_span;
+    }
+}
+
+void SalesState::DrawBody()
+{
+    if (_is_amount)
+    {
+        DrawAmounts();
+        return;
+    }
+
+    DrawGoods();
+}
+
+void SalesState::Draw()
+{
+    LCD::FillRect(bg_pos, bg_rect, color_black);
+
+    int32_t y = good_y;
+    int32_t sum_price = 0;
+
+    for (Good& good : _goods_list->GetGoods())
+    {
+        int16_t sales = good.GetSales();
+        int32_t good_price = good.GetSumSales();
+
+        if (sales == 0)
+        {
+            continue;
+        }
+
         sum_price += good_price;
     }
 
-    int32_t amount_sales = _amount_state->GetSumSales();
+    sum_price += _amount_state->GetSumSales();
 
-    if (amount_sales != 0)
+    _amounts.clear();
+
+    // unordered_map へ抽出
+    for (const int32_t amount : _amount_state->GetAmounts())
     {
-        // todo: 金額ごとカウントに変更
-        LCD::SetTextDatum(TextDatum::TopLeft);
-        LCD::DrawString("金額入力", amount_left_pos);
-        LCD::SetTextDatum(TextDatum::TopRight);
-        LCD::DrawString(String(amount_sales) + "円", amount_right_pos);
+        if (_amounts.find(amount) != _amounts.end())
+        {
+            _amounts[amount]++;
+            continue;
+        }
 
-        sum_price += amount_sales;
+        _amounts[amount] = 1;
     }
 
     LCD::SetTextColor(color_yellow, color_black);
@@ -70,6 +164,8 @@ void SalesState::Draw()
     LCD::DrawString("合計", price_left_pos);
     LCD::SetTextDatum(TextDatum::TopRight);
     LCD::DrawString(String(sum_price) + "円", price_right_pos);
+
+    DrawBody();
 }
 
 void SalesState::ButtonA()
@@ -80,6 +176,7 @@ void SalesState::ButtonA()
 void SalesState::ButtonB()
 {
     _is_amount = !_is_amount;
+    _page = 0;
     _selector->ToSalesState();
 }
 
@@ -113,5 +210,40 @@ void SalesState::PrintSales()
         sum_price += amount_sales;
     }
 
-    // todo: 金額入力
+    for (auto& amount : _amounts)
+    {
+        const int32_t price = amount.first * amount.second;
+
+        _serial->Print(String(amount.first) + "円");
+        _serial->Print(" x" + String(amount.second));
+        _serial->Println(" " + String(price) + "円");
+
+        sum_price += price;
+    }
+
+    _serial->Print("合計: " + String(sum_price) + "円");
+}
+
+void SalesState::Up()
+{
+    if (_page >= GetAmountsPages() - 1)
+    {
+        return;
+    }
+
+    _page++;
+
+    DrawBody();
+}
+
+void SalesState::Down()
+{
+    if (_page <= 0)
+    {
+        return;
+    }
+
+    _page--;
+
+    DrawBody();
 }

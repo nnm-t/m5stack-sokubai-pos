@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+#include <unordered_map>
+
 #include <Arduino.h>
 #include <M5Stack.h>
 
@@ -23,11 +26,16 @@ class SalesState : public IState
     static constexpr const int32_t amount_y = 160;
     static constexpr const int32_t price_y = 190;
 
+    static constexpr const size_t page_values = 6;
+
     static constexpr const Vector2<int32_t> amount_left_pos = Vector2<int32_t>(good_x_left, amount_y);
     static constexpr const Vector2<int32_t> amount_right_pos = Vector2<int32_t>(good_x_right, amount_y);
 
     static constexpr const Vector2<int32_t> price_left_pos = Vector2<int32_t>(good_x_left, price_y);
     static constexpr const Vector2<int32_t> price_right_pos = Vector2<int32_t>(good_x_right, price_y);
+
+    static constexpr const Vector2<int32_t> bg_list_pos = Vector2<int32_t>(0, 30);
+    static constexpr const Rect<int32_t> bg_list_rect = Rect<int32_t>(320, 160);
 
     StateSelector* const _selector;
     AmountState* const _amount_state;
@@ -35,11 +43,38 @@ class SalesState : public IState
     ISerial* const _serial;
 
     bool _is_amount = false;
+    size_t _page = 0;
+    size_t _max_page = 0;
+
+    std::unordered_map<int32_t, int16_t> _amounts;
+
+    const size_t GetGoodsSize()
+    {
+        return _goods_list->GetGoods().size();
+    }
+
+    const size_t GetGoodsPages()
+    {
+        return GetGoodsSize() / page_values + 1;
+    }
+
+    const size_t GetAmountsPages()
+    {
+        return _amounts.size() / page_values + 1;
+    }
+
+    const size_t GetMaxPages();
 
     void PrintSales();
 
+    void DrawGoods();
+
+    void DrawAmounts();
+
+    void DrawBody();
+
 public:
-    SalesState(StateSelector* const selector, AmountState* const amount_state, GoodsList* const goods_list, ISerial* const serial) : _selector(selector), _amount_state(amount_state), _goods_list(goods_list), _serial(serial)
+    SalesState(StateSelector* const selector, AmountState* const amount_state, GoodsList* const goods_list, ISerial* const serial) : _selector(selector), _amount_state(amount_state), _goods_list(goods_list), _serial(serial), _amounts(std::unordered_map<int32_t, int16_t>())
     {
 
     }
@@ -58,15 +93,9 @@ public:
 
     void Draw() override;
 
-    void Up() override
-    {
+    void Up() override;
 
-    }
-
-    void Down() override
-    {
-
-    }
+    void Down() override;
 
     void Left() override
     {
