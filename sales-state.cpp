@@ -12,6 +12,8 @@ constexpr const Vector2<int32_t> SalesState::price_right_pos;
 constexpr const Vector2<int32_t> SalesState::bg_list_pos;
 constexpr const Rect<int32_t> SalesState::bg_list_rect;
 
+constexpr const Rect<int32_t> SalesState::triangle_rect;
+
 FooterText SalesState::GetFooterText()
 {
     if (_is_amount)
@@ -32,9 +34,27 @@ const size_t SalesState::GetMaxPages()
     return GetGoodsPages();
 }
 
+void SalesState::DrawTriangle()
+{
+    LCD::FillRect(Vector2<int32_t>(289, 189), triangle_rect, color_black);
+    LCD::FillRect(Vector2<int32_t>(289, 29), triangle_rect, color_black);
+
+    if (_page > 0)
+    {
+        LCD::FillTriangle(Vector2<int32_t>(290, 190), Vector2<int32_t>(310, 190), Vector2<int32_t>(300, 210), color_red);
+    }
+
+    if (_page != GetMaxPages() - 1)
+    {
+        LCD::FillTriangle(Vector2<int32_t>(290, 30), Vector2<int32_t>(310, 30), Vector2<int32_t>(300, 50), color_red);
+    }
+}
+
 void SalesState::DrawGoods()
 {
     LCD::FillRect(bg_list_pos, bg_list_rect, color_black);
+
+    DrawTriangle();
 
     LCD::SetTextDatum(TextDatum::TopLeft);
     LCD::SetTextColor(color_white, color_black);
@@ -45,7 +65,6 @@ void SalesState::DrawGoods()
 
     for (size_t i = 0; i < page_values; i++)
     {
-        // todo: スクロール
         const size_t index = _page * page_values + i;
 
         if (index > GetGoodsSize() - 1)
@@ -73,11 +92,12 @@ void SalesState::DrawAmounts()
 {
     LCD::FillRect(bg_list_pos, bg_list_rect, color_black);
 
+    DrawTriangle();
+
     LCD::SetTextDatum(TextDatum::TopLeft);
     LCD::SetTextColor(color_white, color_black);
     LCD::DrawString("金額入力売上", title_pos);
 
-    // todo: スクロール
     // unordered_map の途中からの iterate
     auto iterator = _amounts.begin();
     int32_t y = good_y;
