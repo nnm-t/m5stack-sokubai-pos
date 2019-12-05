@@ -97,4 +97,4 @@ RFID カードの UUID が含まれるので, リポジトリからは外して�
 
 ## 使い方
 
-これから記述
+[Wiki](https://github.com/nnm-t/m5stack-sokubai-pos/wiki) に書きました.
