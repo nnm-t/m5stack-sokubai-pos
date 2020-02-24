@@ -70,6 +70,8 @@ void PaymentState::Draw()
 
 void PaymentState::DrawGoods()
 {
+    LCD::SetTextColor(color_white, color_black);
+
     LCD::FillRect(goods_bg_pos, goods_bg_rect, color_black);
 
     LCD::FillRect(Vector2<int32_t>(289, 189), triangle_rect, color_black);

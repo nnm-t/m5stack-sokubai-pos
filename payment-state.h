@@ -53,6 +53,11 @@ class PaymentState : public IState
 
     void DrawGoods();
 
+    const size_t GetGoodsModifies()
+    {
+        return _goods_list->GetGoodsModifies();
+    }
+
     const size_t GetGoodsSize()
     {
         return _goods_list->GetGoods().size();
@@ -60,7 +65,14 @@ class PaymentState : public IState
 
     const size_t GetGoodsPages()
     {
-        return GetGoodsSize() / page_goods + 1;
+        const size_t modifies = GetGoodsModifies();
+
+        if (modifies <= 0)
+        {
+            return 1;
+        }
+
+        return (GetGoodsModifies() - 1) / page_goods + 1;
     }
 
 public:

@@ -72,5 +72,20 @@ public:
         return _goods;
     }
 
+    const size_t GetGoodsModifies()
+    {
+        size_t modifies = 0;
+
+        for (Good& good: _goods)
+        {
+            if (good.GetQuantity() != 1)
+            {
+                modifies++;
+            }
+        }
+
+        return modifies;
+    }
+
     void WriteSales();
 };
