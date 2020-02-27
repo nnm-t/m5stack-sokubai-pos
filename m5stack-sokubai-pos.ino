@@ -20,13 +20,13 @@
 #include "amount-state.h"
 #include "payment-state.h"
 #include "sales-state.h"
+#include "settings-state.h"
 #include "game-boy.h"
 #include "m5-button.h"
 #include "rfid.h"
 #include "speaker.h"
 #include "json-io.h"
 #include "hard-serial.h"
-#include "brightness.h"
 
 using namespace std;
 
@@ -61,7 +61,10 @@ GameBoy gameboy;
 Speaker speaker;
 M5Button m5_button;
 RFID rfid(&serial, &speaker, mfrc522_address, ticker_ms);
+
 Brightness brightness(brightness_initial, brightness_step);
+RTC rtc;
+SettingsState settings_state(&selector, &rtc, &brightness);
 
 void setup()
 {
@@ -70,11 +73,13 @@ void setup()
 
     serial.Begin();
     brightness.Begin();
+    rtc.Begin();
 
     selector.goods_state = &goods_state;
     selector.amount_state = &amount_state;
     selector.payment_state = &payment_state;
     selector.sales_state = &sales_state;
+    selector.settings_state = &settings_state;
     selector.write_json = [&]{ json_io.Write(); };
 
     gameboy.Begin();
@@ -82,11 +87,10 @@ void setup()
     gameboy.on_down_pressed = [&]{ selector.Down(); };
     gameboy.on_left_pressed = [&]{ selector.Left(); };
     gameboy.on_right_pressed = [&]{ selector.Right(); };
+    gameboy.on_start_pressed = [&]{ selector.Start(); };
     gameboy.on_select_pressed = [&]{ selector.Select(); };
     gameboy.on_a_pressed = [&]{ selector.GameboyA(); };
     gameboy.on_b_pressed = [&]{ selector.GameboyB(); };
-
-    gameboy.on_start_pressed = [&]{ brightness.Up(); };
 
     m5_button.Begin();
     m5_button.on_button_a_pressed = [&]{ selector.ButtonA(); };

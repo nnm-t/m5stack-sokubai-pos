@@ -39,7 +39,15 @@ void StateSelector::Down()
 
 void StateSelector::Start()
 {
-    _current->Start();
+    if (_current == settings_state)
+    {
+        // GoodsStateへ戻る
+        ToGoodsState();
+        return;
+    }
+
+    // SettingsStateへ移動
+    ToSettingsState();
 }
 
 void StateSelector::Select()
@@ -93,6 +101,12 @@ void StateSelector::ToPaymentState()
 void StateSelector::ToSalesState()
 {
     _current = sales_state;
+    DrawState();
+}
+
+void StateSelector::ToSettingsState()
+{
+    _current = settings_state;
     DrawState();
 }
 
