@@ -49,10 +49,11 @@ void SettingsState::Draw()
 
     LCD::DrawString("設定", title_pos);
 
-    DrawModeArrow();
-
     DrawTime();
     DrawBrightness();
+
+    DrawModeArrow();
+    DrawTimeUnderLine();
 }
 
 void SettingsState::DrawModeArrow()
@@ -87,13 +88,14 @@ String SettingsState::Convert2Digit(const uint8_t number)
 void SettingsState::DrawTime()
 {
     LCD::FillRect(time_bg_pos, time_bg_rect, color_black);
+    LCD::FillRect(time_year1000_pos, time_bg_rect, color_black);
 
     LCD::DrawString("時刻", time_title_pos);
 
     const uint16_t year = _time.year();
-    LCD::DrawString(String(year, DEC), time_year1000_pos);
-    LCD::DrawString(String(year % 1000, DEC), time_year100_pos);
-    LCD::DrawString(String(year % 100, DEC), time_year10_pos);
+    LCD::DrawString(String(year / 1000, DEC), time_year1000_pos);
+    LCD::DrawString(String((year % 1000) / 100, DEC), time_year100_pos);
+    LCD::DrawString(String((year % 100) / 10, DEC), time_year10_pos);
     LCD::DrawString(String(year % 10, DEC), time_year1_pos);
     LCD::DrawString("/", time_year_slash_pos);
 
@@ -107,6 +109,43 @@ void SettingsState::DrawTime()
     LCD::DrawString(":", time_minute_colon_pos);
     // 設定を抜けた時点で0秒として打ち込む
     LCD::DrawString("00", time_second_pos);
+}
+
+void SettingsState::DrawTimeUnderLine()
+{
+    constexpr Rect<int32_t> digit1_rect = Rect<int32_t>(15, 2);
+    constexpr Rect<int32_t> digit2_rect = Rect<int32_t>(30, 2);
+    constexpr int32_t digit_pos_y = 110;
+
+    LCD::FillRect(Vector2<int32_t>(time_year1000_pos.X(), digit_pos_y), Rect<int32_t>(280, 2), color_black);
+
+    // 下線
+    switch (_date_mode)
+    {
+    case SettingsStateDateTime::Year100:
+        LCD::FillRect(Vector2<int32_t>(time_year100_pos.X(), digit_pos_y), digit1_rect, color_red);
+        break;
+    case SettingsStateDateTime::Year10:
+        LCD::FillRect(Vector2<int32_t>(time_year10_pos.X(), digit_pos_y), digit1_rect, color_red);
+        break;
+    case SettingsStateDateTime::Year1:
+        LCD::FillRect(Vector2<int32_t>(time_year1_pos.X(), digit_pos_y), digit1_rect, color_red);
+        break;
+    case SettingsStateDateTime::Month:
+        LCD::FillRect(Vector2<int32_t>(time_month_pos.X(), digit_pos_y), digit2_rect, color_red);
+        break;
+    case SettingsStateDateTime::Day:
+        LCD::FillRect(Vector2<int32_t>(time_day_pos.X(), digit_pos_y), digit2_rect, color_red);
+        break;
+    case SettingsStateDateTime::Hour:
+        LCD::FillRect(Vector2<int32_t>(time_hour_pos.X(), digit_pos_y), digit2_rect, color_red);
+        break;
+    case SettingsStateDateTime::Minute:
+        LCD::FillRect(Vector2<int32_t>(time_minute_pos.X(), digit_pos_y), digit2_rect, color_red);
+        break;
+    default:
+        break;
+    }
 }
 
 void SettingsState::DrawBrightness()
@@ -142,6 +181,16 @@ void SettingsState::Left()
     switch(_mode)
     {
         case SettingsStateMode::Time:
+            if (_date_mode == SettingsStateDateTime::Year100)
+            {
+                _date_mode = SettingsStateDateTime::Minute;
+            }
+            else
+            {
+                _date_mode = static_cast<SettingsStateDateTime>(static_cast<uint8_t>(_date_mode) - 1);
+            }
+
+            DrawTimeUnderLine();
         break;
         case SettingsStateMode::Brightness:
             _brightness->Down();
@@ -157,6 +206,16 @@ void SettingsState::Right()
     switch(_mode)
     {
         case SettingsStateMode::Time:
+            if (_date_mode == SettingsStateDateTime::Minute)
+            {
+                _date_mode = SettingsStateDateTime::Year100;
+            }
+            else
+            {
+                _date_mode = static_cast<SettingsStateDateTime>(static_cast<uint8_t>(_date_mode) + 1);
+            }
+
+            DrawTimeUnderLine();
         break;
         case SettingsStateMode::Brightness:
             _brightness->Up();
@@ -174,12 +233,258 @@ void SettingsState::Start()
 
 void SettingsState::GameboyA()
 {
+    if (_mode != SettingsStateMode::Time)
+    {
+        return;
+    }
 
+    // インクリメント
+    uint16_t year = _time.year();
+    uint8_t month = _time.month();
+    uint8_t day = _time.day();
+    uint8_t hour = _time.hour();
+    uint8_t minute = _time.minute();
+    switch (_date_mode)
+    {
+    case SettingsStateDateTime::Year100:
+        if (year > 2899)
+        {
+            break;
+        }
+
+        year += 100;
+        break;
+    case SettingsStateDateTime::Year10:
+        if (year > 2989)
+        {
+            break;
+        }
+
+        year += 10;
+        break;
+    case SettingsStateDateTime::Year1:
+        if (year > 2998)
+        {
+            break;
+        }
+
+        year++;
+        break;
+    case SettingsStateDateTime::Month:
+        if (month >= 12)
+        {
+            month = 1;
+        }
+        else
+        {
+            month++;
+        }
+        break;
+    case SettingsStateDateTime::Day:
+        switch(month)
+        {
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
+                if (day >= 31)
+                {
+                    day = 1;
+                }
+                else
+                {
+                    day++;
+                }
+            break;
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                if (day >= 30)
+                {
+                    day = 1;
+                }
+                else
+                {
+                    day++;
+                }
+            break;
+            case 2:
+                // 2100年対応は省略
+                if (day >= 29 && year % 4 == 0)
+                {
+                    day = 1;
+                }
+                else if (day >= 28 && year % 4 != 0)
+                {
+                    day = 1;
+                }
+                else
+                {
+                    day++;
+                }
+            break;
+        }
+        break;
+    case SettingsStateDateTime::Hour:
+        if (hour >= 23)
+        {
+            hour = 0;
+        }
+        else
+        {
+            hour++;
+        }
+        break;
+    case SettingsStateDateTime::Minute:
+        if (minute >= 59)
+        {
+            minute = 0;
+        }
+        else
+        {
+            minute++;
+        }
+        break;
+    default:
+        break;
+    }
+
+    _time = DateTime(year, month, day, hour, minute, 0);
+
+    DrawTime();
+    DrawModeArrow();
 }
 
 void SettingsState::GameboyB()
 {
+    if (_mode != SettingsStateMode::Time)
+    {
+        return;
+    }
 
+    // デクリメント
+    uint16_t year = _time.year();
+    uint8_t month = _time.month();
+    uint8_t day = _time.day();
+    uint8_t hour = _time.hour();
+    uint8_t minute = _time.minute();
+    switch (_date_mode)
+    {
+    case SettingsStateDateTime::Year100:
+        if (year <= 1000)
+        {
+            break;
+        }
+
+        year -= 100;
+        break;
+    case SettingsStateDateTime::Year10:
+        if (year <= 100)
+        {
+            break;
+        }
+
+        year -= 10;
+        break;
+    case SettingsStateDateTime::Year1:
+        if (year <= 1)
+        {
+            break;
+        }
+
+        year--;
+        break;
+    case SettingsStateDateTime::Month:
+        if (month <= 1)
+        {
+            month = 12;
+        }
+        else
+        {
+            month--;
+        }
+        break;
+    case SettingsStateDateTime::Day:
+        switch(month)
+        {
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
+                if (day <= 1)
+                {
+                    day = 31;
+                }
+                else
+                {
+                    day--;
+                }
+            break;
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                if (day <= 1)
+                {
+                    day = 30;
+                }
+                else
+                {
+                    day--;
+                }
+            break;
+            case 2:
+                // 2100年対応は省略
+                if (day <= 1 && year % 4 == 0)
+                {
+                    day = 29;
+                }
+                else if (day <= 1 && year % 4 != 0)
+                {
+                    day = 28;
+                }
+                else
+                {
+                    day--;
+                }
+            break;
+        }
+        break;
+    case SettingsStateDateTime::Hour:
+        if (hour == 0)
+        {
+            hour = 23;
+        }
+        else
+        {
+            hour--;
+        }
+        break;
+    case SettingsStateDateTime::Minute:
+        if (minute == 00)
+        {
+            minute = 59;
+        }
+        else
+        {
+            minute--;
+        }
+        break;
+    default:
+        break;
+    }
+
+    _time = DateTime(year, month, day, hour, minute, 0);
+
+    DrawTime();
+    DrawModeArrow();
 }
 
 void SettingsState::ButtonA()
@@ -191,5 +496,6 @@ void SettingsState::ButtonA()
 void SettingsState::ButtonC()
 {
     // 決定
+    _rtc->Adjust(_time);
     _selector->ToGoodsState();
 }

@@ -80,6 +80,11 @@ void LCD::DrawBmpFile(const Vector2<uint16_t>& position, String& path, fs::FS fs
     M5.Lcd.drawBmpFile(fs, path.c_str(), position.X(), position.Y());
 }
 
+void LCD::DrawLine(const Vector2<int16_t>& pos0, const Vector2<int16_t>& pos1, const Color16& color)
+{
+    M5.Lcd.drawLine(pos0.X(), pos0.Y(), pos1.X(), pos1.Y(), color.Get());
+}
+
 void LCD::SetTextSize(const uint8_t size)
 {
     M5.Lcd.setTextSize(size);

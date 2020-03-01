@@ -8,6 +8,7 @@
 #include "rtc.h"
 #include "brightness.h"
 #include "settings-state-mode.h"
+#include "settings-state-datetime.h"
 
 class SettingsState : public IState
 {
@@ -30,7 +31,7 @@ class SettingsState : public IState
     static constexpr int32_t time_w = 15;
 
     static constexpr Vector2<int32_t> time_bg_pos = Vector2<int32_t>(time_x, 60);
-    static constexpr Rect<int32_t> time_bg_rect = Rect<int32_t>(280, 55);
+    static constexpr Rect<int32_t> time_bg_rect = Rect<int32_t>(280, 20);
 
     static constexpr Vector2<int32_t> time_year1000_pos = Vector2<int32_t>(time_x, time_y);
     static constexpr Vector2<int32_t> time_year100_pos = Vector2<int32_t>(time_x + time_w, time_y);
@@ -63,11 +64,14 @@ class SettingsState : public IState
     Brightness* const _brightness;
 
     SettingsStateMode _mode = SettingsStateMode::Time;
+    SettingsStateDateTime _date_mode = SettingsStateDateTime::Year100;
     DateTime _time = DateTime();
 
     void DrawModeArrow();
 
     void DrawTime();
+
+    void DrawTimeUnderLine();
 
     void DrawBrightness();
 
