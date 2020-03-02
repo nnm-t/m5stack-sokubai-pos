@@ -43,8 +43,9 @@ namespace
 Ticker ticker;
 
 HardSerial serial;
+RTC rtc;
 
-Header header(&serial, ticker_ms);
+Header header(&rtc, ticker_ms);
 Footer footer;
 Sprite name_sprite;
 GoodsList goods_list(&name_sprite);
@@ -63,7 +64,6 @@ M5Button m5_button;
 RFID rfid(&serial, &speaker, mfrc522_address, ticker_ms);
 
 Brightness brightness(brightness_initial, brightness_step);
-RTC rtc;
 SettingsState settings_state(&selector, &rtc, &brightness);
 
 void setup()
