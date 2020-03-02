@@ -26,6 +26,7 @@ public:
     IState* goods_state = nullptr;
     IState* payment_state = nullptr;
     IState* sales_state = nullptr;
+    IState* settings_state = nullptr;
 
     std::function<void()> write_json = nullptr;
 
@@ -77,6 +78,8 @@ public:
     void ToPaymentState();
 
     void ToSalesState();
+
+    void ToSettingsState();
 
     void WriteSales();
 };

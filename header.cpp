@@ -5,7 +5,11 @@ constexpr Rect<int32_t> Header::battery_rect;
 
 constexpr Vector2<int32_t> Header::background_pos;
 
-constexpr Vector2<int32_t> Header::circle_pos;
+constexpr Vector2<int32_t> Header::hour_pos;
+constexpr Vector2<int32_t> Header::hour_slash_pos;
+constexpr Vector2<int32_t> Header::minute_pos;
+constexpr Vector2<int32_t> Header::minute_slash_pos;
+constexpr Vector2<int32_t> Header::second_pos;
 
 constexpr Vector2<int32_t> Header::battery_pos;
 constexpr Vector2<int32_t> Header::battery_rect_pos;
@@ -14,41 +18,38 @@ constexpr Vector2<int32_t> Header::connected_pos;
 
 void Header::Draw()
 {
-    const bool is_ready = _serial->IsReady();
-    DrawConnected(is_ready);
+    DrawTime();
 
     const int8_t battery_level = Power::GetBatteryLevel();
     DrawBatteryLevel(battery_level);
 }
 
-void Header::DrawConnected(const bool is_ready)
+String Header::Convert2Digit(const uint8_t value)
 {
-    if (is_ready == _is_ready)
+    String str = String(value);
+
+    if (value < 10)
     {
-        return;
+        return String("0" + str);
     }
 
-    _is_ready = is_ready;
+    return str;
+}
+
+void Header::DrawTime()
+{
+    DateTime time = _rtc->GetNow();
 
     LCD::FillRect(background_pos, background_rect, color_white);
-
-    String connected;
-
-    if (_is_ready)
-    {
-        LCD::FillCircle(circle_pos, circle_radius, color_bluetooth);
-
-        LCD::SetTextColor(color_bluetooth, color_white);
-        connected = "Connected";
-    }
-    else
-    {
-        LCD::SetTextColor(color_black, color_white);
-        connected = "No Connection";
-    }
-
+    LCD::SetTextColor(color_black, color_white);
     LCD::SetTextDatum(TextDatum::TopLeft);
-    LCD::DrawString(connected, connected_pos);
+
+    LCD::DrawString(Convert2Digit(time.hour()), hour_pos);
+    LCD::DrawString(":", hour_slash_pos);
+    LCD::DrawString(Convert2Digit(time.minute()), minute_pos);
+    LCD::DrawString(":", minute_slash_pos);
+    LCD::DrawString(Convert2Digit(time.second()), second_pos);
+
 }
 
 void Header::DrawBatteryLevel(const int8_t battery_level)

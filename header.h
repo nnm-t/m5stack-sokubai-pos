@@ -11,11 +11,11 @@
 #include "text-datum.h"
 #include "lcd.h"
 #include "power.h"
-#include "i-serial.h"
+#include "rtc.h"
 
 class Header
 {
-    static constexpr const uint32_t interval_ms = 1000;
+    static constexpr const uint32_t interval_ms = 500;
 
     static constexpr const int32_t circle_radius = 8;
 
@@ -28,13 +28,17 @@ class Header
 
     static constexpr Vector2<int32_t> background_pos = Vector2<int32_t>(0, 0);
 
-    static constexpr Vector2<int32_t> circle_pos = Vector2<int32_t>(10, 10);
+    static constexpr Vector2<int32_t> hour_pos = Vector2<int32_t>(10, 0);
+    static constexpr Vector2<int32_t> hour_slash_pos = Vector2<int32_t>(40, 0);
+    static constexpr Vector2<int32_t> minute_pos = Vector2<int32_t>(55, 0);
+    static constexpr Vector2<int32_t> minute_slash_pos = Vector2<int32_t>(85, 0);
+    static constexpr Vector2<int32_t> second_pos = Vector2<int32_t>(100, 0);
 
     static constexpr Vector2<int32_t> battery_pos = Vector2<int32_t>(320, 1);
     static constexpr Vector2<int32_t> battery_rect_pos = Vector2<int32_t>(240, 0);
     static constexpr Vector2<int32_t> connected_pos = Vector2<int32_t>(20, 1);
 
-    ISerial* const _serial;
+    RTC* const _rtc;
     const uint32_t _delay_ms;
 
     uint32_t _period_ms = 0;
@@ -43,12 +47,14 @@ class Header
 
     void Draw();
 
-    void DrawConnected(const bool is_ready);
+    void DrawTime();
 
     void DrawBatteryLevel(const int8_t battery_level);
 
+    String Convert2Digit(const uint8_t value);
+
 public:
-    Header(ISerial* const serial, const uint32_t delay_ms) : _serial(serial), _delay_ms(delay_ms)
+    Header(RTC* const rtc, const uint32_t delay_ms) : _rtc(rtc), _delay_ms(delay_ms)
     {
 
     }

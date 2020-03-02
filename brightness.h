@@ -12,6 +12,9 @@ class Brightness
     const uint8_t _step;
 
 public:
+    static constexpr uint8_t max = 255;
+    static constexpr uint8_t min = 0;
+
     Brightness(const uint8_t initial, const uint8_t step) : _value(initial), _step(step)
     {
 
@@ -22,4 +25,9 @@ public:
     void Up();
 
     void Down();
+
+    const uint8_t GetValue()
+    {
+        return _value;
+    }
 };
