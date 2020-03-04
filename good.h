@@ -56,9 +56,9 @@ public:
 
     void Update(Sprite* const sprite);
 
-    static Good Deserialize(JsonVariant& json);
+    static Good Deserialize(JsonVariant& good, JsonVariant& sales);
 
-    void Serialize(JsonVariant& json);
+    int16_t Serialize();
 
     String GetName()
     {

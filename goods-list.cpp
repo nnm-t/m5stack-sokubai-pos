@@ -16,11 +16,13 @@ void GoodsList::BeginSprite()
     _sprite->SetTextColor(color_white);
 }
 
-void GoodsList::Deserialize(JsonArray& json_array)
+void GoodsList::Deserialize(JsonArray& json_goods, JsonArray& json_sales)
 {
-    for (JsonVariant json_variant : json_array)
+    for (size_t i = 0; i < json_goods.size(); i++)
     {
-        _goods.push_back(Good::Deserialize(json_variant));
+        auto goods = json_goods.getElement(i);
+        auto sales = json_sales.getElement(i);
+        _goods.push_back(Good::Deserialize(goods, sales));
     }
 }
 
@@ -28,8 +30,7 @@ void GoodsList::Serialize(JsonArray& json_array)
 {
     for (Good& good : _goods)
     {
-        JsonVariant json_variant = json_array.createNestedObject();
-        good.Serialize(json_variant);
+        json_array.add(good.Serialize());
     }
 }
 

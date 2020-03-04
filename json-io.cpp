@@ -1,10 +1,13 @@
 #include "json-io.h"
 
-void JsonIO::Read()
+JsonDocument& JsonIO::OpenJson(const char* file_name)
 {
-    File file = SD.open(_file_name, FILE_READ);
+    _json_document.clear();
+
+    File file = SD.open(file_name, FILE_READ);
 
     String json_text;
+    json_text.reserve(file.size());
 
     while (file.available())
     {
@@ -17,14 +20,25 @@ void JsonIO::Read()
 
     if (error != DeserializationError::Code::Ok)
     {
-        _serial->Println("JSON deserialize failed.");
-        return;
+        _serial->Print("JSON deserialize failed: ");
+        _serial->Println(file_name);
+        return _json_document;
     }
 
-    JsonArray goods = _json_document[json_goods].as<JsonArray>();
-    JsonArray amounts = _json_document[json_amounts].as<JsonArray>();
+    return _json_document;
+}
 
-    _goods_list->Deserialize(goods);
+void JsonIO::Read()
+{
+    // todo: goods.json, sales.json に分離
+    auto json_goods = OpenJson(goods_file);
+    auto json_sales = OpenJson(sales_file);
+
+    JsonArray goods = json_goods[goods_key].as<JsonArray>();
+    JsonArray sales = json_sales[goods_key].as<JsonArray>();
+    JsonArray amounts = json_sales[amounts_key].as<JsonArray>();
+
+    _goods_list->Deserialize(goods, sales);
     _amount_state->Deserialize(amounts);
 }
 
@@ -32,16 +46,16 @@ void JsonIO::Write()
 {
     _json_document.clear();
 
-    JsonArray goods = _json_document.createNestedArray(json_goods);
-    JsonArray amounts = _json_document.createNestedArray(json_amounts);
+    JsonArray sales = _json_document.createNestedArray(goods_key);
+    JsonArray amounts = _json_document.createNestedArray(amounts_key);
 
-    _goods_list->Serialize(goods);
+    _goods_list->Serialize(sales);
     _amount_state->Serialize(amounts);
 
     String json_text;
     serializeJsonPretty(_json_document, json_text);
 
-    File file = SD.open(_file_name, FILE_WRITE);
+    File file = SD.open(sales_file, FILE_WRITE);
     file.println(json_text);
     file.close();
 }

@@ -12,19 +12,22 @@
 
 class JsonIO
 {
-    static constexpr const char* json_goods = "goods";
-    static constexpr const char* json_amounts = "amounts";
+    static constexpr const char* goods_key = "goods";
+    static constexpr const char* amounts_key = "amounts";
 
-    const char* _file_name;
+    static constexpr const char* goods_file = "goods.json";
+    static constexpr const char* sales_file = "sales.json";
 
     ISerial* const _serial;
     GoodsList* const _goods_list;
     AmountState* const _amount_state;
 
-    StaticJsonDocument<json_size> _json_document;
+    StaticJsonDocument<json_size> _json_document = StaticJsonDocument<json_size>();
+
+    JsonDocument& OpenJson(const char* file_name);
 
 public:
-    JsonIO(const char* file_name, ISerial* const serial, GoodsList* const goods_list, AmountState* const amount_state) : _file_name(file_name), _serial(serial), _goods_list(goods_list), _amount_state(amount_state), _json_document(StaticJsonDocument<json_size>())
+    JsonIO(ISerial* const serial, GoodsList* const goods_list, AmountState* const amount_state) : _serial(serial), _goods_list(goods_list), _amount_state(amount_state)
     {
 
     }

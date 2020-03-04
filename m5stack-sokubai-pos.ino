@@ -32,7 +32,6 @@ using namespace std;
 
 namespace
 {
-    constexpr const char* json_filename = "/goods.json";
     constexpr const char* bluetooth_name = "M5Stack-Sokubai-POS";
     constexpr const uint8_t mfrc522_address = 0x28;
     constexpr const uint32_t ticker_ms = 20;
@@ -56,7 +55,7 @@ AmountState amount_state(&selector);
 PaymentState payment_state(&selector, &amount_state, &goods_list, &serial);
 SalesState sales_state(&selector, &amount_state, &goods_list, &serial);
 
-JsonIO json_io(json_filename, &serial, &goods_list, &amount_state);
+JsonIO json_io(&serial, &goods_list, &amount_state);
 
 GameBoy gameboy;
 Speaker speaker;

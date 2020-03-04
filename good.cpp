@@ -11,18 +11,19 @@ constexpr Rect<int32_t> Good::name_rect;
 constexpr Rect<int32_t> Good::price_bg_rect;
 constexpr Rect<int32_t> Good::qty_bg_rect;
 
-Good Good::Deserialize(JsonVariant& json)
+Good Good::Deserialize(JsonVariant& good, JsonVariant& sales)
 {
-    String name = json[json_name].as<String>();
-    String image_path = json[json_image].as<String>();
-    int16_t sales = json[json_sales].as<int16_t>();
-    int32_t price = json[json_price].as<int32_t>();
+    String name = good[json_name].as<String>();
+    String image_path = good[json_image].as<String>();
+    int32_t price = good[json_price].as<int32_t>();
+
+    int16_t sales_num = sales.as<int16_t>();
 
     vector<byte> uuid;
 
-    if (json.containsKey(json_uuid))
+    if (good.containsKey(json_uuid))
     {
-        JsonArray uuid_array = json[json_uuid].as<JsonArray>();
+        JsonArray uuid_array = good[json_uuid].as<JsonArray>();
         uuid.reserve(uuid_array.size());
 
         for (JsonVariant uuid_byte : uuid_array)
@@ -32,22 +33,12 @@ Good Good::Deserialize(JsonVariant& json)
         }
     }
 
-    return Good(name, image_path, sales, price, uuid);
+    return Good(name, image_path, sales_num, price, uuid);
 }
 
-void Good::Serialize(JsonVariant& json)
+int16_t Good::Serialize()
 {
-    json[json_name] = _name;
-    json[json_image] = _image_path;
-    json[json_sales] = _sales;
-    json[json_price] = _price;
-
-    JsonArray uuid = json.createNestedArray(json_uuid);
-
-    for (byte uuid_byte : _uuid)
-    {
-        uuid.add(uuid_byte);
-    }
+    return _sales;
 }
 
 void Good::UpdateQuantity()
