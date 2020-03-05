@@ -4,8 +4,6 @@
 #include "vector2.h"
 #include "rect.h"
 
-constexpr const size_t json_size = 2048;
-
 constexpr const char* font_20pt = "mplus-1c20";
 constexpr const char* font_30pt = "mplus-1c30";
 constexpr const char* font_40pt = "mplus-1c40";

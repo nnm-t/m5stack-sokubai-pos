@@ -2,6 +2,7 @@
 bin/
 
 goods.json
+sales.json
 
 MFRC522_I2C.h
 MFRC522_I2C.cpp

@@ -1,10 +1,13 @@
 #include "json-io.h"
 
-void JsonIO::Read()
+void JsonIO::OpenJson(const char* file_name, JsonDocument& json_document)
 {
-    File file = SD.open(_file_name, FILE_READ);
+    json_document.clear();
+
+    File file = SD.open(file_name, FILE_READ);
 
     String json_text;
+    json_text.reserve(file.size());
 
     while (file.available())
     {
@@ -13,35 +16,46 @@ void JsonIO::Read()
 
     file.close();
 
-    DeserializationError error = deserializeJson(_json_document, json_text);
+    DeserializationError error = deserializeJson(json_document, json_text);
 
     if (error != DeserializationError::Code::Ok)
     {
-        _serial->Println("JSON deserialize failed.");
-        return;
+        _serial->Print("JSON deserialize failed: ");
+        _serial->Println(file_name);
     }
+}
 
-    JsonArray goods = _json_document[json_goods].as<JsonArray>();
-    JsonArray amounts = _json_document[json_amounts].as<JsonArray>();
+void JsonIO::Read()
+{
+    // ファイルごとにデシリアライズしてJsonArrayへ展開
+    StaticJsonDocument<goods_size> json_goods;
+    OpenJson(goods_file, json_goods);
+    JsonArray goods = json_goods[goods_key].as<JsonArray>();
 
-    _goods_list->Deserialize(goods);
+    StaticJsonDocument<sales_size> json_sales;
+    OpenJson(sales_file, json_sales);
+    JsonArray sales = json_sales[goods_key].as<JsonArray>();
+    JsonArray amounts = json_sales[amounts_key].as<JsonArray>();
+
+    _goods_list->Deserialize(goods, sales);
     _amount_state->Deserialize(amounts);
 }
 
 void JsonIO::Write()
 {
-    _json_document.clear();
+    // Salesのみシリアライズ
+    StaticJsonDocument<sales_size> json_document;
 
-    JsonArray goods = _json_document.createNestedArray(json_goods);
-    JsonArray amounts = _json_document.createNestedArray(json_amounts);
+    JsonArray sales = json_document.createNestedArray(goods_key);
+    JsonArray amounts = json_document.createNestedArray(amounts_key);
 
-    _goods_list->Serialize(goods);
+    _goods_list->Serialize(sales);
     _amount_state->Serialize(amounts);
 
     String json_text;
-    serializeJsonPretty(_json_document, json_text);
+    serializeJsonPretty(json_document, json_text);
 
-    File file = SD.open(_file_name, FILE_WRITE);
+    File file = SD.open(sales_file, FILE_WRITE);
     file.println(json_text);
     file.close();
 }

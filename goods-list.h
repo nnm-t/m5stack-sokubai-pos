@@ -38,7 +38,7 @@ public:
 
     }
 
-    void Deserialize(JsonArray& json_array);
+    void Deserialize(JsonArray& json_goods, JsonArray& json_sales);
 
     void Serialize(JsonArray& json_array);
 
