@@ -88,4 +88,8 @@ public:
     }
 
     void WriteSales();
+
+    std::vector<String> GetNames();
+
+    std::vector<int16_t> GetQuantities();
 };

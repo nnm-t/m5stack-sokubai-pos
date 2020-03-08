@@ -112,7 +112,13 @@ void StateSelector::ToSettingsState()
 
 void StateSelector::WriteSales()
 {
-    // 売上を記録
+    // 数量書き出し
+    if (write_csv != nullptr)
+    {
+        write_csv();
+    }
+
+    // 売上記録
     if (goods_state != nullptr)
     {
         goods_state->WriteSales();
@@ -127,6 +133,6 @@ void StateSelector::WriteSales()
         return;
     }
 
-    // JSON 書き出し
+    // 売上合計書き出し
     write_json();
 }
