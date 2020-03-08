@@ -152,3 +152,29 @@ void GoodsList::WriteSales()
         good.WriteSales();
     }
 }
+
+vector<String> GoodsList::GetNames()
+{
+    vector<String> names;
+    names.reserve(_goods.size());
+
+    for (Good& good : _goods)
+    {
+        names.push_back(good.GetName());
+    }
+    
+    return names;
+}
+
+vector<int16_t> GoodsList::GetQuantities()
+{
+    vector<int16_t> quantities;
+    quantities.reserve(_goods.size());
+
+    for (Good& good : _goods)
+    {
+        quantities.push_back(good.GetQuantity());
+    }
+
+    return quantities;
+}

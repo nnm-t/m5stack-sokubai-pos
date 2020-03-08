@@ -27,6 +27,7 @@
 #include "speaker.h"
 #include "json-io.h"
 #include "hard-serial.h"
+#include "csv-writer.h"
 
 using namespace std;
 
@@ -56,6 +57,7 @@ PaymentState payment_state(&selector, &amount_state, &goods_list, &serial);
 SalesState sales_state(&selector, &amount_state, &goods_list, &serial);
 
 JsonIO json_io(&serial, &goods_list, &amount_state);
+CSVWriter csv_writer(&rtc, &goods_list, &amount_state);
 
 GameBoy gameboy;
 Speaker speaker;
