@@ -48,19 +48,19 @@ RTC rtc;
 Header header(&rtc, ticker_ms);
 Footer footer;
 Sprite name_sprite;
+Speaker speaker;
 GoodsList goods_list(&name_sprite);
 
 StateSelector selector(&footer);
 GoodsState goods_state(&selector, &goods_list);
 AmountState amount_state(&selector);
-PaymentState payment_state(&selector, &amount_state, &goods_list, &serial);
+PaymentState payment_state(&selector, &amount_state, &goods_list, &serial, &speaker);
 SalesState sales_state(&selector, &amount_state, &goods_list, &serial);
 
 JsonIO json_io(&serial, &goods_list, &amount_state);
 CSVWriter csv_writer(&rtc, &goods_list, &amount_state);
 
 GameBoy gameboy;
-Speaker speaker;
 M5Button m5_button;
 RFID rfid(&serial, &speaker, mfrc522_address, ticker_ms);
 

@@ -13,6 +13,7 @@
 #include "vector2.h"
 #include "text-datum.h"
 #include "i-serial.h"
+#include "speaker.h"
 
 class PaymentState : public IState
 {
@@ -40,10 +41,14 @@ class PaymentState : public IState
 
     static constexpr const Rect<int32_t> triangle_rect = Rect<int32_t>(22, 22);
 
+    static constexpr const uint16_t tone_frequency_hz = 440;
+    static constexpr const uint32_t tone_duration_ms = 50;
+
     StateSelector* const _selector;
     AmountState* const _amount_state;
     GoodsList* const _goods_list;
     ISerial* const _serial;
+    Speaker* const _speaker;
 
     int32_t _sum_price = 0;
     size_t _page = 0;
@@ -76,7 +81,7 @@ class PaymentState : public IState
     }
 
 public:
-    PaymentState(StateSelector* const selector, AmountState* const amount_state, GoodsList* const goods_list, ISerial* const serial) : _selector(selector), _amount_state(amount_state), _goods_list(goods_list), _serial(serial), _goods_index(std::vector<size_t>())
+    PaymentState(StateSelector* const selector, AmountState* const amount_state, GoodsList* const goods_list, ISerial* const serial, Speaker* const speaker) : _selector(selector), _amount_state(amount_state), _goods_list(goods_list), _serial(serial), _goods_index(std::vector<size_t>()), _speaker(speaker)
     {
 
     }
