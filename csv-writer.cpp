@@ -22,16 +22,16 @@ void CSVWriter::PrintHeader(File& file)
     file.print(return_code);
 }
 
-void CSVWriter::PrintQuantities(File& file)
+void CSVWriter::PrintQuantities(File& file, DateTime& date_time)
 {
     // ファイルが空の時はヘッダを書き込む
-    if (file.size() < 1)
+    size_t size = file.size();
+    if (size == 0)
     {
         PrintHeader(file);
     }
 
     // 時刻
-    DateTime date_time = _rtc->GetNow();
     file.print(DateTimeToString(date_time));
     file.print(csv_delimiter);
 
@@ -51,14 +51,17 @@ void CSVWriter::PrintQuantities(File& file)
 
 void CSVWriter::WritePayment()
 {
-    File file = SD.open(csv_name, FILE_WRITE);
+    DateTime date_time = _rtc->GetNow();
 
-    PrintQuantities(file);
+    // 追記モードで書き込む
+    File file = SD.open(csv_name, FILE_APPEND);
+
+    PrintQuantities(file, date_time);
 
     file.close();
 }
 
 String CSVWriter::DateTimeToString(const DateTime& date_time)
 {
-    return String(date_time.year(), DEC) + "/" + String(date_time.month(), DEC) + "/" + String(date_time.day(), DEC) + " " + String(date_time.hour(), DEC) + ":" + String(date_time.month(), DEC) + ":" + String(date_time.second(), DEC);
+    return String(date_time.year(), DEC) + "/" + String(date_time.month(), DEC) + "/" + String(date_time.day(), DEC) + " " + String(date_time.hour(), DEC) + ":" + String(date_time.minute(), DEC) + ":" + String(date_time.second(), DEC);
 }

@@ -81,7 +81,8 @@ void setup()
     selector.payment_state = &payment_state;
     selector.sales_state = &sales_state;
     selector.settings_state = &settings_state;
-    selector.write_json = [&]{ json_io.Write(); };
+    selector.write_json = [&] { json_io.Write(); };
+    selector.write_csv = [&] { csv_writer.WritePayment(); };
 
     gameboy.Begin();
     gameboy.on_up_pressed = [&]{ selector.Up(); };

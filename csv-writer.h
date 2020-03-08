@@ -25,7 +25,7 @@ class CSVWriter
 
     void PrintHeader(File& file);
 
-    void PrintQuantities(File& file);
+    void PrintQuantities(File& file, DateTime& date_time);
 
     static String DateTimeToString(const DateTime& date_time);
 

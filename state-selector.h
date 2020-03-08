@@ -29,6 +29,7 @@ public:
     IState* settings_state = nullptr;
 
     std::function<void()> write_json = nullptr;
+    std::function<void()> write_csv = nullptr;
 
     StateSelector(Footer* const footer) : _footer(footer)
     {
