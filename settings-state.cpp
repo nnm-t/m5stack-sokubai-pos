@@ -90,6 +90,7 @@ void SettingsState::DrawTime()
     LCD::FillRect(time_bg_pos, time_bg_rect, color_black);
     LCD::FillRect(time_year1000_pos, time_bg_rect, color_black);
 
+    LCD::SetTextColor(color_white, color_black);
     LCD::DrawString("時刻", time_title_pos);
 
     const uint16_t year = _time.year();
@@ -152,6 +153,7 @@ void SettingsState::DrawBrightness()
 {
     LCD::FillRect(brightness_bar_pos, brightness_rect, color_black);
 
+    LCD::SetTextColor(color_white, color_black);
     LCD::DrawString("輝度", brightness_title_pos);
     LCD::DrawRect(brightness_bar_pos, brightness_bar_rect, color_white);
 
