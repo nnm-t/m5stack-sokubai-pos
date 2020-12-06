@@ -17,6 +17,8 @@ void RFID::Update()
         return;
     }
 
+    _period_ms = 0;
+
     if(!_mfrc522.PICC_IsNewCardPresent())
     {
         return;
@@ -29,7 +31,7 @@ void RFID::Update()
 
     _speaker->Tone(tone_frequency_hz, tone_duration_ms);
 
-    uint16_t length = _mfrc522.uid.size;
+    const uint16_t length = _mfrc522.uid.size;
     vector<byte> uuid;
     uuid.reserve(length);
 
@@ -57,6 +59,4 @@ void RFID::Update()
     {
         on_rfid_received(uuid);
     }
-
-    _period_ms = 0;
 }
