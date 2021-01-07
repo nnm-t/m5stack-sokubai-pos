@@ -50,15 +50,11 @@ void Good::UpdateQuantity()
     LCD::DrawString("数量: " + String(_quantity), qty_pos);
 }
 
-void Good::Draw(Sprite* const sprite)
+void Good::Draw()
 {
     LCD::DrawBmpFile(image_pos, _image_path);
 
-    sprite->Fill(color_black);
-
-    DrawName(sprite);
-
-    sprite->Push(name_pos);
+    DrawName();
 
     LCD::SetTextDatum(TextDatum::TopLeft);
     LCD::SetTextColor(color_red, color_black);
@@ -68,24 +64,16 @@ void Good::Draw(Sprite* const sprite)
     UpdateQuantity();
 }
 
-void Good::DrawName(Sprite* const sprite)
+void Good::DrawName()
 {
-    _name_x = name_rect.Width();
-    sprite->DrawString(_name, Vector2<int32_t>(title_rect.Width(), 0));
-    sprite->SetScrollRect(Vector2<int32_t>::Zero(), name_rect, color_black);
+    LCD::FillRect(name_pos, name_rect, color_black);
+    LCD::SetTextDatum(TextDatum::TopLeft);
+    LCD::SetTextColor(color_white, color_black);
+    LCD::DrawString(_name, name_pos);
 }
 
-void Good::Update(Sprite* const sprite)
+void Good::Update()
 {
-    sprite->Push(name_pos);
-
-    sprite->Scroll(Vector2<int16_t>(name_dx, 0));
-    _name_x += name_dx;
-
-    if (_name_x < name_scroll_end)
-    {
-        DrawName(sprite);
-    }
 }
 
 void Good::Up()

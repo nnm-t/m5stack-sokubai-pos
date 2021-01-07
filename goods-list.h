@@ -21,7 +21,6 @@ class GoodsList
     static constexpr Rect<int32_t> sum_rect = Rect<int32_t>(150, 21);
 
     std::vector<Good> _goods;
-    Sprite* const _sprite;
 
     size_t _current;
 
@@ -30,10 +29,8 @@ class GoodsList
         return _goods.size() - 1;
     }
 
-    void BeginSprite();
-
 public:
-    GoodsList(Sprite* const sprite) : _sprite(sprite), _goods(std::vector<Good>()), _current(0)
+    GoodsList() : _goods(std::vector<Good>()), _current(0)
     {
 
     }

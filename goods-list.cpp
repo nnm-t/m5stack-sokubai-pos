@@ -8,14 +8,6 @@ constexpr Vector2<int32_t> GoodsList::sum_rect_pos;
 constexpr Rect<int32_t> GoodsList::sum_rect;
 constexpr Rect<int16_t> GoodsList::name_rect;
 
-void GoodsList::BeginSprite()
-{
-    _sprite->Create(name_rect);
-    _sprite->LoadFont(font_20pt);
-    _sprite->SetTextDatum(TextDatum::TopLeft);
-    _sprite->SetTextColor(color_white);
-}
-
 void GoodsList::Deserialize(JsonArray& json_goods, JsonArray& json_sales)
 {
     for (size_t i = 0; i < json_goods.size(); i++)
@@ -36,19 +28,12 @@ void GoodsList::Serialize(JsonArray& json_array)
 
 void GoodsList::Begin()
 {
-    BeginSprite();
-
     Draw();
 }
 
 void GoodsList::Draw()
 {
-    if (_goods.size() < 1)
-    {
-        return;
-    }
-
-    _goods[_current].Draw(_sprite);
+    _goods[_current].Draw();
     DrawSumPrice();
 }
 
@@ -59,7 +44,7 @@ void GoodsList::Update()
         return;
     }
 
-    _goods[_current].Update(_sprite);
+    _goods[_current].Update();
 }
 
 void GoodsList::Next()
@@ -136,7 +121,7 @@ void GoodsList::RFIDReceived(const vector<byte>& uuid)
         {
             _current = i;
 
-            _goods[i].Draw(_sprite);
+            _goods[i].Draw();
             _goods[i].Up();
             DrawSumPrice();
 

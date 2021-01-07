@@ -47,9 +47,8 @@ RTC rtc;
 
 Header header(&rtc, ticker_ms);
 Footer footer;
-Sprite name_sprite;
 Speaker speaker;
-GoodsList goods_list(&name_sprite);
+GoodsList goods_list;
 
 StateSelector selector(&footer);
 GoodsState goods_state(&selector, &goods_list);

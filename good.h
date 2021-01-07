@@ -25,7 +25,7 @@ class Good
     static constexpr const int16_t name_scroll_end = title_rect.Width() * -1;
 
     static constexpr Vector2<uint16_t> image_pos = Vector2<uint16_t>(40, 60);
-    static constexpr Vector2<int32_t> name_pos = Vector2<int32_t>(170, 70);
+    static constexpr Vector2<int32_t> name_pos = Vector2<int32_t>(20, 30);
     static constexpr Vector2<int32_t> price_pos = Vector2<int32_t>(170, 110);
     static constexpr Vector2<int32_t> qty_pos = Vector2<int32_t>(170, 140);
 
@@ -38,7 +38,6 @@ class Good
 
     int16_t _sales;
     int8_t _quantity = 0;
-    int16_t _name_x = 0;
 
     const int32_t _price;
     const std::vector<byte> _uuid;
@@ -50,11 +49,11 @@ public:
     {
     }
 
-    void Draw(Sprite* const sprite);
+    void Draw();
 
-    void DrawName(Sprite* const sprite);
+    void DrawName();
 
-    void Update(Sprite* const sprite);
+    void Update();
 
     static Good Deserialize(JsonVariant& good, JsonVariant& sales);
 
