@@ -28,6 +28,7 @@
 #include "json-io.h"
 #include "hard-serial.h"
 #include "csv-writer.h"
+#include "ble-pos-client.h"
 
 using namespace std;
 
@@ -65,6 +66,11 @@ RFID rfid(&serial, &speaker, mfrc522_address, ticker_ms);
 
 Brightness brightness(brightness_initial, brightness_step);
 SettingsState settings_state(&selector, &rtc, &brightness);
+
+BLEUUID service_uuid("b8b4f6e7-8e73-4f07-949c-6b813af2c119");
+BLEUUID num_characteristic_uuid(static_cast<uint16_t>(0x0000));
+BLEUUID price_characteristic_uuid(static_cast<uint16_t>(0x0000));
+BLEPosClient ble_client("M5Stack-Sokubai-Pos", service_uuid, num_characteristic_uuid, price_characteristic_uuid);
 
 void setup()
 {
@@ -118,6 +124,8 @@ void setup()
 
     header.Begin();
     selector.Begin();
+
+    ble_client.Begin();
 
     ticker.attach_ms(ticker_ms, OnTimerTicked);
 }
