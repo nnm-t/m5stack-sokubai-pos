@@ -5,8 +5,7 @@ void BLEPosClient::Begin(const uint16_t interval_ms, const uint16_t window_ms, c
     BLEDevice::init(_device_name);
 
     BLEScan* scan = BLEDevice::getScan();
-    // todo: BLEAdvertisedDeviceを返す
-    scan->setAdvertisedDeviceCallbacks(new BLEPosAdvertisedDeviceCallbacks(_service_uuid));
+    scan->setAdvertisedDeviceCallbacks(new BLEPosAdvertisedDeviceCallbacks(_service_uuid, _advertised_device));
     scan->setInterval(interval_ms);
     scan->setWindow(window_ms);
     scan->setActiveScan(is_active_scan);
@@ -25,7 +24,12 @@ void BLEPosClient::Update()
         return;
     }
 
-    // todo: BLEAdvertisedDeviceCallbacksが返る & 未接続のとき
+    if (_advertised_device.IsAdvertised())
+    {
+        Connect();
+        return;
+    }
+
     BLEDevice::getScan()->start(re_scan_duration);
 }
 
@@ -46,24 +50,26 @@ void BLEPosClient::WritePrice(const uint16_t price)
         return;
     }
 
-    _price_characteristic->writeValue(price);
+    std::array<uint8_t, 2> data = { price >> 8, price & 0xFF };
+
+    _price_characteristic->writeValue(data.data(), data.size());
 }
 
-const bool BLEPosClient::Connect(BLEAdvertisedDevice* const advertised_device, notify_callback num_callback, notify_callback price_callback)
+const bool BLEPosClient::Connect(notify_callback num_callback, notify_callback price_callback)
 {
     if (_is_connected)
     {
         return false;
     }
 
-    if (advertised_device == nullptr)
+    if (!_advertised_device.IsAdvertised())
     {
         return false;
     }
 
     BLEClient* client = BLEDevice::createClient();
     // setClientCallbacks()
-    client->connect(advertised_device);
+    client->connect(_advertised_device.GetValue());
     _is_connected = true;
 
     _service = client->getService(_service_uuid);

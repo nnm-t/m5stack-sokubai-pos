@@ -6,6 +6,6 @@ void BLEPosAdvertisedDeviceCallbacks::onResult(BLEAdvertisedDevice advertisedDev
     {
         BLEDevice::getScan()->stop();
 
-        //new BLEAdvertisedDevice(advertisedDevice);
+        _advertised_device.SetValue(new BLEAdvertisedDevice(advertisedDevice));
     }
 }

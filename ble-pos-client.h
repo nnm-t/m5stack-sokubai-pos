@@ -1,10 +1,13 @@
 #pragma once
 
+#include <array>
+
 #include "Arduino.h"
 #include "M5Stack.h"
 #include "BLEDevice.h"
 
 #include "ble-pos-advertised-device-callbacks.h"
+#include "ble-advertised-device-container.h"
 
 class BLEPosClient
 {
@@ -15,6 +18,8 @@ class BLEPosClient
     BLEUUID _num_characteristic_uuid;
     BLEUUID _price_characteristic_uuid;
 
+    BLEAdvertisedDeviceContainer _advertised_device;
+
     bool _is_connected = false;
     BLERemoteService* _service = nullptr;
     BLERemoteCharacteristic* _num_characteristic = nullptr;
@@ -23,14 +28,14 @@ class BLEPosClient
     const bool ReadCharacteristic(BLEClient* const client, BLERemoteCharacteristic* const characteristic, notify_callback callback);
 
 public:
-    BLEPosClient(const char* device_name, BLEUUID& service_uuid, BLEUUID& num_characteristic_uuid, BLEUUID& price_characteristic_uuid) : _device_name(device_name), _service_uuid(service_uuid), _num_characteristic_uuid(num_characteristic_uuid), _price_characteristic_uuid(price_characteristic_uuid)
+    BLEPosClient(const char* device_name, BLEUUID& service_uuid, BLEUUID& num_characteristic_uuid, BLEUUID& price_characteristic_uuid) : _device_name(device_name), _service_uuid(service_uuid), _num_characteristic_uuid(num_characteristic_uuid), _price_characteristic_uuid(price_characteristic_uuid), _advertised_device(BLEAdvertisedDeviceContainer())
     {
 
     }
 
     void Begin(const uint16_t interval_ms = 1349, const uint16_t window_ms = 449, const bool is_active_scan = true, const uint32_t duration = 5, const bool is_continue = false);
 
-    const bool Connect(BLEAdvertisedDevice* const advertised_device, notify_callback num_callback = nullptr, notify_callback price_callback = nullptr);
+    const bool Connect(notify_callback num_callback = nullptr, notify_callback price_callback = nullptr);
 
     void Update();
 
