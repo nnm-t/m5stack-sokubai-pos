@@ -5,7 +5,8 @@ void BLEPosClient::Begin(const uint16_t interval_ms, const uint16_t window_ms, c
     BLEDevice::init(_device_name);
 
     BLEScan* scan = BLEDevice::getScan();
-    scan->setAdvertisedDeviceCallbacks(new PosAdvertisedDeviceCallbacks(_service_uuid, _status));
+    // todo: BLEAdvertisedDeviceを返す
+    scan->setAdvertisedDeviceCallbacks(new BLEPosAdvertisedDeviceCallbacks(_service_uuid));
     scan->setInterval(interval_ms);
     scan->setWindow(window_ms);
     scan->setActiveScan(is_active_scan);
@@ -19,56 +20,83 @@ void BLEPosClient::End()
 
 void BLEPosClient::Update()
 {
-    if (_status.GetDoConnect())
+    if (_is_connected)
     {
-        Connect();
-
-        _status.SetDoConnect(false);
-    }
-
-    if (_status.GetIsConnected())
-    {
-        // Write
         return;
     }
 
-    if (_status.GetDoScan())
+    // todo: BLEAdvertisedDeviceCallbacksが返る & 未接続のとき
+    BLEDevice::getScan()->start(re_scan_duration);
+}
+
+void BLEPosClient::WriteNumber(const uint8_t number)
+{
+    if (_num_characteristic == nullptr || !_is_connected)
     {
-        BLEDevice::getScan()->start(re_scan_duration);
+        return;
     }
+
+    _num_characteristic->writeValue(number);
 }
 
-const bool BLEPosClient::Connect()
+void BLEPosClient::WritePrice(const uint16_t price)
 {
-    BLEClient* client = BLEDevice::createClient();
-    // setClientCallbacks()
-    client->connect(_status.GetAdvertisedDevice());
-
-    // Service, Characteristic固有
-    BLERemoteService* const service = client->getService(_service_uuid);
-
-    ReadCharacteristic(client, service, _num_characteristic_uuid);
-}
-
-const bool BLEPosClient::ReadCharacteristic(BLEClient* const client, BLERemoteService* const service, BLEUUID uuid, notify_callback callback)
-{
-    if (service == nullptr)
+    if (_price_characteristic == nullptr || !_is_connected)
     {
-        client->disconnect();
+        return;
+    }
+
+    _price_characteristic->writeValue(price);
+}
+
+const bool BLEPosClient::Connect(BLEAdvertisedDevice* const advertised_device, notify_callback num_callback, notify_callback price_callback)
+{
+    if (_is_connected)
+    {
         return false;
     }
 
-    BLERemoteCharacteristic* characteristic = service->getCharacteristic(uuid);
+    if (advertised_device == nullptr)
+    {
+        return false;
+    }
 
+    BLEClient* client = BLEDevice::createClient();
+    // setClientCallbacks()
+    client->connect(advertised_device);
+    _is_connected = true;
+
+    _service = client->getService(_service_uuid);
+
+    if (_service == nullptr)
+    {
+        client->disconnect();
+        _is_connected = false;
+        return false;
+    }
+
+    _num_characteristic = _service->getCharacteristic(_num_characteristic_uuid);
+    _price_characteristic = _service->getCharacteristic(_price_characteristic_uuid);
+
+    if (!ReadCharacteristic(client, _num_characteristic, num_callback))
+    {
+        return false;
+    }
+
+    return ReadCharacteristic(client, _price_characteristic, price_callback);
+}
+
+const bool BLEPosClient::ReadCharacteristic(BLEClient* const client, BLERemoteCharacteristic* const characteristic, notify_callback callback)
+{
     if (characteristic == nullptr)
     {
         client->disconnect();
+        _is_connected = false;
         return false;
     }
 
     if (characteristic->canNotify())
     {
-        // registerForNotify
         if (callback != nullptr)
         {
             characteristic->registerForNotify(callback);
