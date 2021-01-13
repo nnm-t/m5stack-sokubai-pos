@@ -12,6 +12,8 @@
 #include "constants.h"
 #include "sprite.h"
 
+#include "ble-pos-client.h"
+
 class GoodsList
 {
     static constexpr Vector2<int32_t> sum_pos = Vector2<int32_t>(170, 190);
@@ -24,13 +26,15 @@ class GoodsList
 
     size_t _current;
 
+    BLEPosClient* const _ble_client;
+
     size_t GetLastIndex()
     {
         return _goods.size() - 1;
     }
 
 public:
-    GoodsList() : _goods(std::vector<Good>()), _current(0)
+    GoodsList(BLEPosClient* const ble_client) : _goods(std::vector<Good>()), _current(0), _ble_client(ble_client)
     {
 
     }

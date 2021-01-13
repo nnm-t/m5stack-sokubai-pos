@@ -89,7 +89,13 @@ void GoodsList::Down()
 
 void GoodsList::DrawSumPrice()
 {
+    int16_t num = 0;
     int32_t sum = 0;
+
+    for (uint16_t n : GetQuantities())
+    {
+        num += n;
+    }
 
     for (Good& good : _goods)
     {
@@ -101,6 +107,9 @@ void GoodsList::DrawSumPrice()
 
     LCD::FillRect(sum_rect_pos, sum_rect, color_black);
     LCD::DrawString("合計: " + String(sum) + "円", sum_pos);
+
+    _ble_client->WritePrice(static_cast<uint8_t>(num));
+    _ble_client->WritePrice(static_cast<uint16_t>(sum));
 }
 
 void GoodsList::Reset()

@@ -46,10 +46,15 @@ Ticker ticker;
 HardSerial serial;
 RTC rtc;
 
+BLEUUID service_uuid("b8b4f6e7-8e73-4f07-949c-6b813af2c119");
+BLEUUID num_characteristic_uuid(static_cast<uint16_t>(0x0000));
+BLEUUID price_characteristic_uuid(static_cast<uint16_t>(0x0001));
+BLEPosClient ble_client("M5Stack-Sokubai-Pos", service_uuid, num_characteristic_uuid, price_characteristic_uuid);
+
 Header header(&rtc, ticker_ms);
 Footer footer;
 Speaker speaker;
-GoodsList goods_list;
+GoodsList goods_list(&ble_client);
 
 StateSelector selector(&footer);
 GoodsState goods_state(&selector, &goods_list);
@@ -66,11 +71,6 @@ RFID rfid(&serial, &speaker, mfrc522_address, ticker_ms);
 
 Brightness brightness(brightness_initial, brightness_step);
 SettingsState settings_state(&selector, &rtc, &brightness);
-
-BLEUUID service_uuid("b8b4f6e7-8e73-4f07-949c-6b813af2c119");
-BLEUUID num_characteristic_uuid(static_cast<uint16_t>(0x0000));
-BLEUUID price_characteristic_uuid(static_cast<uint16_t>(0x0000));
-BLEPosClient ble_client("M5Stack-Sokubai-Pos", service_uuid, num_characteristic_uuid, price_characteristic_uuid);
 
 void setup()
 {
@@ -147,4 +147,7 @@ void OnTimerTicked()
     selector.Update();
 
     rfid.Update();
+
+    // todo: 接続処理を手動に変更
+    // ble_client.Update()
 }
