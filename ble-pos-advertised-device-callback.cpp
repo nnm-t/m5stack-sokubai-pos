@@ -2,10 +2,13 @@
 
 void BLEPosAdvertisedDeviceCallbacks::onResult(BLEAdvertisedDevice advertisedDevice)
 {
-    if (advertisedDevice.haveServiceUUID() && advertisedDevice.isAdvertisingService(_service_uuid))
+    if (advertisedDevice.haveServiceUUID())
     {
-        BLEDevice::getScan()->stop();
+        if (advertisedDevice.isAdvertisingService(_service_uuid))
+        {
+            BLEDevice::getScan()->stop();
 
-        _advertised_device.SetValue(new BLEAdvertisedDevice(advertisedDevice));
+            _advertised_device.SetValue(new BLEAdvertisedDevice(advertisedDevice));
+        }
     }
 }

@@ -46,7 +46,8 @@ Ticker ticker;
 HardSerial serial;
 RTC rtc;
 
-BLEUUID service_uuid("b8b4f6e7-8e73-4f07-949c-6b813af2c119");
+// UUID 16bit形式でないとESP32 BLE ClientでAdvertiseできない
+BLEUUID service_uuid(static_cast<uint16_t>(0xF6E7));
 BLEUUID num_characteristic_uuid(static_cast<uint16_t>(0x0000));
 BLEUUID price_characteristic_uuid(static_cast<uint16_t>(0x0001));
 BLEPosClient ble_client("M5Stack-Sokubai-Pos", service_uuid, num_characteristic_uuid, price_characteristic_uuid);
