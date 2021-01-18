@@ -5,7 +5,7 @@ void BLEPosClient::Begin(const uint16_t interval_ms, const uint16_t window_ms, c
     BLEDevice::init(_device_name);
 
     BLEScan* scan = BLEDevice::getScan();
-    scan->setAdvertisedDeviceCallbacks(new BLEPosAdvertisedDeviceCallbacks(_service_uuid, _advertised_device));
+    scan->setAdvertisedDeviceCallbacks(new BLEPosAdvertisedDeviceCallbacks(_service_uuid, _advertised_device, _serial));
     scan->setInterval(interval_ms);
     scan->setWindow(window_ms);
     scan->setActiveScan(is_active_scan);
@@ -30,7 +30,7 @@ void BLEPosClient::Update()
         return;
     }
 
-    BLEDevice::getScan()->start(re_scan_duration);
+    // BLEDevice::getScan()->start(re_scan_duration);
 }
 
 void BLEPosClient::WriteNumber(const uint8_t number)

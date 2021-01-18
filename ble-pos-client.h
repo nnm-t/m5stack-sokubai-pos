@@ -6,6 +6,7 @@
 #include "M5Stack.h"
 #include "BLEDevice.h"
 
+#include "i-serial.h"
 #include "ble-pos-advertised-device-callbacks.h"
 #include "ble-advertised-device-container.h"
 
@@ -17,6 +18,7 @@ class BLEPosClient
     BLEUUID _service_uuid;
     BLEUUID _num_characteristic_uuid;
     BLEUUID _price_characteristic_uuid;
+    ISerial* const _serial;
 
     BLEAdvertisedDeviceContainer _advertised_device;
 
@@ -28,7 +30,7 @@ class BLEPosClient
     const bool ReadCharacteristic(BLEClient* const client, BLERemoteCharacteristic* const characteristic, notify_callback callback);
 
 public:
-    BLEPosClient(const char* device_name, BLEUUID& service_uuid, BLEUUID& num_characteristic_uuid, BLEUUID& price_characteristic_uuid) : _device_name(device_name), _service_uuid(service_uuid), _num_characteristic_uuid(num_characteristic_uuid), _price_characteristic_uuid(price_characteristic_uuid), _advertised_device(BLEAdvertisedDeviceContainer())
+    BLEPosClient(const char* device_name, BLEUUID& service_uuid, BLEUUID& num_characteristic_uuid, BLEUUID& price_characteristic_uuid, ISerial* const serial) : _device_name(device_name), _service_uuid(service_uuid), _num_characteristic_uuid(num_characteristic_uuid), _price_characteristic_uuid(price_characteristic_uuid), _advertised_device(BLEAdvertisedDeviceContainer()), _serial(serial)
     {
 
     }

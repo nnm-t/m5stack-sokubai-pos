@@ -50,7 +50,7 @@ RTC rtc;
 BLEUUID service_uuid(static_cast<uint16_t>(0xF6E7));
 BLEUUID num_characteristic_uuid(static_cast<uint16_t>(0x0000));
 BLEUUID price_characteristic_uuid(static_cast<uint16_t>(0x0001));
-BLEPosClient ble_client("M5Stack-Sokubai-Pos", service_uuid, num_characteristic_uuid, price_characteristic_uuid);
+BLEPosClient ble_client("M5Stack-Sokubai-Pos", service_uuid, num_characteristic_uuid, price_characteristic_uuid, &serial);
 
 Header header(&rtc, ticker_ms);
 Footer footer;
@@ -149,6 +149,6 @@ void OnTimerTicked()
 
     rfid.Update();
 
-    // todo: 接続処理を手動に変更
-    // ble_client.Update()
+    // todo: 再接続ロジック組み直し
+    // ble_client.Update();
 }

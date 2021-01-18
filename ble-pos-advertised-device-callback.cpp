@@ -8,6 +8,11 @@ void BLEPosAdvertisedDeviceCallbacks::onResult(BLEAdvertisedDevice advertisedDev
         {
             BLEDevice::getScan()->stop();
 
+            _serial->Print("MAC: ");
+            _serial->Println(advertisedDevice.getAddress().toString().c_str());
+            _serial->Print("Service UUID: ");
+            _serial->Println(advertisedDevice.getServiceUUID().toString().c_str());
+
             _advertised_device.SetValue(new BLEAdvertisedDevice(advertisedDevice));
         }
     }
