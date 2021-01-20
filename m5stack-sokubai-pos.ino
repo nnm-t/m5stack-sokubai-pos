@@ -129,11 +129,14 @@ void setup()
     ble_client.Begin();
 
     ticker.attach_ms(ticker_ms, OnTimerTicked);
+
+    // todo: UI上に接続処理を移す
+    delay(1000);
+    ble_client.Connect();
 }
 
 void loop()
 {
-
 }
 
 void OnTimerTicked()
@@ -148,7 +151,4 @@ void OnTimerTicked()
     selector.Update();
 
     rfid.Update();
-
-    // todo: 再接続ロジック組み直し
-    // ble_client.Update();
 }

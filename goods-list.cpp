@@ -108,7 +108,8 @@ void GoodsList::DrawSumPrice()
     LCD::FillRect(sum_rect_pos, sum_rect, color_black);
     LCD::DrawString("合計: " + String(sum) + "円", sum_pos);
 
-    _ble_client->WritePrice(static_cast<uint8_t>(num));
+    // todo: 2つ送るとフリーズ
+    // _ble_client->WriteNumber(static_cast<uint8_t>(num));
     _ble_client->WritePrice(static_cast<uint16_t>(sum));
 }
 

@@ -51,7 +51,6 @@ void BLEPosClient::WritePrice(const uint16_t price)
     }
 
     std::array<uint8_t, 2> data = { price >> 8, price & 0xFF };
-
     _price_characteristic->writeValue(data.data(), data.size());
 }
 
@@ -69,7 +68,13 @@ const bool BLEPosClient::Connect(notify_callback num_callback, notify_callback p
 
     BLEClient* client = BLEDevice::createClient();
     // setClientCallbacks()
-    client->connect(_advertised_device.GetValue());
+    if (!client->connect(_advertised_device.GetValue()))
+    {
+        _serial->Println("BLE Connection Failed");
+        return false;
+    }
+
+    _serial->Println("BLE Connected");
     _is_connected = true;
 
     _service = client->getService(_service_uuid);
@@ -78,18 +83,28 @@ const bool BLEPosClient::Connect(notify_callback num_callback, notify_callback p
     {
         client->disconnect();
         _is_connected = false;
+
+        _serial->Println("BLE Service can't initialized");
         return false;
     }
+
+    _serial->Println("BLE Service initialized");
+
+    _serial->Println(_num_characteristic_uuid.toString().c_str());
+    _serial->Println(_price_characteristic_uuid.toString().c_str());
 
     _num_characteristic = _service->getCharacteristic(_num_characteristic_uuid);
     _price_characteristic = _service->getCharacteristic(_price_characteristic_uuid);
 
-    if (!ReadCharacteristic(client, _num_characteristic, num_callback))
+    if (_num_characteristic == nullptr || _price_characteristic == nullptr)
     {
+        client->disconnect();
+        _serial->Println("BLE Characteristic can't initialized");
         return false;
     }
 
-    return ReadCharacteristic(client, _price_characteristic, price_callback);
+    _serial->Println("BLE Ready");
+    return true;
 }
 
 const bool BLEPosClient::ReadCharacteristic(BLEClient* const client, BLERemoteCharacteristic* const characteristic, notify_callback callback)
