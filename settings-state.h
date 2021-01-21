@@ -21,14 +21,14 @@ class SettingsState : public IState
     static constexpr Vector2<int32_t> time_triangle1 = Vector2<int32_t>(10, 80);
     static constexpr Vector2<int32_t> time_triangle2 = Vector2<int32_t>(30, 70);
 
-    static constexpr Vector2<int32_t> brightness_triangle0 = Vector2<int32_t>(10,120);
-    static constexpr Vector2<int32_t> brightness_triangle1 = Vector2<int32_t>(10,140);
-    static constexpr Vector2<int32_t> brightness_triangle2 = Vector2<int32_t>(30,130);
+    static constexpr Vector2<int32_t> brightness_triangle0 = Vector2<int32_t>(10, 100);
+    static constexpr Vector2<int32_t> brightness_triangle1 = Vector2<int32_t>(10, 120);
+    static constexpr Vector2<int32_t> brightness_triangle2 = Vector2<int32_t>(30, 110);
 
-    static constexpr int32_t time_y = 90;
-    static constexpr int32_t time_x = 20;
-    static constexpr int32_t time_x2 = 180;
-    static constexpr int32_t time_w = 15;
+    static constexpr int32_t time_y = time_title_pos.Y();
+    static constexpr int32_t time_x = 90;
+    static constexpr int32_t time_x2 = 230;
+    static constexpr int32_t time_w = 12;
 
     static constexpr Vector2<int32_t> time_bg_pos = Vector2<int32_t>(time_x, 60);
     static constexpr Rect<int32_t> time_bg_rect = Rect<int32_t>(280, 20);
@@ -48,16 +48,13 @@ class SettingsState : public IState
     static constexpr Vector2<int32_t> time_hour_colon_pos = Vector2<int32_t>(time_x2 + time_w * 2, time_y);
 
     static constexpr Vector2<int32_t> time_minute_pos = Vector2<int32_t>(time_x2 + time_w * 3, time_y);
-    static constexpr Vector2<int32_t> time_minute_colon_pos = Vector2<int32_t>(time_x2 + time_w * 5, time_y);
 
-    static constexpr Vector2<int32_t> time_second_pos = Vector2<int32_t>(time_x2 + time_w * 6, time_y);
+    static constexpr Vector2<int32_t> brightness_title_pos = Vector2<int32_t>(index_x, 100);
 
-    static constexpr Vector2<int32_t> brightness_title_pos = Vector2<int32_t>(index_x, 120);
+    static constexpr Vector2<int32_t> brightness_bar_pos = Vector2<int32_t>(time_x, brightness_title_pos.Y());
+    static constexpr Rect<int32_t> brightness_bar_rect = Rect<int32_t>(200, 20);
 
-    static constexpr Vector2<int32_t> brightness_bar_pos = Vector2<int32_t>(index_x, 150);
-    static constexpr Rect<int32_t> brightness_bar_rect = Rect<int32_t>(240, 20);
-
-    static constexpr Rect<int32_t> brightness_rect = Rect<int32_t>(240, 50);
+    static constexpr Rect<int32_t> brightness_rect = Rect<int32_t>(200, 20);
 
     StateSelector* const _selector;
     RTC* const _rtc;

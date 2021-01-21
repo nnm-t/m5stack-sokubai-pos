@@ -21,8 +21,6 @@ constexpr Vector2<int32_t> SettingsState::time_day_pos;
 constexpr Vector2<int32_t> SettingsState::time_hour_pos;
 constexpr Vector2<int32_t> SettingsState::time_hour_colon_pos;
 constexpr Vector2<int32_t> SettingsState::time_minute_pos;
-constexpr Vector2<int32_t> SettingsState::time_minute_colon_pos;
-constexpr Vector2<int32_t> SettingsState::time_second_pos;
 constexpr Vector2<int32_t> SettingsState::brightness_title_pos;
 constexpr Vector2<int32_t> SettingsState::brightness_bar_pos;
 constexpr Rect<int32_t> SettingsState::brightness_bar_rect;
@@ -107,16 +105,13 @@ void SettingsState::DrawTime()
     LCD::DrawString(Convert2Digit(_time.hour()), time_hour_pos);
     LCD::DrawString(":", time_hour_colon_pos);
     LCD::DrawString(Convert2Digit(_time.minute()), time_minute_pos);
-    LCD::DrawString(":", time_minute_colon_pos);
-    // 設定を抜けた時点で0秒として打ち込む
-    LCD::DrawString("00", time_second_pos);
 }
 
 void SettingsState::DrawTimeUnderLine()
 {
-    constexpr Rect<int32_t> digit1_rect = Rect<int32_t>(15, 2);
-    constexpr Rect<int32_t> digit2_rect = Rect<int32_t>(30, 2);
-    constexpr int32_t digit_pos_y = 110;
+    constexpr Rect<int32_t> digit1_rect = Rect<int32_t>(time_w, 2);
+    constexpr Rect<int32_t> digit2_rect = Rect<int32_t>(time_w * 2, 2);
+    constexpr int32_t digit_pos_y = time_y + 20;
 
     LCD::FillRect(Vector2<int32_t>(time_year1000_pos.X(), digit_pos_y), Rect<int32_t>(280, 2), color_black);
 
@@ -158,7 +153,7 @@ void SettingsState::DrawBrightness()
     LCD::DrawRect(brightness_bar_pos, brightness_bar_rect, color_white);
 
     // 輝度をバーで示すために比率を求める
-    float width = 240.0 * _brightness->GetValue() / _brightness->max;
+    float width = 200.0 * _brightness->GetValue() / _brightness->max;
     Rect<int32_t> brightness_value_rect(static_cast<int32_t>(width), brightness_bar_rect.Height());
 
     LCD::FillRect(brightness_bar_pos, brightness_value_rect, color_white);
