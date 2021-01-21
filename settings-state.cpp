@@ -8,6 +8,9 @@ constexpr Vector2<int32_t> SettingsState::time_triangle2;
 constexpr Vector2<int32_t> SettingsState::brightness_triangle0;
 constexpr Vector2<int32_t> SettingsState::brightness_triangle1;
 constexpr Vector2<int32_t> SettingsState::brightness_triangle2;
+constexpr Vector2<int32_t> SettingsState::ble_triangle0;
+constexpr Vector2<int32_t> SettingsState::ble_triangle1;
+constexpr Vector2<int32_t> SettingsState::ble_triangle2;
 constexpr Vector2<int32_t> SettingsState::time_bg_pos;
 constexpr Rect<int32_t> SettingsState::time_bg_rect;
 constexpr Vector2<int32_t> SettingsState::time_year1000_pos;
@@ -28,7 +31,7 @@ constexpr Rect<int32_t> SettingsState::brightness_rect;
 
 FooterText SettingsState::GetFooterText()
 {
-    return FooterText("戻る", String(), "決定");
+    return FooterText("戻る", "BLE接続", "決定");
 }
 
 void SettingsState::Begin()
@@ -49,6 +52,7 @@ void SettingsState::Draw()
 
     DrawTime();
     DrawBrightness();
+    DrawBLE();
 
     DrawModeArrow();
     DrawTimeUnderLine();
@@ -56,18 +60,23 @@ void SettingsState::Draw()
 
 void SettingsState::DrawModeArrow()
 {
+    LCD::FillTriangle(time_triangle0, time_triangle1, time_triangle2, color_black);
+    LCD::FillTriangle(brightness_triangle0, brightness_triangle1, brightness_triangle2, color_black);
+            LCD::FillTriangle(ble_triangle0, ble_triangle1, ble_triangle2, color_black);
+
     switch(_mode)
     {
         case SettingsStateMode::Time:
             // 時刻
             LCD::FillTriangle(time_triangle0, time_triangle1, time_triangle2, color_red);
-            LCD::FillTriangle(brightness_triangle0, brightness_triangle1, brightness_triangle2, color_black);
-        break;
+            break;
         case SettingsStateMode::Brightness:
-            LCD::FillTriangle(time_triangle0, time_triangle1, time_triangle2, color_black);
             // 輝度
             LCD::FillTriangle(brightness_triangle0, brightness_triangle1, brightness_triangle2, color_red);
-        break;
+            break;
+        case SettingsStateMode::BLE:
+            LCD::FillTriangle(ble_triangle0, ble_triangle1, ble_triangle2, color_red);
+            break;
         default:
         break;
     }
@@ -159,15 +168,53 @@ void SettingsState::DrawBrightness()
     LCD::FillRect(brightness_bar_pos, brightness_value_rect, color_white);
 }
 
+void SettingsState::DrawBLE()
+{
+    LCD::FillRect(Vector2<int32_t>(40, 140), Rect<int32_t>(240, 20), color_black);
+
+    LCD::SetTextColor(color_white, color_black);
+    LCD::DrawString("BLE", Vector2<int32_t>(40, 140));
+
+    LCD::DrawString("Scan", Vector2<int32_t>(90, 140));
+
+    // todo: MACアドレス書き出されない
+    if (_ble->IsAdvertised())
+    {
+        LCD::DrawString(_ble->GetAdvertisedDeviceAddress(), Vector2<int32_t>(160, 140));
+    }
+}
+
 void SettingsState::Up()
 {
-    if (_mode == SettingsStateMode::Time)
+    switch (_mode)
     {
-        _mode = SettingsStateMode::Brightness;
+        case SettingsStateMode::Time:
+            _mode = SettingsStateMode::BLE;
+            break;
+        case SettingsStateMode::Brightness:
+            _mode = SettingsStateMode::Time;
+            break;
+        case SettingsStateMode::BLE:
+            _mode = SettingsStateMode::Brightness;
+            break;
     }
-    else
+    
+    DrawModeArrow();
+}
+
+void SettingsState::Down()
+{
+    switch (_mode)
     {
-        _mode = SettingsStateMode::Time;
+        case SettingsStateMode::Time:
+            _mode = SettingsStateMode::Brightness;
+            break;
+        case SettingsStateMode::Brightness:
+            _mode = SettingsStateMode::BLE;
+            break;
+        case SettingsStateMode::BLE:
+            _mode = SettingsStateMode::Time;
+            break;
     }
     
     DrawModeArrow();
@@ -230,7 +277,11 @@ void SettingsState::Start()
 
 void SettingsState::GameboyA()
 {
-    if (_mode != SettingsStateMode::Time)
+    if (_mode == SettingsStateMode::BLE)
+    {
+        _ble->Scan();
+    }
+    else if (_mode != SettingsStateMode::Time)
     {
         return;
     }
@@ -495,4 +546,15 @@ void SettingsState::ButtonC()
     // 決定
     _rtc->Adjust(_time);
     _selector->ToGoodsState();
+}
+
+void SettingsState::Update()
+{
+    _period_ms += _delay_ms;
+
+    if (_period_ms >= min_interval_ms)
+    {
+        _period_ms = 0;
+        DrawBLE();
+    }
 }

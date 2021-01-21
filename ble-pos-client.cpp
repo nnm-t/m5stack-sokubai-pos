@@ -1,9 +1,12 @@
 #include "ble-pos-client.h"
 
-void BLEPosClient::Begin(const uint16_t interval_ms, const uint16_t window_ms, const bool is_active_scan, const uint32_t duration, const bool is_continue)
+void BLEPosClient::Begin()
 {
     BLEDevice::init(_device_name);
+}
 
+void BLEPosClient::Scan(const uint16_t interval_ms, const uint16_t window_ms, const bool is_active_scan, const uint32_t duration, const bool is_continue)
+{
     BLEScan* scan = BLEDevice::getScan();
     scan->setAdvertisedDeviceCallbacks(new BLEPosAdvertisedDeviceCallbacks(_service_uuid, _advertised_device, _serial));
     scan->setInterval(interval_ms);

@@ -6,5 +6,6 @@
 enum class SettingsStateMode : uint8_t
 {
     Time = 0,
-    Brightness = 1
+    Brightness = 1,
+    BLE = 2
 };

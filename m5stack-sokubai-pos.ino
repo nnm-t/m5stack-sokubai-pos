@@ -71,7 +71,7 @@ M5Button m5_button;
 RFID rfid(&serial, &speaker, mfrc522_address, ticker_ms);
 
 Brightness brightness(brightness_initial, brightness_step);
-SettingsState settings_state(&selector, &rtc, &brightness);
+SettingsState settings_state(&selector, &rtc, &brightness, &ble_client, ticker_ms);
 
 void setup()
 {
@@ -129,10 +129,6 @@ void setup()
     ble_client.Begin();
 
     ticker.attach_ms(ticker_ms, OnTimerTicked);
-
-    // todo: UI上に接続処理を移す
-    delay(1000);
-    ble_client.Connect();
 }
 
 void loop()

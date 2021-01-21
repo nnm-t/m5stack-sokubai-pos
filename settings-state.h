@@ -9,6 +9,7 @@
 #include "brightness.h"
 #include "settings-state-mode.h"
 #include "settings-state-datetime.h"
+#include "ble-pos-client.h"
 
 class SettingsState : public IState
 {
@@ -24,6 +25,10 @@ class SettingsState : public IState
     static constexpr Vector2<int32_t> brightness_triangle0 = Vector2<int32_t>(10, 100);
     static constexpr Vector2<int32_t> brightness_triangle1 = Vector2<int32_t>(10, 120);
     static constexpr Vector2<int32_t> brightness_triangle2 = Vector2<int32_t>(30, 110);
+
+    static constexpr Vector2<int32_t> ble_triangle0 = Vector2<int32_t>(10, 130);
+    static constexpr Vector2<int32_t> ble_triangle1 = Vector2<int32_t>(10, 150);
+    static constexpr Vector2<int32_t> ble_triangle2 = Vector2<int32_t>(30, 140);
 
     static constexpr int32_t time_y = time_title_pos.Y();
     static constexpr int32_t time_x = 90;
@@ -56,13 +61,19 @@ class SettingsState : public IState
 
     static constexpr Rect<int32_t> brightness_rect = Rect<int32_t>(200, 20);
 
+    static constexpr const uint32_t min_interval_ms = 1000;
+
     StateSelector* const _selector;
     RTC* const _rtc;
     Brightness* const _brightness;
+    BLEPosClient* const _ble;
+    const uint32_t _delay_ms;
+
 
     SettingsStateMode _mode = SettingsStateMode::Time;
     SettingsStateDateTime _date_mode = SettingsStateDateTime::Year100;
     DateTime _time = DateTime();
+    uint32_t _period_ms = 0;
 
     void DrawModeArrow();
 
@@ -72,10 +83,12 @@ class SettingsState : public IState
 
     void DrawBrightness();
 
+    void DrawBLE();
+
     String Convert2Digit(const uint8_t number);
 
 public:
-    SettingsState(StateSelector* const selector, RTC* const rtc, Brightness* const brightness) : _selector(selector), _rtc(rtc), _brightness(brightness)
+    SettingsState(StateSelector* const selector, RTC* const rtc, Brightness* const brightness, BLEPosClient* const ble, const uint32_t delay_ms) : _selector(selector), _rtc(rtc), _brightness(brightness), _ble(ble), _delay_ms(delay_ms)
     {
 
     }
@@ -84,19 +97,13 @@ public:
 
     void Begin() override;
 
-    void Update() override
-    {
-
-    }
+    void Update() override;
 
     void Draw() override;
 
     void Up() override;
 
-    void Down() override
-    {
-        Up();
-    }
+    void Down() override;
 
     void Left() override;
 

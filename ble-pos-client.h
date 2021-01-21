@@ -35,9 +35,26 @@ public:
 
     }
 
-    void Begin(const uint16_t interval_ms = 1349, const uint16_t window_ms = 449, const bool is_active_scan = true, const uint32_t duration = 5, const bool is_continue = false);
+    void Begin();
+
+    void Scan(const uint16_t interval_ms = 1349, const uint16_t window_ms = 449, const bool is_active_scan = true, const uint32_t duration = 5, const bool is_continue = false);
 
     const bool Connect(notify_callback num_callback = nullptr, notify_callback price_callback = nullptr);
+
+    const bool IsConnected()
+    {
+        return _is_connected;
+    }
+
+    const bool IsAdvertised()
+    {
+        return _advertised_device.IsAdvertised();
+    }
+
+    String GetAdvertisedDeviceAddress()
+    {
+        return _advertised_device.GetAddress();
+    }
 
     void Update();
 

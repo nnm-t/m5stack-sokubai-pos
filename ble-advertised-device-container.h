@@ -7,9 +7,10 @@
 class BLEAdvertisedDeviceContainer
 {
     BLEAdvertisedDevice* _value = nullptr;
+    String _address;
 
 public:
-    BLEAdvertisedDeviceContainer()
+    BLEAdvertisedDeviceContainer() : _address(String())
     {
 
     }
@@ -27,5 +28,20 @@ public:
     const bool IsAdvertised()
     {
         return _value != nullptr;
+    }
+
+    String GetAddress()
+    {
+        return _address;
+    }
+
+    void SetAddress(String& address)
+    {
+        _address = address;
+    }
+
+    void SetAddress(String address)
+    {
+        _address = address;
     }
 };
