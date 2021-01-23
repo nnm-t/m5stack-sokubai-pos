@@ -39,9 +39,4 @@ public:
     {
         _address = address;
     }
-
-    void SetAddress(String address)
-    {
-        _address = address;
-    }
 };
