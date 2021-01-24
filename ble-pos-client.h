@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <functional>
 
 #include "Arduino.h"
 #include "M5Stack.h"
@@ -9,6 +10,7 @@
 #include "i-serial.h"
 #include "ble-pos-advertised-device-callbacks.h"
 #include "ble-advertised-device-container.h"
+#include "ble-pos-client-callbacks.h"
 
 class BLEPosClient
 {
@@ -22,7 +24,9 @@ class BLEPosClient
 
     BLEAdvertisedDeviceContainer _advertised_device;
 
+    bool _did_connect = false;
     bool _is_connected = false;
+    BLEClient* _client = nullptr;
     BLERemoteService* _service = nullptr;
     BLERemoteCharacteristic* _num_characteristic = nullptr;
     BLERemoteCharacteristic* _price_characteristic = nullptr;
@@ -40,6 +44,13 @@ public:
     void Scan(const uint16_t interval_ms = 1349, const uint16_t window_ms = 449, const bool is_active_scan = true, const uint32_t duration = 5, const bool is_continue = false);
 
     const bool Connect(notify_callback num_callback = nullptr, notify_callback price_callback = nullptr);
+
+    const bool Disconnect();
+
+    void NotifyLostConnection()
+    {
+        _is_connected = false;
+    }
 
     const bool IsConnected()
     {
