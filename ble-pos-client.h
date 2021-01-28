@@ -27,10 +27,7 @@ class BLEPosClient
     bool _is_connected = false;
     BLEClient* _client = nullptr;
     BLERemoteService* _service = nullptr;
-    BLERemoteCharacteristic* _num_characteristic = nullptr;
     BLERemoteCharacteristic* _price_characteristic = nullptr;
-
-    const bool ReadCharacteristic(BLEClient* const client, BLERemoteCharacteristic* const characteristic, notify_callback callback);
 
 public:
     BLEPosClient(const char* device_name, BLEUUID& service_uuid, BLEUUID& num_characteristic_uuid, BLEUUID& price_characteristic_uuid, ISerial* const serial) : _device_name(device_name), _service_uuid(service_uuid), _num_characteristic_uuid(num_characteristic_uuid), _price_characteristic_uuid(price_characteristic_uuid), _advertised_device(BLEAdvertisedDeviceContainer()), _serial(serial)
@@ -42,7 +39,7 @@ public:
 
     void Scan(const uint16_t interval_ms = 1349, const uint16_t window_ms = 449, const bool is_active_scan = true, const uint32_t duration = 5, const bool is_continue = false);
 
-    const bool Connect(notify_callback num_callback = nullptr, notify_callback price_callback = nullptr);
+    const bool Connect();
 
     const bool Disconnect();
 
@@ -66,11 +63,11 @@ public:
         return _advertised_device.GetAddress();
     }
 
+    const bool ReadCharacteristic(BLEClient* const client, BLERemoteCharacteristic* const characteristic, notify_callback callback);
+
     void Update();
 
-    void WriteNumber(const uint8_t number);
-
-    void WritePrice(const uint16_t price);
+    void Write(const uint8_t number, const uint16_t price);
 
     void End();
 };
