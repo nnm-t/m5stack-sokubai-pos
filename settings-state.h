@@ -61,6 +61,10 @@ class SettingsState : public IState
 
     static constexpr Rect<int32_t> brightness_rect = Rect<int32_t>(200, 20);
 
+    static constexpr Vector2<int32_t> ble_title_pos = Vector2<int32_t>(40, 140);
+    static constexpr Vector2<int32_t> ble_status_pos = Vector2<int32_t>(90, 140);
+    static constexpr Rect<int32_t> ble_rect = Rect<int32_t>(240, 20);
+
     static constexpr const uint32_t min_interval_ms = 1000;
 
     StateSelector* const _selector;
@@ -69,6 +73,8 @@ class SettingsState : public IState
     BLEPosClient* const _ble;
     const uint32_t _delay_ms;
 
+    bool _do_connect = false;
+    bool _do_disconnect = false;
 
     SettingsStateMode _mode = SettingsStateMode::Time;
     SettingsStateDateTime _date_mode = SettingsStateDateTime::Year100;
@@ -99,6 +105,8 @@ public:
 
     void Update() override;
 
+    void UpdateMainLoop();
+
     void Draw() override;
 
     void Up() override;
@@ -122,10 +130,7 @@ public:
 
     void ButtonA() override;
 
-    void ButtonB() override
-    {
-
-    }
+    void ButtonB() override;
 
     void ButtonC() override;
 

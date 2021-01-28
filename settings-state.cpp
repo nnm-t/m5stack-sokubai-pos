@@ -28,9 +28,16 @@ constexpr Vector2<int32_t> SettingsState::brightness_title_pos;
 constexpr Vector2<int32_t> SettingsState::brightness_bar_pos;
 constexpr Rect<int32_t> SettingsState::brightness_bar_rect;
 constexpr Rect<int32_t> SettingsState::brightness_rect;
+constexpr Vector2<int32_t> SettingsState::ble_title_pos;
+constexpr Vector2<int32_t> SettingsState::ble_status_pos;
+constexpr Rect<int32_t> SettingsState::ble_rect;
 
 FooterText SettingsState::GetFooterText()
 {
+    if (_ble->IsConnected())
+    {
+        return FooterText("戻る", "BLE切断", "決定");
+    }
     return FooterText("戻る", "BLE接続", "決定");
 }
 
@@ -170,18 +177,26 @@ void SettingsState::DrawBrightness()
 
 void SettingsState::DrawBLE()
 {
-    LCD::FillRect(Vector2<int32_t>(40, 140), Rect<int32_t>(240, 20), color_black);
+    LCD::FillRect(ble_title_pos, ble_rect, color_black);
 
     LCD::SetTextColor(color_white, color_black);
-    LCD::DrawString("BLE", Vector2<int32_t>(40, 140));
+    LCD::DrawString("BLE", ble_title_pos);
 
-    LCD::DrawString("Scan", Vector2<int32_t>(90, 140));
+    String ble_status;
 
-    // todo: MACアドレス書き出されない
     if (_ble->IsAdvertised())
     {
-        LCD::DrawString(_ble->GetAdvertisedDeviceAddress(), Vector2<int32_t>(160, 140));
+        if (_ble->IsConnected())
+        {
+            LCD::SetTextColor(color_yellow, color_black);
+        }
+        ble_status = _ble->GetAdvertisedDeviceAddress();
     }
+    else
+    {
+        ble_status = "Keypad A: Scan";
+    }
+    LCD::DrawString(ble_status, ble_status_pos);
 }
 
 void SettingsState::Up()
@@ -280,6 +295,7 @@ void SettingsState::GameboyA()
     if (_mode == SettingsStateMode::BLE)
     {
         _ble->Scan();
+        return;
     }
     else if (_mode != SettingsStateMode::Time)
     {
@@ -541,6 +557,27 @@ void SettingsState::ButtonA()
     _selector->ToGoodsState();
 }
 
+void SettingsState::ButtonB()
+{
+    // BLE接続
+    if (!_ble->IsAdvertised())
+    {
+        return;
+    }
+
+    if (_ble->IsConnected())
+    {
+        _do_disconnect = true;
+    }
+    else
+    {
+        // Timer割り込みでBLE接続するとフリーズするため、フラグを立ててメインループで行う
+        _do_connect = true;
+    }
+
+    _selector->ToGoodsState();
+}
+
 void SettingsState::ButtonC()
 {
     // 決定
@@ -556,5 +593,20 @@ void SettingsState::Update()
     {
         _period_ms = 0;
         DrawBLE();
+    }
+}
+
+void SettingsState::UpdateMainLoop()
+{
+    if (_do_connect)
+    {
+        _do_connect = false;
+        _ble->Connect();
+    }
+
+    if (_do_disconnect)
+    {
+        _do_disconnect = false;
+        _ble->Disconnect();
     }
 }

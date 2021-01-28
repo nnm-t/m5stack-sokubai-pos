@@ -32,10 +32,7 @@ void BLEPosClient::Update()
         return;
     }
 
-    if (_did_connect)
-    {
-        BLEDevice::getScan()->start(re_scan_duration);
-    }
+    // BLEDevice::getScan()->start(re_scan_duration);
 }
 
 void BLEPosClient::WriteNumber(const uint8_t number)
@@ -71,19 +68,17 @@ const bool BLEPosClient::Connect(notify_callback num_callback, notify_callback p
         return false;
     }
 
-    std::function<void()> disconnect_callback = [this]{ this->NotifyLostConnection(); };
+    // std::function<void()> disconnect_callback = [this]{ this->NotifyLostConnection(); };
 
     _client = BLEDevice::createClient();
-    _client->setClientCallbacks(new BLEPosClientCallbacks(disconnect_callback));
+    // _client->setClientCallbacks(new BLEPosClientCallbacks(disconnect_callback));
     if (!_client->connect(_advertised_device.GetValue()))
     {
         _serial->Println("BLE Connection Failed");
-        _did_connect = false;
         return false;
     }
 
     _serial->Println("BLE Connected");
-    _did_connect = true;
     _is_connected = true;
 
     _service = _client->getService(_service_uuid);
@@ -143,7 +138,6 @@ const bool BLEPosClient::Disconnect()
 
     _client->disconnect();
     _is_connected = false;
-    _did_connect = false;
     _serial->Println("BLE Disconnected");
 
     return true;

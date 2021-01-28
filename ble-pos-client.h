@@ -24,7 +24,6 @@ class BLEPosClient
 
     BLEAdvertisedDeviceContainer _advertised_device;
 
-    bool _did_connect = false;
     bool _is_connected = false;
     BLEClient* _client = nullptr;
     BLERemoteService* _service = nullptr;
