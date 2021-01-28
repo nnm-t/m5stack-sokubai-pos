@@ -4,6 +4,7 @@ using namespace std;
 
 constexpr Vector2<uint16_t> Good::image_pos;
 constexpr Vector2<int32_t> Good::name_pos;
+constexpr Vector2<int32_t> Good::name_rect_pos;
 constexpr Vector2<int32_t> Good::price_pos;
 constexpr Vector2<int32_t> Good::qty_pos;
 
@@ -66,7 +67,7 @@ void Good::Draw()
 
 void Good::DrawName()
 {
-    LCD::FillRect(name_pos, name_rect, color_black);
+    LCD::FillRect(name_rect_pos, name_rect, color_black);
     LCD::SetTextDatum(TextDatum::TopLeft);
     LCD::SetTextColor(color_white, color_black);
     LCD::DrawString(_name, name_pos);
