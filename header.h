@@ -29,11 +29,11 @@ class Header
 
     static constexpr Vector2<int32_t> background_pos = Vector2<int32_t>(0, 0);
 
-    static constexpr Vector2<int32_t> hour_pos = Vector2<int32_t>(30, 0);
-    static constexpr Vector2<int32_t> hour_slash_pos = Vector2<int32_t>(60, 0);
-    static constexpr Vector2<int32_t> minute_pos = Vector2<int32_t>(75, 0);
-    static constexpr Vector2<int32_t> minute_slash_pos = Vector2<int32_t>(105, 0);
-    static constexpr Vector2<int32_t> second_pos = Vector2<int32_t>(120, 0);
+    static constexpr Vector2<int32_t> hour_pos = Vector2<int32_t>(20, 0);
+    static constexpr Vector2<int32_t> hour_slash_pos = Vector2<int32_t>(50, 0);
+    static constexpr Vector2<int32_t> minute_pos = Vector2<int32_t>(65, 0);
+    static constexpr Vector2<int32_t> minute_slash_pos = Vector2<int32_t>(95, 0);
+    static constexpr Vector2<int32_t> second_pos = Vector2<int32_t>(110, 0);
 
     static constexpr Vector2<int32_t> battery_pos = Vector2<int32_t>(320, 1);
     static constexpr Vector2<int32_t> battery_rect_pos = Vector2<int32_t>(240, 0);
