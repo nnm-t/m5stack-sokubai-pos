@@ -1,6 +1,8 @@
 #pragma once
 
-#include <RTClib.h>
+#include <Arduino.h>
+
+#include "rtc-pcf8523.h"
 
 class RTC
 {
