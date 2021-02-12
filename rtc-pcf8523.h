@@ -71,7 +71,7 @@ public:
 
     }
 
-    const bool begin(const uint8_t sda = 12, const uint8_t scl = 13);
+    const bool begin(const uint8_t sda = 26, const uint8_t scl = 13);
 
     const bool initialized();
 
