@@ -31,6 +31,9 @@ constexpr Rect<int32_t> SettingsState::brightness_rect;
 constexpr Vector2<int32_t> SettingsState::ble_title_pos;
 constexpr Vector2<int32_t> SettingsState::ble_status_pos;
 constexpr Rect<int32_t> SettingsState::ble_rect;
+constexpr Vector2<int32_t> SettingsState::rfid_title_pos;
+constexpr Vector2<int32_t> SettingsState::rfid_uuid_pos;
+constexpr Rect<int32_t> SettingsState::rfid_rect;
 
 FooterText SettingsState::GetFooterText()
 {
@@ -60,6 +63,7 @@ void SettingsState::Draw()
     DrawTime();
     DrawBrightness();
     DrawBLE();
+    DrawUUID();
 
     DrawModeArrow();
     DrawTimeUnderLine();
@@ -194,9 +198,16 @@ void SettingsState::DrawBLE()
     }
     else
     {
-        ble_status = "Keypad A: Scan";
+        ble_status = "スキャン [Aボタン]";
     }
     LCD::DrawString(ble_status, ble_status_pos);
+}
+
+void SettingsState::DrawUUID()
+{
+    LCD::FillRect(rfid_title_pos, rfid_rect, color_black);
+    LCD::DrawString("RFID", rfid_title_pos);
+    LCD::DrawString(_rfid->GetUUIDString(), rfid_uuid_pos);
 }
 
 void SettingsState::Up()
@@ -593,6 +604,7 @@ void SettingsState::Update()
     {
         _period_ms = 0;
         DrawBLE();
+        DrawUUID();
     }
 }
 

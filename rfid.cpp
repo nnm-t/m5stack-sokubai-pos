@@ -36,23 +36,28 @@ void RFID::Update()
     uuid.reserve(length);
 
     _serial->Print("RFID: ");
+    _uuid_string = "";
 
     for (uint16_t i = 0; i < length; i++)
     {
         byte uuid_byte = _mfrc522.uid.uidByte[i];
         uuid.push_back(uuid_byte);
 
-        String output;
         if (uuid_byte < 10)
         {
-            output = "0" + String(uuid_byte);
+            _uuid_string += "0" + String(uuid_byte);
         }
         else 
         {
-            output = String(uuid_byte, HEX);
+            _uuid_string += String(uuid_byte, HEX);
         }
-        _serial->Print(output);
+
+        if (i < length - 1)
+        {
+            _uuid_string += ":";
+        }
     }
+    _serial->Print(_uuid_string);
     _serial->Print("\n");
 
     if (on_rfid_received != nullptr)

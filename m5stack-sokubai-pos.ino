@@ -71,7 +71,7 @@ M5Button m5_button;
 RFID rfid(&serial, &speaker, mfrc522_address, ticker_ms);
 
 Brightness brightness(brightness_initial, brightness_step);
-SettingsState settings_state(&selector, &rtc, &brightness, &ble_client, ticker_ms);
+SettingsState settings_state(&selector, &rtc, &brightness, &ble_client, &rfid, ticker_ms);
 
 void setup()
 {

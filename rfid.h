@@ -27,6 +27,7 @@ class RFID
 
     MFRC522 _mfrc522;
     uint32_t _period_ms = 0;
+    String _uuid_string = "";
 
 public:
     std::function<void(std::vector<byte>)> on_rfid_received = nullptr;
@@ -39,4 +40,9 @@ public:
     void Begin();
 
     void Update();
+
+    String GetUUIDString()
+    {
+        return _uuid_string;
+    }
 };
