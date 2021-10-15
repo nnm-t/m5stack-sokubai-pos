@@ -83,6 +83,7 @@ void AmountState::DrawPrice()
 {
     LCD::FillRect(price_rect_pos, price_rect, color_black);
     LCD::SetTextDatum(TextDatum::MiddleRight);
+    LCD::SetTextColor(color_white, color_black);
     LCD::DrawString(String(abs((_price % 1000) / 100)), price_100_pos);
     
     if (_price < 0 && _price > -1000)
