@@ -159,6 +159,8 @@ void PaymentState::ButtonC()
     // 決定
     // 音を鳴らす
     _speaker->Tone(tone_frequency_hz, tone_duration_ms);
+    delay(tone_duration_ms * 2);
+    _speaker->Tone(tone_frequency_hz, tone_duration_ms);
 
     // 支払いを記録
     PrintSales();
