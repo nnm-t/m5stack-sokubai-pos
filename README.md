@@ -10,10 +10,10 @@ M5Stack Arduino (C++14) で記述しています.
   - サムネイル画像の表示
 - 商品に対応させた RFID カードをタッチして計数
 - 金額入力での売上登録
+- 時刻表示
 - 売上の集計, 表示
   - JSON ファイルへの記録
-  - シリアル通信での逐次送信
-    - Bluetooth SPP も試行したが, 正常に機能せず. Gray ではメモリが不足する?
+  - CSV ファイルへの記録 (時刻記録つき)
 - バッテリ残量表示
 
 ## 必要なハードウェア
@@ -23,6 +23,8 @@ M5Stack Arduino (C++14) で記述しています.
   - 操作系自体は, ソースを改造すれば通常の M5Stack + Joystick Unit でも対応できると思います.
 - [Mini RFID Unit](https://m5stack.com/collections/m5-unit/products/rfid-sensor-unit) (日本未発売)
   - RFID カードの読み込みに使用します. 本体とは Grove ケーブルで接続します.
+- [Proto Module](https://shop.m5stack.com/products/proto-module)
+  - [Adafruit PCF8523 RTCモジュール](https://www.melonbooks.co.jp/detail/detail.php?product_id=1174493) を取り付けて GPIO26 (SDA), GPIO13 (SCL) へ配線します.
 - [13.56MHz RFID Card-F08 Chip](https://m5stack.com/collections/m5-accessory/products/13-56mhz-rfid-card-f08-chip-5pcs) (日本未発売)
   - 13.56MHz RFID (Mifare 規格) カードで代用できます.
 - Micro SD カード
@@ -65,30 +67,46 @@ RFID カードの UUID が含まれるので, リポジトリからは外して�
         { 
             "name" : "商品1",
             "price" : 400,
-            "sales" : 0,
             "image_path" : "/image_1.bmp",
             "uuid" : [ 0, 0, 0, 0 ]
         },
         {
             "name" : "商品2",
             "price" : 300,
-            "sales" : 0,
             "image_path" : "/image_2.bmp",
             "uuid" : [ 0, 0, 0, 0 ]
         }
-    ],
-    "amounts" : []
+    ]
+}
+```
+
+これとは別に, 次の内容で `sales.json` という名前の JSON ファイルも SD カード上に保存しておきます.
+`goods` の要素数は `goods.json` の商品の種類数と同一にします.
+
+```json
+{
+  "goods": [
+    0,
+    0
+  ],
+  "amounts": [
+  ]
 }
 ```
 
 #### データ構造
 
+##### `goods.json`
+
 - `goods`: 商品データのオブジェクト
   - `name`: 商品名. 日本語表示が可能.
   - `price`: 商品の単価.
-  - `sales`: 商品の頒布数. データ作成時は `0` でよい.
   - `image_path`: サムネイル画像の Micro SD カードでのパス.
-  - `uuid`: RFID カードの UUID をバイト配列 (ビッグエンディアン) で記述する.
+  - `uuid`: RFID カードの UUID をバイト配列 (ビッグエンディアン, 10進数) で記述する.
+
+##### `sales.json`
+
+- `goods`: 商品の売上点数が数値で記録される. データ作成時は商品の種類数と同じ要素数 `0` で埋める.
 - `amounts`: 金額入力の売上記録が数値で入る. データ作成時は空配列でよい.
 
 ### サムネイル画像
