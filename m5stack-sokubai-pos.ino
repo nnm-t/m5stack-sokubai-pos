@@ -1,4 +1,6 @@
 #define ESP32
+#define FACES_GAMEBOY
+// #define FACES_KEYBOARD
 
 #include <functional>
 #include <vector>
@@ -21,7 +23,13 @@
 #include "payment-state.h"
 #include "sales-state.h"
 #include "settings-state.h"
+
+#ifdef FACES_GAMEBOY
 #include "game-boy.h"
+#elif FACES_KEYBOARD
+#include "keyboard-faces.h"
+#endif
+
 #include "m5-button.h"
 #include "rfid.h"
 #include "speaker.h"
@@ -66,7 +74,11 @@ SalesState sales_state(&selector, &amount_state, &goods_list, &serial);
 JsonIO json_io(&serial, &goods_list, &amount_state);
 CSVWriter csv_writer(&rtc, &goods_list, &amount_state);
 
-GameBoy gameboy;
+#ifdef FACES_GAMEBOY
+GameBoy panel;
+#elif FACES_KEYBOARD
+KeyboardFaces panel;
+#endif
 M5Button m5_button;
 RFID rfid(&serial, &speaker, mfrc522_address, ticker_ms);
 
@@ -90,15 +102,15 @@ void setup()
     selector.write_json = [&] { json_io.Write(); };
     selector.write_csv = [&] { csv_writer.WritePayment(); };
 
-    gameboy.Begin();
-    gameboy.on_up_pressed = [&]{ selector.Up(); };
-    gameboy.on_down_pressed = [&]{ selector.Down(); };
-    gameboy.on_left_pressed = [&]{ selector.Left(); };
-    gameboy.on_right_pressed = [&]{ selector.Right(); };
-    gameboy.on_start_pressed = [&]{ selector.Start(); };
-    gameboy.on_select_pressed = [&]{ selector.Select(); };
-    gameboy.on_a_pressed = [&]{ selector.GameboyA(); };
-    gameboy.on_b_pressed = [&]{ selector.GameboyB(); };
+    panel.Begin();
+    panel.on_up_pressed = [&]{ selector.Up(); };
+    panel.on_down_pressed = [&]{ selector.Down(); };
+    panel.on_left_pressed = [&]{ selector.Left(); };
+    panel.on_right_pressed = [&]{ selector.Right(); };
+    panel.on_start_pressed = [&]{ selector.Start(); };
+    panel.on_select_pressed = [&]{ selector.Select(); };
+    panel.on_a_pressed = [&]{ selector.GameboyA(); };
+    panel.on_b_pressed = [&]{ selector.GameboyB(); };
 
     m5_button.Begin();
     m5_button.on_button_a_pressed = [&]{ selector.ButtonA(); };
@@ -142,7 +154,7 @@ void OnTimerTicked()
 
     header.Update();
 
-    gameboy.Update();
+    panel.Update();
     m5_button.Update();
 
     selector.Update();
