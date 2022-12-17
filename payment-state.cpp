@@ -79,12 +79,12 @@ void PaymentState::DrawGoods()
 
     if (_page > 0)
     {
-        LCD::FillTriangle(Vector2<int32_t>(290, 190), Vector2<int32_t>(310, 190), Vector2<int32_t>(300, 210), color_red);
+        LCD::FillTriangle(Vector2<int32_t>(290, 50), Vector2<int32_t>(310, 50), Vector2<int32_t>(300, 30), color_red);
     }
 
     if (_page != GetGoodsPages() - 1)
     {
-        LCD::FillTriangle(Vector2<int32_t>(290, 30), Vector2<int32_t>(310, 30), Vector2<int32_t>(300, 50), color_red);
+        LCD::FillTriangle(Vector2<int32_t>(290, 190), Vector2<int32_t>(310, 190), Vector2<int32_t>(300, 210), color_red);
     }
 
     const size_t index_size = _goods_index.size();
