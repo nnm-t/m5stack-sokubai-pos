@@ -10,7 +10,6 @@
 #include "settings-state-mode.h"
 #include "settings-state-datetime.h"
 #include "ble-pos-client.h"
-#include "rfid.h"
 
 class SettingsState : public IState
 {
@@ -76,7 +75,6 @@ class SettingsState : public IState
     RTC* const _rtc;
     Brightness* const _brightness;
     BLEPosClient* const _ble;
-    RFID* const _rfid;
     const uint32_t _delay_ms;
 
     bool _do_connect = false;
@@ -97,12 +95,10 @@ class SettingsState : public IState
 
     void DrawBLE();
 
-    void DrawUUID();
-
     String Convert2Digit(const uint8_t number);
 
 public:
-    SettingsState(StateSelector* const selector, RTC* const rtc, Brightness* const brightness, BLEPosClient* const ble, RFID* const rfid, const uint32_t delay_ms) : _selector(selector), _rtc(rtc), _brightness(brightness), _ble(ble), _rfid(rfid), _delay_ms(delay_ms)
+    SettingsState(StateSelector* const selector, RTC* const rtc, Brightness* const brightness, BLEPosClient* const ble, const uint32_t delay_ms) : _selector(selector), _rtc(rtc), _brightness(brightness), _ble(ble), _delay_ms(delay_ms)
     {
 
     }

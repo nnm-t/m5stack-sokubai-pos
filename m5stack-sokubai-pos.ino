@@ -31,7 +31,6 @@
 #endif
 
 #include "m5-button.h"
-#include "rfid.h"
 #include "speaker.h"
 #include "json-io.h"
 #include "hard-serial.h"
@@ -80,10 +79,9 @@ GameBoy panel;
 KeyboardFaces panel;
 #endif
 M5Button m5_button;
-RFID rfid(&serial, &speaker, mfrc522_address, ticker_ms);
 
 Brightness brightness(brightness_initial, brightness_step);
-SettingsState settings_state(&selector, &rtc, &brightness, &ble_client, &rfid, ticker_ms);
+SettingsState settings_state(&selector, &rtc, &brightness, &ble_client, ticker_ms);
 
 void setup()
 {
@@ -119,17 +117,6 @@ void setup()
 
     speaker.Begin();
 
-    rfid.Begin();
-    rfid.on_rfid_received = [&](vector<byte> uuid)
-    { 
-        if (!selector.IsGoodsState())
-        {
-            return;
-        }
-
-        goods_state.RFIDReceived(uuid);
-    };
-
     json_io.Read();
 
     LCD::FillScreen(color_black);
@@ -158,6 +145,4 @@ void OnTimerTicked()
     m5_button.Update();
 
     selector.Update();
-
-    rfid.Update();
 }
