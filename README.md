@@ -21,7 +21,7 @@ M5Stack Arduino (C++14) で記述しています.
 - [M5Stack FACES](https://m5stack.com/products/face)
   - Gameboy Unit を使用します.
   - 操作系自体は, ソースを改造すれば通常の M5Stack + Joystick Unit でも対応できると思います.
-- [Mini RFID Unit](https://m5stack.com/collections/m5-unit/products/rfid-sensor-unit) (日本未発売)
+- [RFID Unit 2](https://docs.m5stack.com/en/unit/rfid2)
   - RFID カードの読み込みに使用します. 本体とは Grove ケーブルで接続します.
 - [Proto Module](https://shop.m5stack.com/products/proto-module)
   - [Adafruit PCF8523 RTCモジュール](https://www.melonbooks.co.jp/detail/detail.php?product_id=1174493) を取り付けて GPIO26 (SDA), GPIO13 (SCL) へ配線します.
