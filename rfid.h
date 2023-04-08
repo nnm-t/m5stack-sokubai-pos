@@ -16,9 +16,9 @@
 
 class RFID
 {
-    static constexpr const uint32_t min_interval_ms = 250;
+    static constexpr const uint32_t min_interval_ms = 120;
     static constexpr const uint16_t tone_frequency_hz = 440;
-    static constexpr const uint32_t tone_duration_ms = 50;
+    static constexpr const uint32_t tone_duration_ms = 20;
 
     ISerial* const _serial;
     Speaker* const _speaker;
