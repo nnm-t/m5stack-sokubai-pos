@@ -66,6 +66,8 @@ public:
 
     void GameboyB();
 
+    void GameboyReleased();
+
     void ButtonA();
 
     void ButtonB();

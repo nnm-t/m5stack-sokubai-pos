@@ -29,6 +29,8 @@ public:
 
     virtual void GameboyB() = 0;
 
+    virtual void GameboyReleased() = 0;
+
     virtual void ButtonA() = 0;
 
     virtual void ButtonB() = 0;

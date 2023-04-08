@@ -26,6 +26,12 @@ void GoodsState::Begin()
 
 void GoodsState::Update()
 {
+    if (_is_gameboy_a_press)
+    {
+#ifdef ENABLE_RFID
+        _rfid->Update();
+#endif
+    }
     _goods_list->Update();
 }
 
@@ -71,6 +77,16 @@ void GoodsState::Select()
 void GoodsState::Start()
 {
 
+}
+void GoodsState::GameboyA()
+{
+    _is_gameboy_a_press = true;
+}
+
+
+void GoodsState::GameboyReleased()
+{
+    _is_gameboy_a_press = false;
 }
 
 void GoodsState::ButtonA()

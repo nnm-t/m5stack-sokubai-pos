@@ -65,6 +65,11 @@ void StateSelector::GameboyB()
     _current->GameboyB();
 }
 
+void StateSelector::GameboyReleased()
+{
+    _current->GameboyReleased();
+}
+
 void StateSelector::ButtonA()
 {
     _current->ButtonA();
