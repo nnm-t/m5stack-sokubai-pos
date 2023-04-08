@@ -101,6 +101,11 @@ public:
         Down();
     }
 
+    void GameboyReleased() override
+    {
+
+    }
+
     void ButtonA() override;
 
     void ButtonB() override;

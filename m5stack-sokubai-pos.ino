@@ -1,6 +1,4 @@
-#define ESP32
-#define FACES_GAMEBOY
-// #define FACES_KEYBOARD
+#include "config.h"
 
 #include <functional>
 #include <vector>
@@ -64,9 +62,10 @@ Header header(&rtc, &ble_client, ticker_ms);
 Footer footer;
 Speaker speaker;
 GoodsList goods_list(&ble_client);
+RFID rfid(&serial, &speaker, mfrc522_address, ticker_ms);
 
 StateSelector selector(&footer);
-GoodsState goods_state(&selector, &goods_list);
+GoodsState goods_state(&selector, &goods_list, &rfid);
 AmountState amount_state(&selector);
 PaymentState payment_state(&selector, &amount_state, &goods_list, &serial, &speaker);
 SalesState sales_state(&selector, &amount_state, &goods_list, &serial);
@@ -80,7 +79,6 @@ GameBoy panel;
 KeyboardFaces panel;
 #endif
 M5Button m5_button;
-RFID rfid(&serial, &speaker, mfrc522_address, ticker_ms);
 
 Brightness brightness(brightness_initial, brightness_step);
 SettingsState settings_state(&selector, &rtc, &brightness, &ble_client, &rfid, ticker_ms);
@@ -111,6 +109,7 @@ void setup()
     panel.on_select_pressed = [&]{ selector.Select(); };
     panel.on_a_pressed = [&]{ selector.GameboyA(); };
     panel.on_b_pressed = [&]{ selector.GameboyB(); };
+    panel.on_released = [&]{ selector.GameboyReleased(); };
 
     m5_button.Begin();
     m5_button.on_button_a_pressed = [&]{ selector.ButtonA(); };
@@ -119,6 +118,7 @@ void setup()
 
     speaker.Begin();
 
+#ifdef ENABLE_RFID
     rfid.Begin();
     rfid.on_rfid_received = [&](vector<byte> uuid)
     { 
@@ -129,6 +129,7 @@ void setup()
 
         goods_state.RFIDReceived(uuid);
     };
+#endif ENABLE_RFID
 
     json_io.Read();
 
@@ -158,6 +159,4 @@ void OnTimerTicked()
     m5_button.Update();
 
     selector.Update();
-
-    rfid.Update();
 }

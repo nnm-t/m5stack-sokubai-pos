@@ -136,6 +136,11 @@ public:
 
     void GameboyB() override;
 
+    void GameboyReleased() override
+    {
+
+    }
+
     void ButtonA() override;
 
     void ButtonB() override;
