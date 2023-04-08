@@ -24,7 +24,7 @@ M5Stack Arduino (C++14) で記述しています.
 - [RFID Unit 2](https://docs.m5stack.com/en/unit/rfid2)
   - RFID カードの読み込みに使用します. 本体とは Grove ケーブルで接続します.
 - [Proto Module](https://shop.m5stack.com/products/proto-module)
-  - [Adafruit PCF8523 RTCモジュール](https://www.melonbooks.co.jp/detail/detail.php?product_id=1174493) を取り付けて GPIO26 (SDA), GPIO13 (SCL) へ配線します.
+  - [Adafruit PCF8523 RTCモジュール](https://www.adafruit.com/product/3295) を取り付けて GPIO26 (SDA), GPIO13 (SCL) へ配線します.
 - Micro SD カード
   - 商品データの JSON ファイル, サムネイル画像, フォントファイルを保存します.
 
