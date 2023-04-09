@@ -5,6 +5,7 @@ using namespace std;
 constexpr Vector2<uint16_t> Good::image_pos;
 constexpr Vector2<int32_t> Good::name_pos;
 constexpr Vector2<int32_t> Good::name_rect_pos;
+constexpr Vector2<int32_t> Good::price_title_pos;
 constexpr Vector2<int32_t> Good::price_pos;
 constexpr Vector2<int32_t> Good::qty_pos;
 
@@ -60,7 +61,8 @@ void Good::Draw()
     LCD::SetTextDatum(TextDatum::TopLeft);
     LCD::SetTextColor(color_red, color_black);
     LCD::FillRect(price_pos, price_bg_rect, color_black);
-    LCD::DrawString("単価: " + String(_price) + "円", price_pos);
+    LCD::DrawString("単価:", price_title_pos);
+    LCD::DrawString(String(_price) + "円", price_pos);
 
     UpdateQuantity();
 }
