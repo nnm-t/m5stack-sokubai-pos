@@ -208,6 +208,7 @@ void SettingsState::DrawBLE()
 void SettingsState::DrawUUID()
 {
     LCD::FillRect(rfid_title_pos, rfid_rect, color_black);
+    LCD::SetTextColor(color_white, color_black);
     LCD::DrawString("RFID", rfid_title_pos);
     LCD::DrawString(_rfid->GetUUIDString(), rfid_uuid_pos);
 }
@@ -600,16 +601,16 @@ void SettingsState::ButtonC()
 
 void SettingsState::Update()
 {
-    _period_ms += _delay_ms;
+#ifdef ENABLE_RFID
+        _rfid->Update();
+#endif
 
+    _period_ms += _delay_ms;
     if (_period_ms >= min_interval_ms)
     {
         _period_ms = 0;
         DrawBLE();
-#ifdef ENABLE_RFID
-        _rfid->Update();
         DrawUUID();
-#endif
     }
 }
 
