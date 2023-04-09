@@ -63,7 +63,7 @@ public:
 
     void GameboyB() override
     {
-        Down();
+
     }
 
     void GameboyReleased() override;
