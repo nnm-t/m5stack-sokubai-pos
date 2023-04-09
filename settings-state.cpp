@@ -66,6 +66,9 @@ void SettingsState::Draw()
 
     DrawModeArrow();
     DrawTimeUnderLine();
+#ifdef ENABLE_RFID
+    DrawUUID();
+#endif
 }
 
 void SettingsState::DrawModeArrow()
@@ -200,6 +203,13 @@ void SettingsState::DrawBLE()
         ble_status = "スキャン [Aボタン]";
     }
     LCD::DrawString(ble_status, ble_status_pos);
+}
+
+void SettingsState::DrawUUID()
+{
+    LCD::FillRect(rfid_title_pos, rfid_rect, color_black);
+    LCD::DrawString("RFID", rfid_title_pos);
+    LCD::DrawString(_rfid->GetUUIDString(), rfid_uuid_pos);
 }
 
 void SettingsState::Up()
@@ -596,6 +606,10 @@ void SettingsState::Update()
     {
         _period_ms = 0;
         DrawBLE();
+#ifdef ENABLE_RFID
+        _rfid->Update();
+        DrawUUID();
+#endif
     }
 }
 
