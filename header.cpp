@@ -44,6 +44,7 @@ void Header::DrawTime()
     LCD::FillRect(background_pos, background_rect, color_white);
     LCD::SetTextColor(color_black, color_white);
     LCD::SetTextDatum(TextDatum::TopLeft);
+    LCD::SetFont(&fonts::lgfxJapanGothic_20);
 
     LCD::DrawString(Convert2Digit(time.hour()), hour_pos);
     LCD::DrawString(":", hour_slash_pos);

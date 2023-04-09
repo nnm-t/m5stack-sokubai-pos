@@ -3,6 +3,7 @@
 using namespace std;
 
 constexpr const Vector2<int32_t> AmountState::title_pos;
+constexpr const Vector2<int32_t> AmountState::title2_pos;
 constexpr const Vector2<int32_t> AmountState::price_1000_pos;
 constexpr const Vector2<int32_t> AmountState::price_100_pos;
 constexpr const Vector2<int32_t> AmountState::price_lower_pos;
@@ -33,8 +34,10 @@ void AmountState::Draw()
     LCD::SetTextColor(color_white, color_black);
     LCD::SetTextDatum(TextDatum::TopLeft);
     LCD::DrawString("金額入力", title_pos);
+    LCD::DrawString("100円単位で入力して下さい", title2_pos);
 
     LCD::SetTextDatum(TextDatum::MiddleLeft);
+    LCD::SetFont(&fonts::lgfxJapanGothic_32);
     LCD::DrawString("00円", price_lower_pos);
 
     DrawPrice();
@@ -84,6 +87,7 @@ void AmountState::DrawPrice()
     LCD::FillRect(price_rect_pos, price_rect, color_black);
     LCD::SetTextDatum(TextDatum::MiddleRight);
     LCD::SetTextColor(color_white, color_black);
+    LCD::SetFont(&fonts::lgfxJapanGothic_32);
     LCD::DrawString(String(abs((_price % 1000) / 100)), price_100_pos);
     
     if (_price < 0 && _price > -1000)
@@ -93,6 +97,7 @@ void AmountState::DrawPrice()
     }
 
     LCD::DrawString(String(_price / 1000), price_1000_pos);
+    LCD::SetFont(&fonts::lgfxJapanGothic_20);
 }
 
 void AmountState::Left()
