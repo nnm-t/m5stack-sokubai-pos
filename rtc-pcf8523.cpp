@@ -58,8 +58,8 @@ void RTC_PCF8523::adjust(const DateTime& dt)
     _wire->write(bin2bcd(dt.second()));
     _wire->write(bin2bcd(dt.minute()));
     _wire->write(bin2bcd(dt.hour()));
-    _wire->write(bin2bcd(0));
     _wire->write(bin2bcd(dt.day()));
+    _wire->write(bin2bcd(0));
     _wire->write(bin2bcd(dt.month()));
     _wire->write(bin2bcd(dt.year() - 2000));
     _wire->endTransmission();
