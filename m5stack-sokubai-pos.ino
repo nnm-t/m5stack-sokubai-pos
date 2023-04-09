@@ -68,8 +68,8 @@ namespace
 
     StateSelector selector(&footer);
     GoodsState goods_state(&selector, &goods_list, &rfid);
-    AmountState amount_state(&selector);
-    PaymentState payment_state(&selector, &amount_state, &goods_list, &serial, &speaker);
+    AmountState amount_state(&selector, &ble_client);
+    PaymentState payment_state(&selector, &amount_state, &goods_list, &serial, &speaker, &ble_client);
     SalesState sales_state(&selector, &amount_state, &goods_list, &serial);
 
     JsonIO json_io(&serial, &goods_list, &amount_state);

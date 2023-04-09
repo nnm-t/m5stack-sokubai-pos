@@ -98,6 +98,8 @@ void AmountState::DrawPrice()
 
     LCD::DrawString(String(_price / 1000), price_1000_pos);
     LCD::SetFont(&fonts::lgfxJapanGothic_20);
+
+    _ble_client->Write(BLEPosDataType::Amount, static_cast<uint32_t>(_price));
 }
 
 void AmountState::Left()

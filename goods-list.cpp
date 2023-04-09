@@ -112,7 +112,7 @@ void GoodsList::DrawSumPrice()
     LCD::DrawString(String(sum) + "円", sum_pos);
     LCD::SetFont(&fonts::lgfxJapanGothic_20);
 
-    _ble_client->Write(static_cast<uint8_t>(num), static_cast<uint16_t>(sum));
+    _ble_client->Write(BLEPosDataType::Goods, static_cast<uint8_t>(num), static_cast<uint32_t>(sum));
 }
 
 void GoodsList::Reset()

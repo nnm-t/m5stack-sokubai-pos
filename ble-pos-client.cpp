@@ -35,14 +35,14 @@ void BLEPosClient::Update()
     // BLEDevice::getScan()->start(re_scan_duration);
 }
 
-void BLEPosClient::Write(const uint8_t number, const uint16_t price)
+void BLEPosClient::Write(const BLEPosDataType type, const uint8_t number, const uint32_t price)
 {
     if (_price_characteristic == nullptr || !_is_connected)
     {
         return;
     }
 
-    std::array<uint8_t, 3> data = { number, price >> 8, price & 0xFF };
+    std::array<uint8_t, 6> data = { static_cast<uint8_t>(type), number, price >> 24, (price >> 16) & 0xFF, (price >> 8) & 0xFF, price & 0xFF };
     _price_characteristic->writeValue(data.data(), data.size());
 }
 

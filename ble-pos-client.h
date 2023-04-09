@@ -11,6 +11,7 @@
 #include "ble-pos-advertised-device-callbacks.h"
 #include "ble-advertised-device-container.h"
 #include "ble-pos-client-callbacks.h"
+#include "ble-pos-data-type.h"
 
 class BLEPosClient
 {
@@ -67,7 +68,17 @@ public:
 
     void Update();
 
-    void Write(const uint8_t number, const uint16_t price);
+    void Write(const BLEPosDataType type, const uint8_t number, const uint32_t price);
+    
+    void Write(const BLEPosDataType type, const uint32_t price)
+    {
+        Write(type, 0x00, price);
+    }
+    
+    void Write(const BLEPosDataType type)
+    {
+        Write(type, 0x00, 0x00);
+    }
 
     void End();
 };
