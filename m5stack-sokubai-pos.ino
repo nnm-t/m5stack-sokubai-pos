@@ -29,6 +29,7 @@
 #endif
 
 #include "m5-button.h"
+#include "rfid.h"
 #include "speaker.h"
 #include "json-io.h"
 #include "hard-serial.h"
@@ -80,7 +81,7 @@ KeyboardFaces panel;
 M5Button m5_button;
 
 Brightness brightness(brightness_initial, brightness_step);
-SettingsState settings_state(&selector, &rtc, &brightness, &ble_client, ticker_ms);
+SettingsState settings_state(&selector, &rtc, &brightness, &ble_client, &rfid, ticker_ms);
 
 void setup()
 {
