@@ -151,6 +151,8 @@ void setup()
 void loop()
 {
     settings_state.UpdateMainLoop();
+
+    ble_client.Update();
 }
 
 void OnTimerTicked()

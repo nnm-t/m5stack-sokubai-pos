@@ -29,6 +29,8 @@ class BLEPosClient
     BLEClient* _client = nullptr;
     BLERemoteService* _service = nullptr;
     BLERemoteCharacteristic* _price_characteristic = nullptr;
+    bool _is_write_ready = false;
+    std::array<uint8_t, 6> _write_data = { 0, 0, 0, 0, 0, 0 };
 
 public:
     BLEPosClient(const char* device_name, BLEUUID& service_uuid, BLEUUID& num_characteristic_uuid, BLEUUID& price_characteristic_uuid, ISerial* const serial) : _device_name(device_name), _service_uuid(service_uuid), _num_characteristic_uuid(num_characteristic_uuid), _price_characteristic_uuid(price_characteristic_uuid), _advertised_device(BLEAdvertisedDeviceContainer()), _serial(serial)
