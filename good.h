@@ -26,8 +26,9 @@ class Good
 
     static constexpr Vector2<uint16_t> image_pos = Vector2<uint16_t>(40, 60);
     static constexpr Vector2<int32_t> name_pos = Vector2<int32_t>(20, 30);
-    static constexpr Vector2<int32_t> price_pos = Vector2<int32_t>(170, 110);
-    static constexpr Vector2<int32_t> qty_pos = Vector2<int32_t>(170, 140);
+    static constexpr Vector2<int32_t> price_title_pos = Vector2<int32_t>(170, 70);
+    static constexpr Vector2<int32_t> price_pos = Vector2<int32_t>(170, 90);
+    static constexpr Vector2<int32_t> qty_pos = Vector2<int32_t>(170, 120);
 
     static constexpr Vector2<int32_t> name_rect_pos = Vector2<int32_t>(19, 29);
     static constexpr Rect<int32_t> name_rect = Rect<int32_t>(title_rect.Width() + title_width + 2, title_rect.Height() + 2);

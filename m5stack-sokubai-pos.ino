@@ -6,6 +6,8 @@
 #include <M5Stack.h>
 #include <Ticker.h>
 #include <ArduinoJson.h>
+#include <LovyanGFX.hpp>
+#include <LGFX_AUTODETECT.hpp>
 
 #include "constants.h"
 #include "vector2.h"
@@ -45,46 +47,48 @@ namespace
     constexpr const uint32_t ticker_ms = 20;
     constexpr const uint8_t brightness_initial = 63;
     constexpr const uint8_t brightness_step = 16;
+
+    LGFX lcd;
+    Ticker ticker;
+
+    HardSerial serial;
+    RTC rtc;
+
+    // UUID 16bit形式でないとESP32 BLE ClientでAdvertiseできない
+    BLEUUID service_uuid(static_cast<uint16_t>(0xF6E7));
+    BLEUUID num_characteristic_uuid(static_cast<uint16_t>(0x0000));
+    BLEUUID price_characteristic_uuid(static_cast<uint16_t>(0x0001));
+    BLEPosClient ble_client("M5Stack-Sokubai-Pos", service_uuid, num_characteristic_uuid, price_characteristic_uuid, &serial);
+
+    Header header(&rtc, &ble_client, ticker_ms);
+    Footer footer;
+    Speaker speaker;
+    GoodsList goods_list(&ble_client);
+    RFID rfid(&serial, &speaker, mfrc522_address, ticker_ms);
+
+    StateSelector selector(&footer);
+    GoodsState goods_state(&selector, &goods_list, &rfid);
+    AmountState amount_state(&selector, &ble_client);
+    PaymentState payment_state(&selector, &amount_state, &goods_list, &serial, &speaker, &ble_client);
+    SalesState sales_state(&selector, &amount_state, &goods_list, &serial);
+
+    JsonIO json_io(&serial, &goods_list, &amount_state);
+    CSVWriter csv_writer(&rtc, &goods_list, &amount_state);
+
+    #ifdef FACES_GAMEBOY
+    GameBoy panel;
+    #elif FACES_KEYBOARD
+    KeyboardFaces panel;
+    #endif
+    M5Button m5_button;
+
+    Brightness brightness(brightness_initial, brightness_step);
+    SettingsState settings_state(&selector, &rtc, &brightness, &ble_client, &rfid, ticker_ms);
 }
-
-Ticker ticker;
-
-HardSerial serial;
-RTC rtc;
-
-// UUID 16bit形式でないとESP32 BLE ClientでAdvertiseできない
-BLEUUID service_uuid(static_cast<uint16_t>(0xF6E7));
-BLEUUID num_characteristic_uuid(static_cast<uint16_t>(0x0000));
-BLEUUID price_characteristic_uuid(static_cast<uint16_t>(0x0001));
-BLEPosClient ble_client("M5Stack-Sokubai-Pos", service_uuid, num_characteristic_uuid, price_characteristic_uuid, &serial);
-
-Header header(&rtc, &ble_client, ticker_ms);
-Footer footer;
-Speaker speaker;
-GoodsList goods_list(&ble_client);
-RFID rfid(&serial, &speaker, mfrc522_address, ticker_ms);
-
-StateSelector selector(&footer);
-GoodsState goods_state(&selector, &goods_list, &rfid);
-AmountState amount_state(&selector);
-PaymentState payment_state(&selector, &amount_state, &goods_list, &serial, &speaker);
-SalesState sales_state(&selector, &amount_state, &goods_list, &serial);
-
-JsonIO json_io(&serial, &goods_list, &amount_state);
-CSVWriter csv_writer(&rtc, &goods_list, &amount_state);
-
-#ifdef FACES_GAMEBOY
-GameBoy panel;
-#elif FACES_KEYBOARD
-KeyboardFaces panel;
-#endif
-M5Button m5_button;
-
-Brightness brightness(brightness_initial, brightness_step);
-SettingsState settings_state(&selector, &rtc, &brightness, &ble_client, &rfid, ticker_ms);
 
 void setup()
 {
+    LCD::Init(&lcd);
     M5.begin();
     SD.begin();
 
@@ -134,7 +138,7 @@ void setup()
     json_io.Read();
 
     LCD::FillScreen(color_black);
-    LCD::LoadFont(font_20pt);
+    LCD::SetFont(&fonts::lgfxJapanGothic_20);
 
     header.Begin();
     selector.Begin();
@@ -147,6 +151,8 @@ void setup()
 void loop()
 {
     settings_state.UpdateMainLoop();
+
+    ble_client.Update();
 }
 
 void OnTimerTicked()

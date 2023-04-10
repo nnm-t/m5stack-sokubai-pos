@@ -2,6 +2,7 @@
 
 using namespace std;
 
+constexpr Vector2<int32_t> GoodsList::sum_title_pos;
 constexpr Vector2<int32_t> GoodsList::sum_pos;
 constexpr Vector2<int32_t> GoodsList::sum_rect_pos;
 
@@ -106,9 +107,12 @@ void GoodsList::DrawSumPrice()
     LCD::SetTextDatum(TextDatum::TopLeft);
 
     LCD::FillRect(sum_rect_pos, sum_rect, color_black);
-    LCD::DrawString("合計: " + String(sum) + "円", sum_pos);
+    LCD::DrawString("合計:", sum_title_pos);
+    LCD::SetFont(&fonts::lgfxJapanGothic_32);
+    LCD::DrawString(String(sum) + "円", sum_pos);
+    LCD::SetFont(&fonts::lgfxJapanGothic_20);
 
-    _ble_client->Write(static_cast<uint8_t>(num), static_cast<uint16_t>(sum));
+    _ble_client->Write(BLEPosDataType::Goods, static_cast<uint8_t>(num), static_cast<uint32_t>(sum));
 }
 
 void GoodsList::Reset()

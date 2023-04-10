@@ -24,6 +24,29 @@ void BLEPosClient::Update()
 {
     if (_is_connected)
     {
+        if (_price_characteristic == nullptr)
+        {
+            return;
+        }
+
+        if (!_is_write_ready)
+        {
+            return;
+        }
+
+        _price_characteristic->writeValue(_write_data.data(), _write_data.size());
+
+        String write_data_string = "BLE Send:";
+        for (uint8_t i = 0; i < _write_data.size(); i++)
+        {
+            write_data_string += " ";
+            write_data_string += String(_write_data[i]);
+        }
+
+        Serial.println(write_data_string);
+
+        _is_write_ready = false;
+
         return;
     }
 
@@ -35,15 +58,21 @@ void BLEPosClient::Update()
     // BLEDevice::getScan()->start(re_scan_duration);
 }
 
-void BLEPosClient::Write(const uint8_t number, const uint16_t price)
+void BLEPosClient::Write(const BLEPosDataType type, const uint8_t number, const uint32_t price)
 {
     if (_price_characteristic == nullptr || !_is_connected)
     {
         return;
     }
 
-    std::array<uint8_t, 3> data = { number, price >> 8, price & 0xFF };
-    _price_characteristic->writeValue(data.data(), data.size());
+    _write_data[0] = static_cast<uint8_t>(type);
+    _write_data[1] = number;
+    _write_data[2] = price >> 24;
+    _write_data[3] = (price >> 16) & 0xFF;
+    _write_data[4] = (price >> 8) & 0xFF;
+    _write_data[5] = price & 0xFF;
+
+    _is_write_ready = true;
 }
 
 const bool BLEPosClient::Connect()
