@@ -1,7 +1,7 @@
 #pragma once
 
 #define ESP32
-#define LGFX_AUTODETECT
+#define LGFX_M5STACK
 
 // FACES Panelの種類に合わせて選択
 #define FACES_GAMEBOY
