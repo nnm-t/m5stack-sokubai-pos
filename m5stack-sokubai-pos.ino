@@ -54,11 +54,9 @@ namespace
     HardSerial serial;
     RTC rtc;
 
-    // UUID 16bit形式でないとESP32 BLE ClientでAdvertiseできない
-    BLEUUID service_uuid(static_cast<uint16_t>(0xF6E7));
-    BLEUUID num_characteristic_uuid(static_cast<uint16_t>(0x0000));
-    BLEUUID price_characteristic_uuid(static_cast<uint16_t>(0x0001));
-    BLEPosClient ble_client("M5Stack-Sokubai-Pos", service_uuid, num_characteristic_uuid, price_characteristic_uuid, &serial);
+    BLEUUID service_uuid("1b36fd1e-6fc4-4dc6-8c82-c13552b88789");
+    BLEUUID price_characteristic_uuid("4ee58129-a22f-41cd-bdca-4079fe0632d0");
+    BLEPosClient ble_client("M5Stack-Sokubai-Pos", service_uuid, price_characteristic_uuid, &serial);
 
     Header header(&rtc, &ble_client, ticker_ms);
     Footer footer;

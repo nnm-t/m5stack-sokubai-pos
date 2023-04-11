@@ -19,7 +19,6 @@ class BLEPosClient
 
     const char* _device_name;
     BLEUUID _service_uuid;
-    BLEUUID _num_characteristic_uuid;
     BLEUUID _price_characteristic_uuid;
     ISerial* const _serial;
 
@@ -33,7 +32,7 @@ class BLEPosClient
     std::array<uint8_t, 6> _write_data = { 0, 0, 0, 0, 0, 0 };
 
 public:
-    BLEPosClient(const char* device_name, BLEUUID& service_uuid, BLEUUID& num_characteristic_uuid, BLEUUID& price_characteristic_uuid, ISerial* const serial) : _device_name(device_name), _service_uuid(service_uuid), _num_characteristic_uuid(num_characteristic_uuid), _price_characteristic_uuid(price_characteristic_uuid), _advertised_device(BLEAdvertisedDeviceContainer()), _serial(serial)
+    BLEPosClient(const char* device_name, BLEUUID& service_uuid, BLEUUID& price_characteristic_uuid, ISerial* const serial) : _device_name(device_name), _service_uuid(service_uuid), _price_characteristic_uuid(price_characteristic_uuid), _advertised_device(BLEAdvertisedDeviceContainer()), _serial(serial)
     {
 
     }
