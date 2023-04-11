@@ -13,8 +13,8 @@ void GoodsList::Deserialize(JsonArray& json_goods, JsonArray& json_sales)
 {
     for (size_t i = 0; i < json_goods.size(); i++)
     {
-        auto goods = json_goods.getElement(i);
-        auto sales = json_sales.getElement(i);
+        JsonVariant goods = json_goods[i];
+        JsonVariant sales = json_sales[i];
         _goods.push_back(Good::Deserialize(goods, sales));
     }
 }

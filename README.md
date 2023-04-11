@@ -37,10 +37,9 @@ Arduino IDE で M5Stack 開発ができる環境を組んで下さい.
 
 リポジトリには含まれていないので, 下記 URL から収集します.
 
-- [ArduinoJson 6.19](https://arduinojson.org/)
-  - 6.20 以降は未対応
-- [M5Stack Arduino Library](https://github.com/m5stack/M5Stack)
-- [LovyanGFX](https://github.com/lovyan03/LovyanGFX)
+- [ArduinoJson 6.21.1](https://arduinojson.org/)
+- [M5Stack Arduino Library 0.4.3](https://github.com/m5stack/M5Stack)
+- [LovyanGFX 1.1.5](https://github.com/lovyan03/LovyanGFX)
 
 ESP32 の I2C1 用に自前で組んだものを含んでいるので, RTC (PCF8523) のライブラリは不要.
 
