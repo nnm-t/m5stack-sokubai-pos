@@ -24,6 +24,7 @@ M5Stack Arduino (C++14) で記述しています.
   - 操作系自体は, ソースを改造すれば通常の M5Stack + Joystick Unit でも対応できると思います.
 - [RFID Unit 2](https://docs.m5stack.com/en/unit/rfid2)
   - RFID カードの読み込みに使用します. 本体とは Grove ケーブルで接続します.
+  - FACES II Bottom 使用時は, スキャン中に側面のNeoPixelが点灯します.
 - [Proto Module](https://shop.m5stack.com/products/proto-module)
   - [Adafruit PCF8523 RTCモジュール](https://www.adafruit.com/product/3295) を取り付けて GPIO26 (SDA), GPIO13 (SCL) へ配線します.
 - Micro SD カード
@@ -37,7 +38,7 @@ Arduino IDE で M5Stack 開発ができる環境を組んで下さい.
 
 リポジトリには含まれていないので, 下記 URL から収集します.
 
-- [ArduinoJson 6.21.1](https://arduinojson.org/)
+- [ArduinoJson 6.21.2](https://arduinojson.org/)
 - [M5Stack Arduino Library 0.4.3](https://github.com/m5stack/M5Stack)
 - [LovyanGFX 1.1.5](https://github.com/lovyan03/LovyanGFX)
 
