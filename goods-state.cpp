@@ -81,11 +81,17 @@ void GoodsState::Start()
 void GoodsState::GameboyA()
 {
     _is_gameboy_a_press = true;
+#ifdef ENABLE_RFID
+    _neopixel->SetAll(neopixel_color, neopixel_brightness);
+#endif
 }
 
 
 void GoodsState::GameboyReleased()
 {
+#ifdef ENABLE_RFID
+    _neopixel->UnsetAll();
+#endif
     _is_gameboy_a_press = false;
 }
 

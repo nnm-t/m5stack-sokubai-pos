@@ -32,6 +32,7 @@
 
 #include "m5-button.h"
 #include "rfid.h"
+#include "neopixel.h"
 #include "speaker.h"
 #include "json-io.h"
 #include "hard-serial.h"
@@ -53,6 +54,7 @@ namespace
 
     HardSerial serial;
     RTC rtc;
+    NeoPixel neopixel;
 
     BLEUUID service_uuid("1b36fd1e-6fc4-4dc6-8c82-c13552b88789");
     BLEUUID price_characteristic_uuid("4ee58129-a22f-41cd-bdca-4079fe0632d0");
@@ -65,7 +67,7 @@ namespace
     RFID rfid(&serial, &speaker, mfrc522_address, ticker_ms);
 
     StateSelector selector(&footer);
-    GoodsState goods_state(&selector, &goods_list, &rfid);
+    GoodsState goods_state(&selector, &goods_list, &rfid, &neopixel);
     AmountState amount_state(&selector, &ble_client);
     PaymentState payment_state(&selector, &amount_state, &goods_list, &serial, &speaker, &ble_client);
     SalesState sales_state(&selector, &amount_state, &goods_list, &serial);
@@ -93,6 +95,7 @@ void setup()
     serial.Begin();
     brightness.Begin();
     rtc.Begin();
+    neopixel.Begin();
 
     selector.goods_state = &goods_state;
     selector.amount_state = &amount_state;
