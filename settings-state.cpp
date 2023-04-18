@@ -39,9 +39,9 @@ FooterText SettingsState::GetFooterText()
 {
     if (_ble->IsConnected())
     {
-        return FooterText("戻る", "BLE切断", "決定");
+        return FooterText("戻る", "BLE切断", "RTC設定");
     }
-    return FooterText("戻る", "BLE接続", "決定");
+    return FooterText("戻る", "BLE接続", "RTC設定");
 }
 
 void SettingsState::Begin()
