@@ -32,7 +32,9 @@ class SalesState : public IState
     static constexpr const Vector2<int32_t> amount_right_pos = Vector2<int32_t>(good_x_right, amount_y);
 
     static constexpr const Vector2<int32_t> price_left_pos = Vector2<int32_t>(good_x_left, price_y);
-    static constexpr const Vector2<int32_t> price_right_pos = Vector2<int32_t>(good_x_right, price_y);
+    static constexpr const Vector2<int32_t> price_right_pos = Vector2<int32_t>(280, price_y);
+    static constexpr const Vector2<int32_t> price_line_left_pos = Vector2<int32_t>(good_x_left, 210);
+    static constexpr const Vector2<int32_t> price_line_right_pos = Vector2<int32_t>(280, 210);
 
     static constexpr const Vector2<int32_t> bg_list_pos = Vector2<int32_t>(0, 30);
     static constexpr const Rect<int32_t> bg_list_rect = Rect<int32_t>(320, 160);

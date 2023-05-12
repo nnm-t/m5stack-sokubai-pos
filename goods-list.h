@@ -82,7 +82,7 @@ public:
 
         for (Good& good: _goods)
         {
-            if (good.GetQuantity() != 1)
+            if (good.GetQuantity() > 0)
             {
                 modifies++;
             }

@@ -7,6 +7,8 @@ constexpr Vector2<int32_t> PaymentState::amount_left_pos;
 constexpr Vector2<int32_t> PaymentState::amount_right_pos;
 constexpr Vector2<int32_t> PaymentState::price_left_pos;
 constexpr Vector2<int32_t> PaymentState::price_right_pos;
+constexpr Vector2<int32_t> PaymentState::price_line_left_pos;
+constexpr Vector2<int32_t> PaymentState::price_line_right_pos;
 
 constexpr Vector2<int32_t> PaymentState::goods_bg_pos;
 
@@ -66,7 +68,7 @@ void PaymentState::Draw()
     LCD::DrawString("合計", price_left_pos);
     LCD::SetTextDatum(TextDatum::TopRight);
     LCD::DrawString(String(_sum_price) + "円", price_right_pos);
-    LCD::DrawLine(price_left_pos, price_right_pos, color_accent2);
+    LCD::DrawLine(price_line_left_pos, price_line_right_pos, color_accent2);
 
     _ble_client->Write(BLEPosDataType::Sum, static_cast<uint32_t>(_sum_price));
 }

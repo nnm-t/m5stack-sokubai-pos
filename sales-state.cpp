@@ -8,6 +8,8 @@ constexpr const Vector2<int32_t> SalesState::amount_left_pos;
 constexpr const Vector2<int32_t> SalesState::amount_right_pos;
 constexpr const Vector2<int32_t> SalesState::price_left_pos;
 constexpr const Vector2<int32_t> SalesState::price_right_pos;
+constexpr const Vector2<int32_t> SalesState::price_line_left_pos;
+constexpr const Vector2<int32_t> SalesState::price_line_right_pos;
 
 constexpr const Vector2<int32_t> SalesState::bg_list_pos;
 constexpr const Rect<int32_t> SalesState::bg_list_rect;
@@ -194,7 +196,7 @@ void SalesState::Draw()
     LCD::DrawString("合計", price_left_pos);
     LCD::SetTextDatum(TextDatum::TopRight);
     LCD::DrawString(String(sum_price) + "円", price_right_pos);
-    LCD::DrawLine(price_left_pos, price_right_pos, color_accent2);
+    LCD::DrawLine(price_line_left_pos, price_line_right_pos, color_accent2);
 }
 
 void SalesState::ButtonA()
