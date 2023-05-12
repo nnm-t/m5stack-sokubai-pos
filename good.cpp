@@ -4,10 +4,15 @@ using namespace std;
 
 constexpr Vector2<uint16_t> Good::image_pos;
 constexpr Vector2<int32_t> Good::name_pos;
+constexpr Vector2<int32_t> Good::name_line_pos;
+constexpr Vector2<int32_t> Good::name_line_end_pos;
 constexpr Vector2<int32_t> Good::name_rect_pos;
 constexpr Vector2<int32_t> Good::price_title_pos;
 constexpr Vector2<int32_t> Good::price_pos;
+constexpr Vector2<int32_t> Good::price_rect_pos;
 constexpr Vector2<int32_t> Good::qty_pos;
+constexpr Vector2<int32_t> Good::qty_num_pos;
+constexpr Vector2<int32_t> Good::qty_num_rect_pos;
 
 constexpr Rect<int32_t> Good::name_rect;
 constexpr Rect<int32_t> Good::price_bg_rect;
@@ -46,10 +51,13 @@ int16_t Good::Serialize()
 void Good::UpdateQuantity()
 {
     LCD::SetTextDatum(TextDatum::TopLeft);
-    LCD::SetTextColor(color_white, color_black);
+    LCD::SetTextColor(color_foreground, color_background1);
 
-    LCD::FillRect(qty_pos, qty_bg_rect, color_black);
-    LCD::DrawString("数量: " + String(_quantity), qty_pos);
+    LCD::FillRect(qty_num_rect_pos, qty_bg_rect, color_background1);
+    LCD::DrawString("数量", qty_pos);
+    LCD::SetTextDatum(TextDatum::TopRight);
+    LCD::DrawString(String(_quantity) + "個", qty_num_pos);
+    LCD::SetTextDatum(TextDatum::TopLeft);
 }
 
 void Good::Draw()
@@ -59,20 +67,23 @@ void Good::Draw()
     DrawName();
 
     LCD::SetTextDatum(TextDatum::TopLeft);
-    LCD::SetTextColor(color_red, color_black);
-    LCD::FillRect(price_pos, price_bg_rect, color_black);
-    LCD::DrawString("単価:", price_title_pos);
+    LCD::SetTextColor(color_accent1, color_background1);
+    LCD::FillRect(price_rect_pos, price_bg_rect, color_background1);
+    LCD::DrawString("単価", price_title_pos);
+    LCD::SetTextDatum(TextDatum::TopRight);
     LCD::DrawString(String(_price) + "円", price_pos);
+    LCD::SetTextDatum(TextDatum::TopLeft);
 
     UpdateQuantity();
 }
 
 void Good::DrawName()
 {
-    LCD::FillRect(name_rect_pos, name_rect, color_black);
+    LCD::FillRect(name_rect_pos, name_rect, color_background1);
     LCD::SetTextDatum(TextDatum::TopLeft);
-    LCD::SetTextColor(color_white, color_black);
+    LCD::SetTextColor(color_foreground, color_background1);
     LCD::DrawString(_name, name_pos);
+    LCD::DrawLine(name_line_pos, name_line_end_pos, color_foreground);
 }
 
 void Good::Update()

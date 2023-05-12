@@ -5,6 +5,8 @@ using namespace std;
 constexpr Vector2<int32_t> GoodsList::sum_title_pos;
 constexpr Vector2<int32_t> GoodsList::sum_pos;
 constexpr Vector2<int32_t> GoodsList::sum_rect_pos;
+constexpr Vector2<int32_t> GoodsList::sum_line_start_pos;
+constexpr Vector2<int32_t> GoodsList::sum_line_end_pos;
 
 constexpr Rect<int32_t> GoodsList::sum_rect;
 constexpr Rect<int16_t> GoodsList::name_rect;
@@ -103,14 +105,17 @@ void GoodsList::DrawSumPrice()
         sum += good.GetSumPrice();
     }
 
-    LCD::SetTextColor(color_yellow, color_black);
+    LCD::SetTextColor(color_accent2, color_background1);
     LCD::SetTextDatum(TextDatum::TopLeft);
 
-    LCD::FillRect(sum_rect_pos, sum_rect, color_black);
-    LCD::DrawString("合計:", sum_title_pos);
+    LCD::FillRect(sum_rect_pos, sum_rect, color_background1);
+    LCD::DrawString("合計", sum_title_pos);
+    LCD::DrawLine(sum_line_start_pos, sum_line_end_pos, color_accent2);
     LCD::SetFont(&fonts::lgfxJapanGothic_32);
+    LCD::SetTextDatum(TextDatum::TopRight);
     LCD::DrawString(String(sum) + "円", sum_pos);
     LCD::SetFont(&fonts::lgfxJapanGothic_20);
+    LCD::SetTextDatum(TextDatum::TopLeft);
 
     _ble_client->Write(BLEPosDataType::Goods, static_cast<uint8_t>(num), static_cast<uint32_t>(sum));
 }

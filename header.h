@@ -35,7 +35,7 @@ class Header
     static constexpr Vector2<int32_t> minute_slash_pos = Vector2<int32_t>(95, 0);
     static constexpr Vector2<int32_t> second_pos = Vector2<int32_t>(110, 0);
 
-    static constexpr Vector2<int32_t> battery_pos = Vector2<int32_t>(320, 1);
+    static constexpr Vector2<int32_t> battery_pos = Vector2<int32_t>(310, 1);
     static constexpr Vector2<int32_t> battery_rect_pos = Vector2<int32_t>(240, 0);
     static constexpr Vector2<int32_t> connected_pos = Vector2<int32_t>(20, 1);
 

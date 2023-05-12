@@ -52,6 +52,8 @@ public:
 
     static void DrawLine(const Vector2<int16_t>& pos0, const Vector2<int16_t>& pos1, const Color16& color);
 
+    static void DrawLine(const Vector2<int32_t>& pos0, const Vector2<int32_t>& pos1, const Color16& color);
+
     static void SetTextSize(const uint8_t size);
     
     static void SetBrightness(const uint8_t brightness);

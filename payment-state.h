@@ -34,7 +34,7 @@ class PaymentState : public IState
     static constexpr const Vector2<int32_t> amount_right_pos = Vector2<int32_t>(good_x_right, amount_y);
 
     static constexpr const Vector2<int32_t> price_left_pos = Vector2<int32_t>(good_x_left, price_y);
-    static constexpr const Vector2<int32_t> price_right_pos = Vector2<int32_t>(280, price_y);
+    static constexpr const Vector2<int32_t> price_right_pos = Vector2<int32_t>(good_x_right, price_y);
 
     static constexpr const Vector2<int32_t> goods_bg_pos = Vector2<int32_t>(good_x_left, good_y);
 

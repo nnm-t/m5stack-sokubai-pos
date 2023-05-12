@@ -3,6 +3,7 @@
 using namespace std;
 
 constexpr Vector2<int32_t> GoodsState::title_pos;
+constexpr Vector2<int32_t> GoodsState::note_pos;
 
 constexpr Vector2<int32_t> GoodsState::left_tr0;
 constexpr Vector2<int32_t> GoodsState::left_tr1;
@@ -37,14 +38,15 @@ void GoodsState::Update()
 
 void GoodsState::Draw()
 {
-    LCD::SetTextColor(color_white, color_black);
+    LCD::SetTextColor(color_foreground, color_background1);
     LCD::SetTextDatum(TextDatum::TopLeft);
     LCD::DrawString("商品入力", title_pos);
 
-    LCD::FillRect(bg_pos, bg_rect, color_black);
+    LCD::FillRect(bg_pos, bg_rect, color_background1);
 
-    LCD::FillTriangle(left_tr0, left_tr1, left_tr2, color_red);
-    LCD::FillTriangle(right_tr0, right_tr1, right_tr2, color_red);
+    LCD::FillTriangle(left_tr0, left_tr1, left_tr2, color_accent1);
+    LCD::FillTriangle(right_tr0, right_tr1, right_tr2, color_accent1);
+    LCD::DrawString("Aボタンを押してスキャン", note_pos);
 
     _goods_list->Draw();
 }

@@ -20,10 +20,10 @@ FooterText PaymentState::GetFooterText()
 
 void PaymentState::Draw()
 {
-    LCD::FillRect(bg_pos, bg_rect, color_black);
+    LCD::FillRect(bg_pos, bg_rect, color_background1);
 
     LCD::SetTextDatum(TextDatum::TopLeft);
-    LCD::SetTextColor(color_white, color_black);
+    LCD::SetTextColor(color_foreground, color_background1);
     LCD::DrawString("支払", title_pos);
 
     _goods_index.clear();
@@ -61,38 +61,40 @@ void PaymentState::Draw()
         _sum_price += amount_price;
     }
 
-    LCD::SetTextColor(color_yellow, color_black);
+    LCD::SetTextColor(color_accent2, color_background1);
     LCD::SetTextDatum(TextDatum::TopLeft);
     LCD::DrawString("合計", price_left_pos);
     LCD::SetTextDatum(TextDatum::TopRight);
     LCD::DrawString(String(_sum_price) + "円", price_right_pos);
+    LCD::DrawLine(price_left_pos, price_right_pos, color_accent2);
 
     _ble_client->Write(BLEPosDataType::Sum, static_cast<uint32_t>(_sum_price));
 }
 
 void PaymentState::DrawGoods()
 {
-    LCD::SetTextColor(color_white, color_black);
+    LCD::SetTextColor(color_foreground, color_background1);
 
-    LCD::FillRect(goods_bg_pos, goods_bg_rect, color_black);
+    LCD::FillRect(goods_bg_pos, goods_bg_rect, color_background1);
 
-    LCD::FillRect(Vector2<int32_t>(289, 189), triangle_rect, color_black);
-    LCD::FillRect(Vector2<int32_t>(289, 29), triangle_rect, color_black);
+    LCD::FillRect(Vector2<int32_t>(289, 189), triangle_rect, color_background1);
+    LCD::FillRect(Vector2<int32_t>(289, 29), triangle_rect, color_background1);
 
     if (_page > 0)
     {
-        LCD::FillTriangle(Vector2<int32_t>(290, 50), Vector2<int32_t>(310, 50), Vector2<int32_t>(300, 30), color_red);
+        LCD::FillTriangle(Vector2<int32_t>(290, 50), Vector2<int32_t>(310, 50), Vector2<int32_t>(300, 30), color_accent1);
     }
 
     if (_page != GetGoodsPages() - 1)
     {
-        LCD::FillTriangle(Vector2<int32_t>(290, 190), Vector2<int32_t>(310, 190), Vector2<int32_t>(300, 210), color_red);
+        LCD::FillTriangle(Vector2<int32_t>(290, 190), Vector2<int32_t>(310, 190), Vector2<int32_t>(300, 210), color_accent1);
     }
 
     const size_t index_size = _goods_index.size();
 
     if (index_size == 0)
     {
+        LCD::DrawRect(goods_bg_pos, goods_bg_rect, color_foreground);
         return;
     }
 
@@ -124,6 +126,8 @@ void PaymentState::DrawGoods()
 
         y += good_y_span;
     }
+
+    LCD::DrawRect(goods_bg_pos, goods_bg_rect, color_foreground);
 }
 
 void PaymentState::Up()

@@ -26,14 +26,19 @@ class Good
 
     static constexpr Vector2<uint16_t> image_pos = Vector2<uint16_t>(40, 60);
     static constexpr Vector2<int32_t> name_pos = Vector2<int32_t>(20, 30);
-    static constexpr Vector2<int32_t> price_title_pos = Vector2<int32_t>(170, 70);
-    static constexpr Vector2<int32_t> price_pos = Vector2<int32_t>(170, 90);
-    static constexpr Vector2<int32_t> qty_pos = Vector2<int32_t>(170, 120);
+    static constexpr Vector2<int32_t> name_line_pos = Vector2<int32_t>(20, 50);
+    static constexpr Vector2<int32_t> name_line_end_pos = Vector2<int32_t>(300, 50);
+    static constexpr Vector2<int32_t> price_title_pos = Vector2<int32_t>(170, 60);
+    static constexpr Vector2<int32_t> price_pos = Vector2<int32_t>(280, 60);
+    static constexpr Vector2<int32_t> price_rect_pos = Vector2<int32_t>(220, 60);
+    static constexpr Vector2<int32_t> qty_pos = Vector2<int32_t>(170, 90);
+    static constexpr Vector2<int32_t> qty_num_pos = Vector2<int32_t>(280, 90);
+    static constexpr Vector2<int32_t> qty_num_rect_pos = Vector2<int32_t>(220, 90);
 
     static constexpr Vector2<int32_t> name_rect_pos = Vector2<int32_t>(19, 29);
     static constexpr Rect<int32_t> name_rect = Rect<int32_t>(title_rect.Width() + title_width + 2, title_rect.Height() + 2);
-    static constexpr Rect<int32_t> price_bg_rect = Rect<int32_t>(120, 20);
-    static constexpr Rect<int32_t> qty_bg_rect = Rect<int32_t>(90, 20);
+    static constexpr Rect<int32_t> price_bg_rect = Rect<int32_t>(70, 20);
+    static constexpr Rect<int32_t> qty_bg_rect = Rect<int32_t>(70, 20);
 
     String _name;
     String _image_path;

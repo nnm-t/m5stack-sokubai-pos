@@ -16,12 +16,14 @@
 
 class GoodsList
 {
-    static constexpr Vector2<int32_t> sum_title_pos = Vector2<int32_t>(170, 150);
-    static constexpr Vector2<int32_t> sum_pos = Vector2<int32_t>(170, 170);
-    static constexpr Vector2<int32_t> sum_rect_pos = Vector2<int32_t>(170, 170);
+    static constexpr Vector2<int32_t> sum_title_pos = Vector2<int32_t>(170, 120);
+    static constexpr Vector2<int32_t> sum_pos = Vector2<int32_t>(280, 148);
+    static constexpr Vector2<int32_t> sum_rect_pos = Vector2<int32_t>(160, 140);
+    static constexpr Vector2<int32_t> sum_line_start_pos = Vector2<int32_t>(170, 140);
+    static constexpr Vector2<int32_t> sum_line_end_pos = Vector2<int32_t>(280, 140);
 
     static constexpr Rect<int16_t> name_rect = Rect<int16_t>(title_rect.Width() + title_width, title_rect.Height());
-    static constexpr Rect<int32_t> sum_rect = Rect<int32_t>(150, 32);
+    static constexpr Rect<int32_t> sum_rect = Rect<int32_t>(120, 40);
 
     std::vector<Good> _goods;
 

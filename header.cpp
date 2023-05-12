@@ -41,8 +41,8 @@ void Header::DrawTime()
 {
     DateTime time = _rtc->GetNow();
 
-    LCD::FillRect(background_pos, background_rect, color_white);
-    LCD::SetTextColor(color_black, color_white);
+    LCD::FillRect(background_pos, background_rect, color_accent1);
+    LCD::SetTextColor(color_background1, color_accent1);
     LCD::SetTextDatum(TextDatum::TopLeft);
     LCD::SetFont(&fonts::lgfxJapanGothic_20);
 
@@ -58,11 +58,11 @@ void Header::DrawBLEConnection()
 {
     if (_ble->IsConnected())
     {
-        LCD::DrawLine(Vector2<int16_t>(6, 6), Vector2<int16_t>(14, 14), color_black);
-        LCD::DrawLine(Vector2<int16_t>(14, 6), Vector2<int16_t>(6, 14), color_black);
-        LCD::DrawLine(Vector2<int16_t>(10, 2), Vector2<int16_t>(10, 18), color_black);
-        LCD::DrawLine(Vector2<int16_t>(10, 2), Vector2<int16_t>(14, 6), color_black);
-        LCD::DrawLine(Vector2<int16_t>(14, 14), Vector2<int16_t>(10, 18), color_black);
+        LCD::DrawLine(Vector2<int16_t>(6, 6), Vector2<int16_t>(14, 14), color_foreground);
+        LCD::DrawLine(Vector2<int16_t>(14, 6), Vector2<int16_t>(6, 14), color_foreground);
+        LCD::DrawLine(Vector2<int16_t>(10, 2), Vector2<int16_t>(10, 18), color_foreground);
+        LCD::DrawLine(Vector2<int16_t>(10, 2), Vector2<int16_t>(14, 6), color_foreground);
+        LCD::DrawLine(Vector2<int16_t>(14, 14), Vector2<int16_t>(10, 18), color_foreground);
     }
 }
 

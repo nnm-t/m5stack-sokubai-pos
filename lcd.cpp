@@ -93,6 +93,11 @@ void LCD::DrawLine(const Vector2<int16_t>& pos0, const Vector2<int16_t>& pos1, c
     _lcd->drawLine(pos0.X(), pos0.Y(), pos1.X(), pos1.Y(), color.Get());
 }
 
+void LCD::DrawLine(const Vector2<int32_t>& pos0, const Vector2<int32_t>& pos1, const Color16& color)
+{
+    _lcd->drawLine(pos0.X(), pos0.Y(), pos1.X(), pos1.Y(), color.Get());
+}
+
 void LCD::SetTextSize(const uint8_t size)
 {
     _lcd->setTextSize(size);

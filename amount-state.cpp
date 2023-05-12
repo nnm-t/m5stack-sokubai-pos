@@ -29,9 +29,9 @@ FooterText AmountState::GetFooterText()
 
 void AmountState::Draw()
 {
-    LCD::FillRect(bg_pos, bg_rect, color_black);
+    LCD::FillRect(bg_pos, bg_rect, color_background1);
 
-    LCD::SetTextColor(color_white, color_black);
+    LCD::SetTextColor(color_foreground, color_background1);
     LCD::SetTextDatum(TextDatum::TopLeft);
     LCD::DrawString("金額入力", title_pos);
     LCD::DrawString("100円単位で入力して下さい", title2_pos);
@@ -84,9 +84,9 @@ void AmountState::Down()
 
 void AmountState::DrawPrice()
 {
-    LCD::FillRect(price_rect_pos, price_rect, color_black);
+    LCD::FillRect(price_rect_pos, price_rect, color_background1);
     LCD::SetTextDatum(TextDatum::MiddleRight);
-    LCD::SetTextColor(color_white, color_black);
+    LCD::SetTextColor(color_foreground, color_background1);
     LCD::SetFont(&fonts::lgfxJapanGothic_32);
     LCD::DrawString(String(abs((_price % 1000) / 100)), price_100_pos);
     
@@ -116,15 +116,15 @@ void AmountState::Right()
 
 void AmountState::DrawPricePlace()
 {
-    LCD::FillRect(price_place_pos, price_place_rect, color_black);
+    LCD::FillRect(price_place_pos, price_place_rect, color_background1);
 
     if (_price_place == PricePlace::Lower)
     {
-        LCD::FillTriangle(price_place_lower0, price_place_lower1, price_place_lower2, color_red);
+        LCD::FillTriangle(price_place_lower0, price_place_lower1, price_place_lower2, color_accent1);
         return;
     }
 
-    LCD::FillTriangle(price_place_upper0, price_place_upper1, price_place_upper2, color_red);
+    LCD::FillTriangle(price_place_upper0, price_place_upper1, price_place_upper2, color_accent1);
 }
 
 void AmountState::Select()

@@ -11,6 +11,8 @@ constexpr const Vector2<int32_t> SalesState::price_right_pos;
 
 constexpr const Vector2<int32_t> SalesState::bg_list_pos;
 constexpr const Rect<int32_t> SalesState::bg_list_rect;
+constexpr const Vector2<int32_t> SalesState::bg_list_pos2;
+constexpr const Rect<int32_t> SalesState::bg_list_rect2;
 
 constexpr const Rect<int32_t> SalesState::triangle_rect;
 
@@ -36,30 +38,30 @@ const size_t SalesState::GetMaxPages()
 
 void SalesState::DrawTriangle()
 {
-    LCD::FillRect(Vector2<int32_t>(289, 189), triangle_rect, color_black);
-    LCD::FillRect(Vector2<int32_t>(289, 29), triangle_rect, color_black);
+    LCD::FillRect(Vector2<int32_t>(289, 189), triangle_rect, color_background1);
+    LCD::FillRect(Vector2<int32_t>(289, 29), triangle_rect, color_background1);
 
     if (_page > 0)
     {
         // 上向き
-        LCD::FillTriangle(Vector2<int32_t>(290, 50), Vector2<int32_t>(310, 50), Vector2<int32_t>(300, 30), color_red);
+        LCD::FillTriangle(Vector2<int32_t>(290, 50), Vector2<int32_t>(310, 50), Vector2<int32_t>(300, 30), color_accent1);
     }
 
     if (_page != GetMaxPages() - 1)
     {
         // 下向き
-        LCD::FillTriangle(Vector2<int32_t>(290, 190), Vector2<int32_t>(310, 190), Vector2<int32_t>(300, 210), color_red);
+        LCD::FillTriangle(Vector2<int32_t>(290, 190), Vector2<int32_t>(310, 190), Vector2<int32_t>(300, 210), color_accent1);
     }
 }
 
 void SalesState::DrawGoods()
 {
-    LCD::FillRect(bg_list_pos, bg_list_rect, color_black);
+    LCD::FillRect(bg_list_pos, bg_list_rect, color_background1);
 
     DrawTriangle();
 
     LCD::SetTextDatum(TextDatum::TopLeft);
-    LCD::SetTextColor(color_white, color_black);
+    LCD::SetTextColor(color_foreground, color_background1);
     LCD::DrawString("商品売上", title_pos);
 
     int32_t y = good_y;
@@ -71,7 +73,7 @@ void SalesState::DrawGoods()
 
         if (index > GetGoodsSize() - 1)
         {
-            return;
+            break;
         }
 
         int16_t sales = goods[index].GetSales();
@@ -88,16 +90,18 @@ void SalesState::DrawGoods()
 
         y += good_y_span;
     }
+
+    LCD::DrawRect(bg_list_pos2, bg_list_rect2, color_foreground);
 }
 
 void SalesState::DrawAmounts()
 {
-    LCD::FillRect(bg_list_pos, bg_list_rect, color_black);
+    LCD::FillRect(bg_list_pos, bg_list_rect, color_background1);
 
     DrawTriangle();
 
     LCD::SetTextDatum(TextDatum::TopLeft);
-    LCD::SetTextColor(color_white, color_black);
+    LCD::SetTextColor(color_foreground, color_background1);
     LCD::DrawString("金額入力売上", title_pos);
 
     // unordered_map の途中からの iterate
@@ -114,7 +118,7 @@ void SalesState::DrawAmounts()
     {
         if (iterator == _amounts.end())
         {
-            return;
+            break;
         }
 
         const int32_t unit_price = iterator->first;
@@ -132,6 +136,8 @@ void SalesState::DrawAmounts()
         iterator++;
         y += good_y_span;
     }
+
+    LCD::DrawRect(bg_list_pos2, bg_list_rect2, color_foreground);
 }
 
 void SalesState::DrawBody()
@@ -147,7 +153,7 @@ void SalesState::DrawBody()
 
 void SalesState::Draw()
 {
-    LCD::FillRect(bg_pos, bg_rect, color_black);
+    LCD::FillRect(bg_pos, bg_rect, color_background1);
 
     int32_t y = good_y;
     int32_t sum_price = 0;
@@ -181,13 +187,14 @@ void SalesState::Draw()
         _amounts[amount] = 1;
     }
 
-    LCD::SetTextColor(color_yellow, color_black);
+    DrawBody();
+
+    LCD::SetTextColor(color_accent2, color_background1);
     LCD::SetTextDatum(TextDatum::TopLeft);
     LCD::DrawString("合計", price_left_pos);
     LCD::SetTextDatum(TextDatum::TopRight);
     LCD::DrawString(String(sum_price) + "円", price_right_pos);
-
-    DrawBody();
+    LCD::DrawLine(price_left_pos, price_right_pos, color_accent2);
 }
 
 void SalesState::ButtonA()

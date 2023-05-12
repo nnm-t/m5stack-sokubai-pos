@@ -16,6 +16,12 @@ constexpr const Color16 color_orange = Color16::From32(0xFF9900);
 constexpr const Color16 color_green = Color16::From32(0x009966);
 constexpr const Color16 color_bluetooth = Color16::From32(0x0082FC);
 
+constexpr const Color16 color_background1 = Color16::From32(0xDDDDDD);
+constexpr const Color16 color_background2 = Color16::From32(0xBBBBBB);
+constexpr const Color16 color_foreground = Color16::From32(0x000000);
+constexpr const Color16 color_accent1 = Color16::From32(0x0099CC);
+constexpr const Color16 color_accent2 = Color16::From32(0xFF6600);
+
 constexpr const Vector2<int32_t> bg_pos = Vector2<int32_t>(0, 20);
 constexpr const Rect<int32_t> bg_rect = Rect<int32_t>(320, 200);
 

@@ -51,11 +51,11 @@ void SettingsState::Begin()
 
 void SettingsState::Draw()
 {
-    LCD::FillRect(bg_pos, bg_rect, color_black);
+    LCD::FillRect(bg_pos, bg_rect, color_background1);
 
     _time = _rtc->GetNow();
 
-    LCD::SetTextColor(color_white, color_black);
+    LCD::SetTextColor(color_foreground, color_background1);
     LCD::SetTextDatum(TextDatum::TopLeft);
 
     LCD::DrawString("設定", title_pos);
@@ -73,22 +73,22 @@ void SettingsState::Draw()
 
 void SettingsState::DrawModeArrow()
 {
-    LCD::FillTriangle(time_triangle0, time_triangle1, time_triangle2, color_black);
-    LCD::FillTriangle(brightness_triangle0, brightness_triangle1, brightness_triangle2, color_black);
-            LCD::FillTriangle(ble_triangle0, ble_triangle1, ble_triangle2, color_black);
+    LCD::FillTriangle(time_triangle0, time_triangle1, time_triangle2, color_background1);
+    LCD::FillTriangle(brightness_triangle0, brightness_triangle1, brightness_triangle2, color_background1);
+            LCD::FillTriangle(ble_triangle0, ble_triangle1, ble_triangle2, color_background1);
 
     switch(_mode)
     {
         case SettingsStateMode::Time:
             // 時刻
-            LCD::FillTriangle(time_triangle0, time_triangle1, time_triangle2, color_red);
+            LCD::FillTriangle(time_triangle0, time_triangle1, time_triangle2, color_accent1);
             break;
         case SettingsStateMode::Brightness:
             // 輝度
-            LCD::FillTriangle(brightness_triangle0, brightness_triangle1, brightness_triangle2, color_red);
+            LCD::FillTriangle(brightness_triangle0, brightness_triangle1, brightness_triangle2, color_accent1);
             break;
         case SettingsStateMode::BLE:
-            LCD::FillTriangle(ble_triangle0, ble_triangle1, ble_triangle2, color_red);
+            LCD::FillTriangle(ble_triangle0, ble_triangle1, ble_triangle2, color_accent1);
             break;
         default:
         break;
@@ -107,10 +107,10 @@ String SettingsState::Convert2Digit(const uint8_t number)
 
 void SettingsState::DrawTime()
 {
-    LCD::FillRect(time_bg_pos, time_bg_rect, color_black);
-    LCD::FillRect(time_year1000_pos, time_bg_rect, color_black);
+    LCD::FillRect(time_bg_pos, time_bg_rect, color_background1);
+    LCD::FillRect(time_year1000_pos, time_bg_rect, color_background1);
 
-    LCD::SetTextColor(color_white, color_black);
+    LCD::SetTextColor(color_foreground, color_background1);
     LCD::DrawString("時刻", time_title_pos);
 
     const uint16_t year = _time.year();
@@ -135,31 +135,31 @@ void SettingsState::DrawTimeUnderLine()
     constexpr Rect<int32_t> digit2_rect = Rect<int32_t>(time_w * 2, 2);
     constexpr int32_t digit_pos_y = time_y + 20;
 
-    LCD::FillRect(Vector2<int32_t>(time_year1000_pos.X(), digit_pos_y), Rect<int32_t>(280, 2), color_black);
+    LCD::FillRect(Vector2<int32_t>(time_year1000_pos.X(), digit_pos_y), Rect<int32_t>(280, 2), color_background1);
 
     // 下線
     switch (_date_mode)
     {
     case SettingsStateDateTime::Year100:
-        LCD::FillRect(Vector2<int32_t>(time_year100_pos.X(), digit_pos_y), digit1_rect, color_red);
+        LCD::FillRect(Vector2<int32_t>(time_year100_pos.X(), digit_pos_y), digit1_rect, color_accent1);
         break;
     case SettingsStateDateTime::Year10:
-        LCD::FillRect(Vector2<int32_t>(time_year10_pos.X(), digit_pos_y), digit1_rect, color_red);
+        LCD::FillRect(Vector2<int32_t>(time_year10_pos.X(), digit_pos_y), digit1_rect, color_accent1);
         break;
     case SettingsStateDateTime::Year1:
-        LCD::FillRect(Vector2<int32_t>(time_year1_pos.X(), digit_pos_y), digit1_rect, color_red);
+        LCD::FillRect(Vector2<int32_t>(time_year1_pos.X(), digit_pos_y), digit1_rect, color_accent1);
         break;
     case SettingsStateDateTime::Month:
-        LCD::FillRect(Vector2<int32_t>(time_month_pos.X(), digit_pos_y), digit2_rect, color_red);
+        LCD::FillRect(Vector2<int32_t>(time_month_pos.X(), digit_pos_y), digit2_rect, color_accent1);
         break;
     case SettingsStateDateTime::Day:
-        LCD::FillRect(Vector2<int32_t>(time_day_pos.X(), digit_pos_y), digit2_rect, color_red);
+        LCD::FillRect(Vector2<int32_t>(time_day_pos.X(), digit_pos_y), digit2_rect, color_accent1);
         break;
     case SettingsStateDateTime::Hour:
-        LCD::FillRect(Vector2<int32_t>(time_hour_pos.X(), digit_pos_y), digit2_rect, color_red);
+        LCD::FillRect(Vector2<int32_t>(time_hour_pos.X(), digit_pos_y), digit2_rect, color_accent1);
         break;
     case SettingsStateDateTime::Minute:
-        LCD::FillRect(Vector2<int32_t>(time_minute_pos.X(), digit_pos_y), digit2_rect, color_red);
+        LCD::FillRect(Vector2<int32_t>(time_minute_pos.X(), digit_pos_y), digit2_rect, color_accent1);
         break;
     default:
         break;
@@ -168,24 +168,24 @@ void SettingsState::DrawTimeUnderLine()
 
 void SettingsState::DrawBrightness()
 {
-    LCD::FillRect(brightness_bar_pos, brightness_rect, color_black);
+    LCD::FillRect(brightness_bar_pos, brightness_rect, color_background1);
 
-    LCD::SetTextColor(color_white, color_black);
+    LCD::SetTextColor(color_foreground, color_background1);
     LCD::DrawString("輝度", brightness_title_pos);
-    LCD::DrawRect(brightness_bar_pos, brightness_bar_rect, color_white);
+    LCD::DrawRect(brightness_bar_pos, brightness_bar_rect, color_foreground);
 
     // 輝度をバーで示すために比率を求める
     float width = 200.0 * _brightness->GetValue() / _brightness->max;
     Rect<int32_t> brightness_value_rect(static_cast<int32_t>(width), brightness_bar_rect.Height());
 
-    LCD::FillRect(brightness_bar_pos, brightness_value_rect, color_white);
+    LCD::FillRect(brightness_bar_pos, brightness_value_rect, color_foreground);
 }
 
 void SettingsState::DrawBLE()
 {
-    LCD::FillRect(ble_title_pos, ble_rect, color_black);
+    LCD::FillRect(ble_title_pos, ble_rect, color_background1);
 
-    LCD::SetTextColor(color_white, color_black);
+    LCD::SetTextColor(color_foreground, color_background1);
     LCD::DrawString("BLE", ble_title_pos);
 
     String ble_status;
@@ -194,7 +194,7 @@ void SettingsState::DrawBLE()
     {
         if (_ble->IsConnected())
         {
-            LCD::SetTextColor(color_yellow, color_black);
+            LCD::SetTextColor(color_accent2, color_background1);
         }
         ble_status = _ble->GetAdvertisedDeviceAddress();
     }
@@ -207,8 +207,8 @@ void SettingsState::DrawBLE()
 
 void SettingsState::DrawUUID()
 {
-    LCD::FillRect(rfid_title_pos, rfid_rect, color_black);
-    LCD::SetTextColor(color_white, color_black);
+    LCD::FillRect(rfid_title_pos, rfid_rect, color_background1);
+    LCD::SetTextColor(color_foreground, color_background1);
     LCD::DrawString("RFID", rfid_title_pos);
     LCD::DrawString(_rfid->GetUUIDString(), rfid_uuid_pos);
 }
