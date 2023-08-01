@@ -26,7 +26,7 @@ class SalesState : public IState
     static constexpr const int32_t amount_y = 160;
     static constexpr const int32_t price_y = 190;
 
-    static constexpr const size_t page_values = 6;
+    static constexpr const size_t page_values = 5;
 
     static constexpr const Vector2<int32_t> amount_left_pos = Vector2<int32_t>(good_x_left, amount_y);
     static constexpr const Vector2<int32_t> amount_right_pos = Vector2<int32_t>(good_x_right, amount_y);
