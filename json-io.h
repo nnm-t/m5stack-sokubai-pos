@@ -12,7 +12,7 @@
 
 class JsonIO
 {
-    static constexpr const size_t goods_size = 2048;
+    static constexpr const size_t goods_size = 3072;
     static constexpr const size_t sales_size = 1024;
 
     static constexpr const char* goods_key = "goods";
