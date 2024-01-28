@@ -78,12 +78,12 @@ void LCD::SetTextColor(const Color16& foreground, const Color16& background)
     _lcd->setTextColor(foreground.Get(), background.Get());
 }
 
-void LCD::DrawBmpFile(const Vector2<uint16_t>& position, const char* path, fs::FS fs)
+void LCD::DrawBmpFile(const Vector2<uint16_t>& position, const char* path, fs::FS& fs)
 {
     _lcd->drawBmpFile(fs, path, position.X(), position.Y());
 }
 
-void LCD::DrawBmpFile(const Vector2<uint16_t>& position, String& path, fs::FS fs)
+void LCD::DrawBmpFile(const Vector2<uint16_t>& position, String& path, fs::FS& fs)
 {
     _lcd->drawBmpFile(fs, path.c_str(), position.X(), position.Y());
 }

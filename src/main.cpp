@@ -75,16 +75,18 @@ namespace
     JsonIO json_io(&serial, &goods_list, &amount_state);
     CSVWriter csv_writer(&rtc, &goods_list, &amount_state);
 
-    #ifdef FACES_GAMEBOY
+#ifdef FACES_GAMEBOY
     GameBoy panel;
-    #elif FACES_KEYBOARD
+#elif FACES_KEYBOARD
     KeyboardFaces panel;
-    #endif
+#endif
     M5Button m5_button;
 
     Brightness brightness(brightness_initial, brightness_step);
     SettingsState settings_state(&selector, &rtc, &brightness, &ble_client, &rfid, ticker_ms);
 }
+
+void OnTimerTicked();
 
 void setup()
 {
@@ -134,7 +136,7 @@ void setup()
 
         goods_state.RFIDReceived(uuid);
     };
-#endif ENABLE_RFID
+#endif
 
     json_io.Read();
 
