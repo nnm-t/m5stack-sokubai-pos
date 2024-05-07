@@ -42,7 +42,6 @@ using namespace std;
 
 namespace
 {
-    constexpr const char* bluetooth_name = "M5Stack-Sokubai-POS";
     constexpr const uint8_t mfrc522_address = 0x28;
     constexpr const uint32_t ticker_ms = 20;
     constexpr const uint8_t brightness_initial = 63;
