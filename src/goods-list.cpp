@@ -116,6 +116,9 @@ void GoodsList::DrawSumPrice()
     LCD::DrawString(String(sum) + "円", sum_pos);
     LCD::SetFont(&fonts::lgfxJapanGothic_20);
     LCD::SetTextDatum(TextDatum::TopLeft);
+
+    String name = _goods[_current].GetName();
+    _espnow->SendGood(name, _goods[_current].GetPrice(), sum);
 }
 
 void GoodsList::Reset()

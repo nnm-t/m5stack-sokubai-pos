@@ -32,6 +32,7 @@
 
 #include "m5-button.h"
 #include "rfid.h"
+#include "esp-now.h"
 #include "neopixel.h"
 #include "speaker.h"
 #include "json-io.h"
@@ -57,16 +58,17 @@ namespace
     Header header(&rtc, ticker_ms);
     Footer footer;
     Speaker speaker;
-    GoodsList goods_list;
+    ESPNOW espnow(&serial);
+    GoodsList goods_list(&espnow);
     RFID rfid(&serial, &speaker, mfrc522_address, ticker_ms);
 
     StateSelector selector(&footer);
     GoodsState goods_state(&selector, &goods_list, &rfid, &neopixel);
-    AmountState amount_state(&selector);
-    PaymentState payment_state(&selector, &amount_state, &goods_list, &serial, &speaker);
+    AmountState amount_state(&selector, &espnow);
+    PaymentState payment_state(&selector, &amount_state, &goods_list, &serial, &speaker, &espnow);
     SalesState sales_state(&selector, &amount_state, &goods_list, &serial);
 
-    JsonIO json_io(&serial, &goods_list, &amount_state);
+    JsonIO json_io(&serial, &goods_list, &amount_state, &espnow);
     CSVWriter csv_writer(&rtc, &goods_list, &amount_state);
 
 #ifdef FACES_GAMEBOY
@@ -77,7 +79,7 @@ namespace
     M5Button m5_button;
 
     Brightness brightness(brightness_initial, brightness_step);
-    SettingsState settings_state(&selector, &rtc, &brightness, &rfid, ticker_ms);
+    SettingsState settings_state(&selector, &rtc, &brightness, &rfid, &espnow, ticker_ms);
 }
 
 void OnTimerTicked();
@@ -131,6 +133,8 @@ void setup()
         goods_state.RFIDReceived(uuid);
     };
 #endif
+
+    espnow.Begin();
 
     json_io.Read();
 

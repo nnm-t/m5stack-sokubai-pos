@@ -31,12 +31,14 @@ void JsonIO::Read()
     StaticJsonDocument<goods_size> json_goods;
     OpenJson(goods_file, json_goods);
     JsonArray goods = json_goods[goods_key].as<JsonArray>();
+    JsonArray mac = json_goods[mac_key].as<JsonArray>();
 
     StaticJsonDocument<sales_size> json_sales;
     OpenJson(sales_file, json_sales);
     JsonArray sales = json_sales[goods_key].as<JsonArray>();
     JsonArray amounts = json_sales[amounts_key].as<JsonArray>();
 
+    _espnow->Deserialize(mac);
     _goods_list->Deserialize(goods, sales);
     _amount_state->Deserialize(amounts);
 }

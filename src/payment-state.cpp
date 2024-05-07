@@ -173,6 +173,8 @@ void PaymentState::ButtonC()
     _selector->WriteSales();
 
     _selector->ToGoodsState();
+
+    _espnow->SendComplete();
 }
 
 void PaymentState::PrintSales()

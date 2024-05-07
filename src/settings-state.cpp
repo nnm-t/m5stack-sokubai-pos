@@ -25,6 +25,11 @@ constexpr Vector2<int32_t> SettingsState::brightness_title_pos;
 constexpr Vector2<int32_t> SettingsState::brightness_bar_pos;
 constexpr Rect<int32_t> SettingsState::brightness_bar_rect;
 constexpr Rect<int32_t> SettingsState::brightness_rect;
+constexpr Vector2<int32_t> SettingsState::mac_title_pos;
+constexpr Vector2<int32_t> SettingsState::mac_from_title_pos;
+constexpr Vector2<int32_t> SettingsState::mac_to_title_pos;
+constexpr Vector2<int32_t> SettingsState::mac_from_pos;
+constexpr Vector2<int32_t> SettingsState::mac_to_pos;
 constexpr Vector2<int32_t> SettingsState::rfid_title_pos;
 constexpr Vector2<int32_t> SettingsState::rfid_uuid_pos;
 constexpr Rect<int32_t> SettingsState::rfid_rect;
@@ -55,6 +60,8 @@ void SettingsState::Draw()
 
     DrawModeArrow();
     DrawTimeUnderLine();
+
+    DrawMAC();
 #ifdef ENABLE_RFID
     DrawUUID();
 #endif
@@ -164,6 +171,17 @@ void SettingsState::DrawBrightness()
     Rect<int32_t> brightness_value_rect(static_cast<int32_t>(width), brightness_bar_rect.Height());
 
     LCD::FillRect(brightness_bar_pos, brightness_value_rect, color_foreground);
+}
+
+void SettingsState::DrawMAC()
+{
+    LCD::SetTextColor(color_foreground, color_background1);
+    LCD::DrawString("Wi-Fi MAC", mac_title_pos);
+    LCD::DrawString("本機", mac_from_title_pos);
+    LCD::DrawString(WiFi.macAddress(), mac_from_pos);
+    LCD::DrawString("宛先", mac_to_title_pos);
+    LCD::DrawString(_espnow->GetPeerAddress(), mac_to_pos);
+
 }
 
 void SettingsState::DrawUUID()

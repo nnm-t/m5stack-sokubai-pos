@@ -11,6 +11,7 @@
 #include "lcd.h"
 #include "constants.h"
 #include "sprite.h"
+#include "esp-now.h"
 
 class GoodsList
 {
@@ -24,6 +25,7 @@ class GoodsList
     static constexpr Rect<int32_t> sum_rect = Rect<int32_t>(120, 40);
 
     std::vector<Good> _goods;
+    ESPNOW* const _espnow;
 
     size_t _current;
 
@@ -33,7 +35,7 @@ class GoodsList
     }
 
 public:
-    GoodsList() : _goods(std::vector<Good>()), _current(0)
+    GoodsList(ESPNOW* const espnow) : _goods(std::vector<Good>()), _current(0), _espnow(espnow)
     {
 
     }

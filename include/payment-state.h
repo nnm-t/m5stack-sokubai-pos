@@ -14,6 +14,7 @@
 #include "text-datum.h"
 #include "i-serial.h"
 #include "speaker.h"
+#include "esp-now.h"
 
 class PaymentState : public IState
 {
@@ -51,6 +52,7 @@ class PaymentState : public IState
     GoodsList* const _goods_list;
     ISerial* const _serial;
     Speaker* const _speaker;
+    ESPNOW* const _espnow;
 
     int32_t _sum_price = 0;
     size_t _page = 0;
@@ -83,7 +85,7 @@ class PaymentState : public IState
     }
 
 public:
-    PaymentState(StateSelector* const selector, AmountState* const amount_state, GoodsList* const goods_list, ISerial* const serial, Speaker* const speaker) : _selector(selector), _amount_state(amount_state), _goods_list(goods_list), _serial(serial), _goods_index(std::vector<size_t>()), _speaker(speaker)
+    PaymentState(StateSelector* const selector, AmountState* const amount_state, GoodsList* const goods_list, ISerial* const serial, Speaker* const speaker, ESPNOW* const espnow) : _selector(selector), _amount_state(amount_state), _goods_list(goods_list), _serial(serial), _goods_index(std::vector<size_t>()), _speaker(speaker), _espnow(espnow)
     {
 
     }

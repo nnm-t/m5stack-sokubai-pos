@@ -4,6 +4,7 @@
 
 #include <Arduino.h>
 #include <M5Stack.h>
+#include <WiFi.h>
 
 #include "i-state.h"
 #include "state-selector.h"
@@ -12,6 +13,7 @@
 #include "settings-state-mode.h"
 #include "settings-state-datetime.h"
 #include "rfid.h"
+#include "esp-now.h"
 
 class SettingsState : public IState
 {
@@ -59,8 +61,14 @@ class SettingsState : public IState
 
     static constexpr Rect<int32_t> brightness_rect = Rect<int32_t>(200, 20);
 
-    static constexpr Vector2<int32_t> rfid_title_pos = Vector2<int32_t>(40, 180);
-    static constexpr Vector2<int32_t> rfid_uuid_pos = Vector2<int32_t>(90, 180);
+    static constexpr Vector2<int32_t> mac_title_pos = Vector2<int32_t>(40, 125);
+    static constexpr Vector2<int32_t> mac_from_title_pos = Vector2<int32_t>(40, 145);
+    static constexpr Vector2<int32_t> mac_to_title_pos = Vector2<int32_t>(40, 165);
+    static constexpr Vector2<int32_t> mac_from_pos = Vector2<int32_t>(90, 145);
+    static constexpr Vector2<int32_t> mac_to_pos = Vector2<int32_t>(90, 165);
+
+    static constexpr Vector2<int32_t> rfid_title_pos = Vector2<int32_t>(40, 190);
+    static constexpr Vector2<int32_t> rfid_uuid_pos = Vector2<int32_t>(90, 190);
     static constexpr Rect<int32_t> rfid_rect = Rect<int32_t>(240, 20);
 
     static constexpr const uint32_t min_interval_ms = 1000;
@@ -69,6 +77,7 @@ class SettingsState : public IState
     RTC* const _rtc;
     Brightness* const _brightness;
     RFID* const _rfid;
+    ESPNOW* const _espnow;
     const uint32_t _delay_ms;
 
     bool _do_connect = false;
@@ -87,12 +96,14 @@ class SettingsState : public IState
 
     void DrawBrightness();
 
+    void DrawMAC();
+
     void DrawUUID();
 
     String Convert2Digit(const uint8_t number);
 
 public:
-    SettingsState(StateSelector* const selector, RTC* const rtc, Brightness* const brightness, RFID* const rfid, const uint32_t delay_ms) : _selector(selector), _rtc(rtc), _brightness(brightness), _rfid(rfid), _delay_ms(delay_ms)
+    SettingsState(StateSelector* const selector, RTC* const rtc, Brightness* const brightness, RFID* const rfid, ESPNOW* const espnow, const uint32_t delay_ms) : _selector(selector), _rtc(rtc), _brightness(brightness), _rfid(rfid), _espnow(espnow), _delay_ms(delay_ms)
     {
 
     }
