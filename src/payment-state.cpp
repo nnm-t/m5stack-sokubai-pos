@@ -69,8 +69,6 @@ void PaymentState::Draw()
     LCD::SetTextDatum(TextDatum::TopRight);
     LCD::DrawString(String(_sum_price) + "円", price_right_pos);
     LCD::DrawLine(price_line_left_pos, price_line_right_pos, color_accent2);
-
-    _ble_client->Write(BLEPosDataType::Sum, static_cast<uint32_t>(_sum_price));
 }
 
 void PaymentState::DrawGoods()
@@ -174,7 +172,6 @@ void PaymentState::ButtonC()
     PrintSales();
     _selector->WriteSales();
 
-    _ble_client->Write(BLEPosDataType::Paid);
     _selector->ToGoodsState();
 }
 

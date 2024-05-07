@@ -12,7 +12,6 @@
 #include "lcd.h"
 #include "power.h"
 #include "rtc.h"
-#include "ble-pos-client.h"
 
 class Header
 {
@@ -40,7 +39,6 @@ class Header
     static constexpr Vector2<int32_t> connected_pos = Vector2<int32_t>(20, 1);
 
     RTC* const _rtc;
-    BLEPosClient* const _ble;
     const uint32_t _delay_ms;
 
     uint32_t _period_ms = 0;
@@ -51,14 +49,12 @@ class Header
 
     void DrawTime();
 
-    void DrawBLEConnection();
-
     void DrawBatteryLevel(const int8_t battery_level);
 
     String Convert2Digit(const uint8_t value);
 
 public:
-    Header(RTC* const rtc, BLEPosClient* const ble, const uint32_t delay_ms) : _rtc(rtc), _ble(ble), _delay_ms(delay_ms)
+    Header(RTC* const rtc, const uint32_t delay_ms) : _rtc(rtc), _delay_ms(delay_ms)
     {
 
     }

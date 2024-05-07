@@ -19,7 +19,6 @@ constexpr Vector2<int32_t> Header::connected_pos;
 void Header::Draw()
 {
     DrawTime();
-    DrawBLEConnection();
 
     const int8_t battery_level = Power::GetBatteryLevel();
     DrawBatteryLevel(battery_level);
@@ -52,18 +51,6 @@ void Header::DrawTime()
     LCD::DrawString(":", minute_slash_pos);
     LCD::DrawString(Convert2Digit(time.second()), second_pos);
 
-}
-
-void Header::DrawBLEConnection()
-{
-    if (_ble->IsConnected())
-    {
-        LCD::DrawLine(Vector2<int16_t>(6, 6), Vector2<int16_t>(14, 14), color_foreground);
-        LCD::DrawLine(Vector2<int16_t>(14, 6), Vector2<int16_t>(6, 14), color_foreground);
-        LCD::DrawLine(Vector2<int16_t>(10, 2), Vector2<int16_t>(10, 18), color_foreground);
-        LCD::DrawLine(Vector2<int16_t>(10, 2), Vector2<int16_t>(14, 6), color_foreground);
-        LCD::DrawLine(Vector2<int16_t>(14, 14), Vector2<int16_t>(10, 18), color_foreground);
-    }
 }
 
 void Header::DrawBatteryLevel(const int8_t battery_level)

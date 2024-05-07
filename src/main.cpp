@@ -37,7 +37,6 @@
 #include "json-io.h"
 #include "hard-serial.h"
 #include "csv-writer.h"
-#include "ble-pos-client.h"
 
 using namespace std;
 
@@ -56,20 +55,16 @@ namespace
     RTC rtc;
     NeoPixel neopixel;
 
-    BLEUUID service_uuid("1b36fd1e-6fc4-4dc6-8c82-c13552b88789");
-    BLEUUID price_characteristic_uuid("4ee58129-a22f-41cd-bdca-4079fe0632d0");
-    BLEPosClient ble_client("M5Stack-Sokubai-Pos", service_uuid, price_characteristic_uuid, &serial);
-
-    Header header(&rtc, &ble_client, ticker_ms);
+    Header header(&rtc, ticker_ms);
     Footer footer;
     Speaker speaker;
-    GoodsList goods_list(&ble_client);
+    GoodsList goods_list;
     RFID rfid(&serial, &speaker, mfrc522_address, ticker_ms);
 
     StateSelector selector(&footer);
     GoodsState goods_state(&selector, &goods_list, &rfid, &neopixel);
-    AmountState amount_state(&selector, &ble_client);
-    PaymentState payment_state(&selector, &amount_state, &goods_list, &serial, &speaker, &ble_client);
+    AmountState amount_state(&selector);
+    PaymentState payment_state(&selector, &amount_state, &goods_list, &serial, &speaker);
     SalesState sales_state(&selector, &amount_state, &goods_list, &serial);
 
     JsonIO json_io(&serial, &goods_list, &amount_state);
@@ -83,7 +78,7 @@ namespace
     M5Button m5_button;
 
     Brightness brightness(brightness_initial, brightness_step);
-    SettingsState settings_state(&selector, &rtc, &brightness, &ble_client, &rfid, ticker_ms);
+    SettingsState settings_state(&selector, &rtc, &brightness, &rfid, ticker_ms);
 }
 
 void OnTimerTicked();
@@ -146,16 +141,11 @@ void setup()
     header.Begin();
     selector.Begin();
 
-    ble_client.Begin();
-
     ticker.attach_ms(ticker_ms, OnTimerTicked);
 }
 
 void loop()
 {
-    settings_state.UpdateMainLoop();
-
-    ble_client.Update();
 }
 
 void OnTimerTicked()

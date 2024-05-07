@@ -8,9 +8,6 @@ constexpr Vector2<int32_t> SettingsState::time_triangle2;
 constexpr Vector2<int32_t> SettingsState::brightness_triangle0;
 constexpr Vector2<int32_t> SettingsState::brightness_triangle1;
 constexpr Vector2<int32_t> SettingsState::brightness_triangle2;
-constexpr Vector2<int32_t> SettingsState::ble_triangle0;
-constexpr Vector2<int32_t> SettingsState::ble_triangle1;
-constexpr Vector2<int32_t> SettingsState::ble_triangle2;
 constexpr Vector2<int32_t> SettingsState::time_bg_pos;
 constexpr Rect<int32_t> SettingsState::time_bg_rect;
 constexpr Vector2<int32_t> SettingsState::time_year1000_pos;
@@ -28,20 +25,13 @@ constexpr Vector2<int32_t> SettingsState::brightness_title_pos;
 constexpr Vector2<int32_t> SettingsState::brightness_bar_pos;
 constexpr Rect<int32_t> SettingsState::brightness_bar_rect;
 constexpr Rect<int32_t> SettingsState::brightness_rect;
-constexpr Vector2<int32_t> SettingsState::ble_title_pos;
-constexpr Vector2<int32_t> SettingsState::ble_status_pos;
-constexpr Rect<int32_t> SettingsState::ble_rect;
 constexpr Vector2<int32_t> SettingsState::rfid_title_pos;
 constexpr Vector2<int32_t> SettingsState::rfid_uuid_pos;
 constexpr Rect<int32_t> SettingsState::rfid_rect;
 
 FooterText SettingsState::GetFooterText()
 {
-    if (_ble->IsConnected())
-    {
-        return FooterText("戻る", "BLE切断", "RTC設定");
-    }
-    return FooterText("戻る", "BLE接続", "RTC設定");
+    return FooterText("戻る", "", "RTC設定");
 }
 
 void SettingsState::Begin()
@@ -62,7 +52,6 @@ void SettingsState::Draw()
 
     DrawTime();
     DrawBrightness();
-    DrawBLE();
 
     DrawModeArrow();
     DrawTimeUnderLine();
@@ -75,7 +64,6 @@ void SettingsState::DrawModeArrow()
 {
     LCD::FillTriangle(time_triangle0, time_triangle1, time_triangle2, color_background1);
     LCD::FillTriangle(brightness_triangle0, brightness_triangle1, brightness_triangle2, color_background1);
-            LCD::FillTriangle(ble_triangle0, ble_triangle1, ble_triangle2, color_background1);
 
     switch(_mode)
     {
@@ -86,9 +74,6 @@ void SettingsState::DrawModeArrow()
         case SettingsStateMode::Brightness:
             // 輝度
             LCD::FillTriangle(brightness_triangle0, brightness_triangle1, brightness_triangle2, color_accent1);
-            break;
-        case SettingsStateMode::BLE:
-            LCD::FillTriangle(ble_triangle0, ble_triangle1, ble_triangle2, color_accent1);
             break;
         default:
         break;
@@ -181,30 +166,6 @@ void SettingsState::DrawBrightness()
     LCD::FillRect(brightness_bar_pos, brightness_value_rect, color_foreground);
 }
 
-void SettingsState::DrawBLE()
-{
-    LCD::FillRect(ble_title_pos, ble_rect, color_background1);
-
-    LCD::SetTextColor(color_foreground, color_background1);
-    LCD::DrawString("BLE", ble_title_pos);
-
-    String ble_status;
-
-    if (_ble->IsAdvertised())
-    {
-        if (_ble->IsConnected())
-        {
-            LCD::SetTextColor(color_accent2, color_background1);
-        }
-        ble_status = _ble->GetAdvertisedDeviceAddress();
-    }
-    else
-    {
-        ble_status = "スキャン [Aボタン]";
-    }
-    LCD::DrawString(ble_status, ble_status_pos);
-}
-
 void SettingsState::DrawUUID()
 {
     LCD::FillRect(rfid_title_pos, rfid_rect, color_background1);
@@ -218,13 +179,10 @@ void SettingsState::Up()
     switch (_mode)
     {
         case SettingsStateMode::Time:
-            _mode = SettingsStateMode::BLE;
+            _mode = SettingsStateMode::Brightness;
             break;
         case SettingsStateMode::Brightness:
             _mode = SettingsStateMode::Time;
-            break;
-        case SettingsStateMode::BLE:
-            _mode = SettingsStateMode::Brightness;
             break;
     }
     
@@ -239,9 +197,6 @@ void SettingsState::Down()
             _mode = SettingsStateMode::Brightness;
             break;
         case SettingsStateMode::Brightness:
-            _mode = SettingsStateMode::BLE;
-            break;
-        case SettingsStateMode::BLE:
             _mode = SettingsStateMode::Time;
             break;
     }
@@ -306,12 +261,7 @@ void SettingsState::Start()
 
 void SettingsState::GameboyA()
 {
-    if (_mode == SettingsStateMode::BLE)
-    {
-        _ble->Scan();
-        return;
-    }
-    else if (_mode != SettingsStateMode::Time)
+    if (_mode != SettingsStateMode::Time)
     {
         return;
     }
@@ -573,23 +523,6 @@ void SettingsState::ButtonA()
 
 void SettingsState::ButtonB()
 {
-    // BLE接続
-    if (!_ble->IsAdvertised())
-    {
-        return;
-    }
-
-    if (_ble->IsConnected())
-    {
-        _do_disconnect = true;
-    }
-    else
-    {
-        // Timer割り込みでBLE接続するとフリーズするため、フラグを立ててメインループで行う
-        _do_connect = true;
-    }
-
-    _selector->ToGoodsState();
 }
 
 void SettingsState::ButtonC()
@@ -609,22 +542,6 @@ void SettingsState::Update()
     if (_period_ms >= min_interval_ms)
     {
         _period_ms = 0;
-        DrawBLE();
         DrawUUID();
-    }
-}
-
-void SettingsState::UpdateMainLoop()
-{
-    if (_do_connect)
-    {
-        _do_connect = false;
-        _ble->Connect();
-    }
-
-    if (_do_disconnect)
-    {
-        _do_disconnect = false;
-        _ble->Disconnect();
     }
 }

@@ -16,7 +16,6 @@
 #include "text-datum.h"
 #include "price-place.h"
 #include "state-selector.h"
-#include "ble-pos-client.h"
 
 class AmountState : public IState
 {
@@ -45,7 +44,6 @@ class AmountState : public IState
     static constexpr const int32_t price_min = -9900;
 
     StateSelector* const _selector;
-    BLEPosClient* const _ble_client;
 
     int32_t _price = 0;
     std::vector<int32_t> _amounts;
@@ -56,7 +54,7 @@ class AmountState : public IState
     void DrawPricePlace();
 
 public:
-    AmountState(StateSelector* const selector, BLEPosClient* const ble_client) : _selector(selector), _amounts(std::vector<int32_t>()), _ble_client(ble_client)
+    AmountState(StateSelector* const selector) : _selector(selector), _amounts(std::vector<int32_t>())
     {
 
     }
