@@ -24,6 +24,9 @@ class RFID
     Speaker* const _speaker;
 
     const uint32_t _delay_ms;
+    const uint8_t _i2c_address;
+
+    bool _is_found = false;
 
     MFRC522 _mfrc522;
     uint32_t _period_ms = 0;
@@ -32,7 +35,7 @@ class RFID
 public:
     std::function<void(std::vector<byte>)> on_rfid_received = nullptr;
 
-    RFID(ISerial* const serial, Speaker* const speaker, const uint8_t i2c_address, const uint32_t delay_ms) : _serial(serial), _speaker(speaker), _mfrc522(MFRC522(i2c_address)), _delay_ms(delay_ms)
+    RFID(ISerial* const serial, Speaker* const speaker, const uint8_t i2c_address, const uint32_t delay_ms) : _serial(serial), _speaker(speaker), _i2c_address(i2c_address), _mfrc522(MFRC522(i2c_address)), _delay_ms(delay_ms)
     {
 
     }

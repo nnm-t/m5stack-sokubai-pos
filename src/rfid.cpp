@@ -4,8 +4,16 @@ using namespace std;
 
 void RFID::Begin()
 {
-    Wire.begin();
+    Wire.beginTransmission(_i2c_address);
+    const uint8_t error = Wire.endTransmission();
 
+    if (error != 0)
+    {
+        _is_found = false;
+        return;
+    }
+
+    _is_found = true;
     _mfrc522.PCD_Init();
 }
 
@@ -18,6 +26,11 @@ void RFID::Update()
     }
 
     _period_ms = 0;
+
+    if (!_is_found)
+    {
+        return;
+    }
 
     if(!_mfrc522.PICC_IsNewCardPresent())
     {
