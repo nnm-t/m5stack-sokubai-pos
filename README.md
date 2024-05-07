@@ -2,7 +2,7 @@
 
 M5Stack で同人誌即売会用の簡易レジを開発するプロジェクト.
 
-M5Stack Arduino (C++14) で記述しています.
+~~M5Stack Arduino (C++14) で記述しています.~~ PlatformIOへ移行しました.
 
 ## 機能
 
@@ -15,14 +15,14 @@ M5Stack Arduino (C++14) で記述しています.
   - JSON ファイルへの記録
   - CSV ファイルへの記録 (時刻記録つき)
 - バッテリ残量表示
-- [m5stickc-pos-viewer](https://github.com/nnm-t/m5stickc-pos-viewer) への金額表示 (Bluetooth LE 通信)
+~~- [m5stickc-pos-viewer](https://github.com/nnm-t/m5stickc-pos-viewer) への金額表示 (Bluetooth LE 通信)~~
 
 ## 必要なハードウェア
 
-- [M5Stack FACES](https://m5stack.com/products/face)
+- [M5Stack FACES](https://m5stack.com/products/face) (EOL)
   - Gameboy Unit を使用します.
   - 操作系自体は, ソースを改造すれば通常の M5Stack + Joystick Unit でも対応できると思います.
-- [RFID Unit 2](https://docs.m5stack.com/en/unit/rfid2)
+- [RFID Unit 2](https://docs.m5stack.com/en/unit/rfid2) (必須ではなくなりました)
   - RFID カードの読み込みに使用します. 本体とは Grove ケーブルで接続します.
   - FACES II Bottom 使用時は, スキャン中に側面のNeoPixelが点灯します.
 - [Proto Module](https://shop.m5stack.com/products/proto-module)
